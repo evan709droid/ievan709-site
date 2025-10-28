@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ievan709.online – Contenido diario</title>
+  <style>
+    body {
+      background-color: #0f0f10;
+      color: #fff;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, sans-serif;
+      margin: 0;
+      line-height: 1.5;
+    }
+    header {
+      padding: 2rem 1.5rem;
+      text-align: center;
+      background: radial-gradient(circle at 20% 20%, #2a2a3a 0%, #0f0f10 60%);
+      border-bottom: 1px solid #2a2a3a;
+    }
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin: 0 0 .5rem;
+      color: #fff;
+    }
+    h2 {
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: #9ca3af;
+      margin: 0;
+    }
+    main {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 0 1.5rem 4rem;
+    }
+    section {
+      background-color: #1a1a22;
+      border: 1px solid #2f2f3d;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    section h3 {
+      margin-top: 0;
+      font-size: 1.1rem;
+      color: #fff;
+      font-weight: 600;
+    }
+    p {
+      color: #d1d5db;
+      font-size: .95rem;
+      margin: .5rem 0 1rem;
+    }
+    a.button {
+      display: inline-block;
+      text-decoration: none;
+      background: linear-gradient(90deg, #6366f1 0%, #14b8a6 100%);
+      color: #fff;
+      font-weight: 600;
+      font-size: .9rem;
+      padding: .7rem 1rem;
+      border-radius: 8px;
+    }
+    footer {
+      text-align: center;
+      font-size: .8rem;
+      color: #6b7280;
+      padding: 2rem 1.5rem 4rem;
+      border-top: 1px solid #2a2a3a;
+      background-color: #0f0f10;
+    }
+    footer a {
+      color: #9ca3af;
+      text-decoration: none;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>ievan709.online</h1>
+  <h2>Contenido diario: Fortnite • Fitness • Cocina</h2>
+</header>
+
+<main>
+
+  <section>
+    <h3>📦 Tienda diaria de Fortnite</h3>
+    <p>
+      Todos los días publico la tienda completa de Fortnite con:
+      precios en V-Bucks, rareza de cada skin, rotación y destacados.
+      Esto incluye una imagen tipo catálogo con todos los ítems del día.
+    </p>
+    <p>
+      Este proceso está automatizado con mi propia herramienta. La app genera la imagen de la tienda y la publica en mis redes sociales oficiales.
+      No vendo cuentas y no es un sitio de compra de V-Bucks — es información / catálogo para la comunidad.
+    </p>
+    <p>
+      Puedes ver la sección dedicada a Fortnite aquí:
+    </p>
+    <p>
+      <a class="button" href="./fortnite/index.html">Ver tienda Fortnite diaria →</a>
+    </p>
+  </section>
+
+  <section>
+    <h3>💪 Contenido fitness (próximamente)</h3>
+    <p>
+      Plan es compartir rutinas simples, sin equipo caro, y hacks rápidos para mejorar condición física sin gimnasio. 
+      Todo explicado fácil.
+    </p>
+  </section>
+
+  <section>
+    <h3>🍳 Cocina rápida (próximamente)</h3>
+    <p>
+      Recetas sencillas, baratas y reales — comida para el día a día, no cosas imposibles. 
+      Cuando esta parte esté lista, también se publicará aquí.
+    </p>
+  </section>
+
+  <section>
+    <h3>¿Quién soy?</h3>
+    <p>
+      Soy ievan709. Construí esta app para publicar contenido diario en mis propias redes:
+      mi página de Facebook y mi cuenta de X/Twitter. Todo el contenido se publica sólo en mis canales oficiales.
+    </p>
+    <p>
+      La app NO publica en páginas de otras personas, no vende datos, y no accede a información privada de usuarios.
+    </p>
+  </section>
+
+</main>
+
+<footer>
+  <p>
+    <a href="./privacy.html">Política de privacidad</a>
+    ·
+    <span>© <span id="year"></span> ievan709</span>
+  </p>
+</footer>
+
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>

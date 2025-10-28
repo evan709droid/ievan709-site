@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tienda diaria de Fortnite – ievan709</title>
+  <style>
+    body {
+      background-color: #0f0f10;
+      color: #fff;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, sans-serif;
+      margin: 0;
+      line-height: 1.5;
+    }
+    header {
+      padding: 2rem 1.5rem 1rem;
+      text-align: center;
+      background: radial-gradient(circle at 20% 20%, #2a2a3a 0%, #0f0f10 60%);
+      border-bottom: 1px solid #2a2a3a;
+    }
+    header h1 {
+      font-size: 1.6rem;
+      font-weight: 600;
+      margin: 0 0 .5rem;
+      color: #fff;
+    }
+    header p {
+      margin: 0;
+      color: #9ca3af;
+      font-size: .95rem;
+    }
+    main {
+      max-width: 800px;
+      margin: 2rem auto 4rem;
+      padding: 0 1.5rem;
+    }
+    section {
+      background-color: #1a1a22;
+      border: 1px solid #2f2f3d;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    section h2 {
+      margin-top: 0;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #fff;
+    }
+    p {
+      color: #d1d5db;
+      font-size: .95rem;
+      margin: .5rem 0 1rem;
+    }
+    ul {
+      color: #d1d5db;
+      font-size: .95rem;
+      margin: .5rem 0 1rem;
+      padding-left: 1.2rem;
+    }
+    footer {
+      text-align: center;
+      font-size: .8rem;
+      color: #6b7280;
+      padding: 2rem 1.5rem 4rem;
+      border-top: 1px solid #2a2a3a;
+      background-color: #0f0f10;
+    }
+    footer a {
+      color: #9ca3af;
+      text-decoration: none;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Tienda diaria de Fortnite</h1>
+  <p>Rarezas, precios en V-Bucks y rotación actualizada todos los días.</p>
+</header>
+
+<main>
+
+  <section>
+    <h2>¿Qué es esto?</h2>
+    <p>
+      Esta sección muestra la tienda diaria de Fortnite. Cada día mi app genera:
+    </p>
+    <ul>
+      <li>Una imagen tipo catálogo con todos los ítems disponibles en la tienda del día.</li>
+      <li>Rareza de cada skin con color (épico, legendario, etc.).</li>
+      <li>Precio en V-Bucks por skin/pack.</li>
+      <li>Fecha estimada de rotación/salida.</li>
+    </ul>
+    <p>
+      Esa misma información se publica automáticamente en mis redes oficiales
+      (por ejemplo X/Twitter y mi página de Facebook).
+    </p>
+  </section>
+
+  <section>
+    <h2>¿Cómo se genera esta info?</h2>
+    <p>
+      Tengo un bot propio que:
+    </p>
+    <ul>
+      <li>Consulta la tienda de Fortnite usando una API de Fortnite.</li>
+      <li>Construye una imagen tipo collage con todos los ítems y sus rarezas.</li>
+      <li>Publica el resumen (texto + precios) en redes sociales oficiales.</li>
+    </ul>
+    <p>
+      Nota importante: este bot sólo publica en mis propias cuentas. No publica en
+      páginas de otras personas ni accede a datos privados de usuarios.
+    </p>
+  </section>
+
+  <section>
+    <h2>¿Para qué se usa en Facebook?</h2>
+    <p>
+      El objetivo es mostrar el catálogo diario de skins en MI página oficial de Facebook
+      de forma automática, sin tener que hacerlo manualmente cada día.
+      No se usa para leer mensajes privados ni para gestionar otras páginas.
+    </p>
+    <p>
+      Facebook requiere ciertos permisos (“pages_manage_posts”, “pages_read_engagement”)
+      para poder publicar contenido y confirmar que la publicación salió correctamente
+      en mi propia página.
+    </p>
+    <p>
+      Toda la automatización es sólo para mis cuentas oficiales.
+    </p>
+  </section>
+
+</main>
+
+<footer>
+  <p>
+    <a href="../index.html">Volver al inicio</a> ·
+    <a href="../privacy.html">Privacidad</a> ·
+    © <span id="year"></span> ievan709
+  </p>
+</footer>
+
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
