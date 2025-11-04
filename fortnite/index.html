@@ -133,20 +133,15 @@
       grid.innerHTML = DATA.items.map(card).join('');
     }
 
-    fetch('shop.json?ts='+Date.now())
-      .then(r=>r.json())
-      .then(j=>{
-        DATA = j;
-        const d = new Date(j.date);
-        const fmt = d.toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'});
-        dateEl.textContent = `Actualizado: ${fmt} · ${j.count} artículos`;
-        render();
-      })
-      .catch(e=>{
-        dateEl.textContent = 'No se pudo cargar la tienda.';
-        grid.innerHTML = '<p style="color:#9fb0c7">Error al cargar shop.json</p>';
-        console.error(e);
-      });
+   fetch('/fortnite/shop.json?ts=' + Date.now())
+    .then(r => r.json())
+    .then(renderShop)
+    .catch(e => {
+      document.querySelector('#status').textContent = 'No se pudo cargar la tienda.';
+      document.querySelector('#error').textContent = 'Error al cargar /fortnite/shop.json';
+      console.error(e);
+    });
   </script>
 </body>
 </html>
+
