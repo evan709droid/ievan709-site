@@ -1,152 +1,152 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tienda diaria de Fortnite – ievan709</title>
+  <meta charset="utf-8" />
+  <title>Tienda de Fortnite — iEvan709</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="Tienda diaria de Fortnite con precios, rarezas y filtros. Actualizada automáticamente." />
+  <meta property="og:title" content="Tienda de Fortnite — iEvan709" />
+  <meta property="og:description" content="Tienda diaria de Fortnite con precios, rarezas y filtros. Actualizada automáticamente." />
+  <meta property="og:type" content="website" />
   <style>
-    body {
-      background-color: #0f0f10;
-      color: #fff;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, sans-serif;
-      margin: 0;
-      line-height: 1.5;
+    :root{
+      --bg:#0b0f1a; --panel:#111726; --card:#141c2e;
+      --txt:#e8ecf1; --muted:#9fb0c7;
+      --rare-common:#888; --rare-uncommon:#29c059; --rare-rare:#3a82ff; --rare-epic:#a45bff; --rare-legendary:#ff8f2b; --rare-mythic:#ffd400;
+      --ring: 10px;
     }
-    header {
-      padding: 2rem 1.5rem 1rem;
-      text-align: center;
-      background: radial-gradient(circle at 20% 20%, #2a2a3a 0%, #0f0f10 60%);
-      border-bottom: 1px solid #2a2a3a;
-    }
-    header h1 {
-      font-size: 1.6rem;
-      font-weight: 600;
-      margin: 0 0 .5rem;
-      color: #fff;
-    }
-    header p {
-      margin: 0;
-      color: #9ca3af;
-      font-size: .95rem;
-    }
-    main {
-      max-width: 800px;
-      margin: 2rem auto 4rem;
-      padding: 0 1.5rem;
-    }
-    section {
-      background-color: #1a1a22;
-      border: 1px solid #2f2f3d;
-      border-radius: 12px;
-      padding: 1.5rem;
-      margin-bottom: 1.5rem;
-    }
-    section h2 {
-      margin-top: 0;
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: #fff;
-    }
-    p {
-      color: #d1d5db;
-      font-size: .95rem;
-      margin: .5rem 0 1rem;
-    }
-    ul {
-      color: #d1d5db;
-      font-size: .95rem;
-      margin: .5rem 0 1rem;
-      padding-left: 1.2rem;
-    }
-    footer {
-      text-align: center;
-      font-size: .8rem;
-      color: #6b7280;
-      padding: 2rem 1.5rem 4rem;
-      border-top: 1px solid #2a2a3a;
-      background-color: #0f0f10;
-    }
-    footer a {
-      color: #9ca3af;
-      text-decoration: none;
-    }
-    footer a:hover {
-      text-decoration: underline;
-    }
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(180deg,#0b0f1a,#0d1324 40%,#0b0f1a);color:var(--txt);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Noto Sans',sans-serif}
+    .wrap{max-width:1100px;margin:auto;padding:20px}
+    header{display:flex;gap:16px;align-items:center;justify-content:space-between;margin-bottom:18px}
+    .title h1{font-size:22px;margin:0}
+    .title small{color:var(--muted)}
+    .filters{display:flex;gap:8px;flex-wrap:wrap}
+    .chip{padding:8px 12px;border-radius:999px;background:#1a2236;color:#cfe0ff;cursor:pointer;border:1px solid #243150;font-size:13px}
+    .chip.active{background:#244077;color:#fff;border-color:#2b57a3}
+    .grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+    @media (max-width:1200px){.grid{grid-template-columns:repeat(5,1fr)}}
+    @media (max-width:980px){.grid{grid-template-columns:repeat(4,1fr)}}
+    @media (max-width:760px){.grid{grid-template-columns:repeat(3,1fr)}}
+    @media (max-width:520px){.grid{grid-template-columns:repeat(2,1fr)}}
+    .card{background:var(--card);border-radius:14px;overflow:hidden;border:1px solid #1b2440;display:flex;flex-direction:column;min-height:240px;position:relative}
+    .thumb{aspect-ratio:1/1;background:linear-gradient(180deg,#0f1629,#0a1124);display:flex;align-items:center;justify-content:center;position:relative}
+    .thumb img{width:86%;height:86%;object-fit:contain;image-rendering:-webkit-optimize-contrast}
+    .price{position:absolute;left:8px;top:8px;background:#101827cc;border:1px solid #1f2c4d;color:#fff;padding:4px 7px;border-radius:8px;font-size:12px}
+    .badge{position:absolute;right:8px;top:8px;padding:4px 7px;border-radius:8px;border:1px solid #1f2c4d;background:#101827cc;font-size:12px}
+    .meta{padding:10px 10px 12px}
+    .name{font-size:14px;font-weight:600;line-height:1.2;margin-bottom:6px;min-height:34px}
+    .sub{font-size:12px;color:var(--muted);display:flex;justify-content:space-between;gap:8px}
+    /* aros por rareza */
+    .ring{position:absolute;inset:0;pointer-events:none;border-radius:14px}
+    .ring.common     {box-shadow: inset 0 0 0 var(--ring) color-mix(in oklab, var(--rare-common) 46%, transparent)}
+    .ring.uncommon   {box-shadow: inset 0 0 0 var(--ring) color-mix(in oklab, var(--rare-uncommon) 38%, transparent)}
+    .ring.rare       {box-shadow: inset 0 0 0 var(--ring) color-mix(in oklab, var(--rare-rare) 34%, transparent)}
+    .ring.epic       {box-shadow: inset 0 0 0 var(--ring) color-mix(in oklab, var(--rare-epic) 34%, transparent)}
+    .ring.legendary  {box-shadow: inset 0 0 0 var(--ring) color-mix(in oklab, var(--rare-legendary) 32%, transparent)}
+    .ring.mythic     {box-shadow: inset 0 0 0 var(--ring) color-mix(in oklab, var(--rare-mythic) 30%, transparent)}
+    .legend{display:flex;gap:10px;align-items:center;color:var(--muted);font-size:12px}
+    .dot{width:10px;height:10px;border-radius:50%}
+    .dot.common{background:var(--rare-common)} .dot.uncommon{background:var(--rare-uncommon)} .dot.rare{background:var(--rare-rare)}
+    .dot.epic{background:var(--rare-epic)} .dot.legendary{background:var(--rare-legendary)} .dot.mythic{background:var(--rare-mythic)}
+    .empty{opacity:.5}
+    footer{margin:28px 0 8px;color:var(--muted);font-size:12px}
   </style>
 </head>
 <body>
+  <div class="wrap">
+    <header>
+      <div class="title">
+        <h1>Tienda de Fortnite</h1>
+        <small id="date">Cargando…</small>
+      </div>
+      <div class="legend">
+        <span class="chip active" data-filter="all">Todo</span>
+        <span class="chip" data-filter="traje">Traje</span>
+        <span class="chip" data-filter="gesto">Gesto</span>
+        <span class="chip" data-filter="pico">Pico</span>
+        <span class="chip" data-filter="ala-delta">Ala delta</span>
+        <span class="chip" data-filter="envoltorio">Envoltorio</span>
+        <span class="chip" data-filter="mochila">Mochila</span>
+      </div>
+    </header>
 
-<header>
-  <h1>Tienda diaria de Fortnite</h1>
-  <p>Rarezas, precios en V-Bucks y rotación actualizada todos los días.</p>
-</header>
+    <div class="legend" style="margin:10px 0 18px">
+      <span class="dot common"></span> Común
+      <span class="dot uncommon"></span> Poco común
+      <span class="dot rare"></span> Raro
+      <span class="dot epic"></span> Épico
+      <span class="dot legendary"></span> Legendario
+      <span class="dot mythic"></span> Mítico
+    </div>
 
-<main>
+    <section class="grid" id="grid"></section>
 
-  <section>
-    <h2>¿Qué es esto?</h2>
-    <p>
-      Esta sección muestra la tienda diaria de Fortnite. Cada día mi app genera:
-    </p>
-    <ul>
-      <li>Una imagen tipo catálogo con todos los ítems disponibles en la tienda del día.</li>
-      <li>Rareza de cada skin con color (épico, legendario, etc.).</li>
-      <li>Precio en V-Bucks por skin/pack.</li>
-      <li>Fecha estimada de rotación/salida.</li>
-    </ul>
-    <p>
-      Esa misma información se publica automáticamente en mis redes oficiales
-      (por ejemplo X/Twitter y mi página de Facebook).
-    </p>
-  </section>
+    <footer>Fuente: Fortnite-API · Render por iEvan709</footer>
+  </div>
 
-  <section>
-    <h2>¿Cómo se genera esta info?</h2>
-    <p>
-      Tengo un bot propio que:
-    </p>
-    <ul>
-      <li>Consulta la tienda de Fortnite usando una API de Fortnite.</li>
-      <li>Construye una imagen tipo collage con todos los ítems y sus rarezas.</li>
-      <li>Publica el resumen (texto + precios) en redes sociales oficiales.</li>
-    </ul>
-    <p>
-      Nota importante: este bot sólo publica en mis propias cuentas. No publica en
-      páginas de otras personas ni accede a datos privados de usuarios.
-    </p>
-  </section>
+  <script>
+    const grid = document.getElementById('grid');
+    const dateEl = document.getElementById('date');
+    const chips = Array.from(document.querySelectorAll('.chip'));
+    let DATA = {items:[]}, FILTER = 'all';
 
-  <section>
-    <h2>¿Para qué se usa en Facebook?</h2>
-    <p>
-      El objetivo es mostrar el catálogo diario de skins en MI página oficial de Facebook
-      de forma automática, sin tener que hacerlo manualmente cada día.
-      No se usa para leer mensajes privados ni para gestionar otras páginas.
-    </p>
-    <p>
-      Facebook requiere ciertos permisos (“pages_manage_posts”, “pages_read_engagement”)
-      para poder publicar contenido y confirmar que la publicación salió correctamente
-      en mi propia página.
-    </p>
-    <p>
-      Toda la automatización es sólo para mis cuentas oficiales.
-    </p>
-  </section>
+    chips.forEach(ch => ch.addEventListener('click', ()=>{
+      chips.forEach(c=>c.classList.remove('active'));
+      ch.classList.add('active');
+      FILTER = ch.dataset.filter;
+      render();
+    }));
 
-</main>
+    function priceFmt(p){
+      if(p == null || p === "") return "¿?";
+      const s = String(p);
+      return /^\d+$/.test(s) ? `${s} V-Bucks` : s;
+    }
 
-<footer>
-  <p>
-    <a href="../index.html">Volver al inicio</a> ·
-    <a href="../privacy.html">Privacidad</a> ·
-    © <span id="year"></span> ievan709
-  </p>
-</footer>
+    function rarityLabel(r){
+      const map = {common:"Común",uncommon:"Poco común",rare:"Raro",epic:"Épico",legendary:"Legendario",mythic:"Mítico"};
+      return map[r] || r || "—";
+    }
 
-<script>
-  document.getElementById("year").textContent = new Date().getFullYear();
-</script>
+    function card(it){
+      const rar = (it.rarity||"common").toLowerCase();
+      const ty = it.type || "traje";
+      const valid = FILTER==="all" || ty===FILTER;
+      if(!valid) return '';
+      return `
+      <article class="card" data-type="${ty}">
+        <div class="ring ${rar}"></div>
+        <div class="thumb">
+          <img loading="lazy" src="${it.img}" alt="${it.name}" onerror="this.closest('.card').classList.add('empty')" />
+          <span class="price">${priceFmt(it.price)}</span>
+          <span class="badge">${rarityLabel(rar)}</span>
+        </div>
+        <div class="meta">
+          <div class="name">${it.name}</div>
+          <div class="sub"><span>${ty}</span><span>Sale: ${it.expires||'—'}</span></div>
+        </div>
+      </article>`;
+    }
 
+    function render(){
+      grid.innerHTML = DATA.items.map(card).join('');
+    }
+
+    fetch('shop.json?ts='+Date.now())
+      .then(r=>r.json())
+      .then(j=>{
+        DATA = j;
+        const d = new Date(j.date);
+        const fmt = d.toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'});
+        dateEl.textContent = `Actualizado: ${fmt} · ${j.count} artículos`;
+        render();
+      })
+      .catch(e=>{
+        dateEl.textContent = 'No se pudo cargar la tienda.';
+        grid.innerHTML = '<p style="color:#9fb0c7">Error al cargar shop.json</p>';
+        console.error(e);
+      });
+  </script>
 </body>
 </html>
