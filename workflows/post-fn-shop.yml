@@ -1,0 +1,63 @@
+name: Update Fortnite Shop (site)
+
+on:
+  schedule:
+    - cron: '0 0 * * *'   # 00:00 UTC = 18:00 America/Mexico_City
+  workflow_dispatch:
+
+permissions:
+  contents: write   # para commitear shop.json
+
+jobs:
+  post_fortnite_shop:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    env:
+      FN_API_KEY: ${{ secrets.FN_API_KEY }}
+      TW_API_KEY: ${{ secrets.TW_API_KEY }}
+      TW_API_SECRET: ${{ secrets.TW_API_SECRET }}
+      TW_ACCESS_TOKEN: ${{ secrets.TW_ACCESS_TOKEN }}
+      TW_ACCESS_SECRET: ${{ secrets.TW_ACCESS_SECRET }}
+      FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
+      FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+      FB_PAGE_URL: "https://www.facebook.com/IEvan709"
+      FB_MAX_IMAGES: "40"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install deps
+        run: |
+          pip install fortnite-api tweepy requests urllib3
+
+      - name: Quick env sanity
+        run: |
+          python - << 'PY'
+          import os
+          print("FN_API_KEY set?:", bool(os.getenv("FN_API_KEY")))
+          print("FB creds set?:", all(bool(os.getenv(k)) for k in ["FB_PAGE_ID","FB_PAGE_TOKEN"]))
+          print("TW creds set?:", all(bool(os.getenv(k)) for k in ["TW_API_KEY","TW_API_SECRET","TW_ACCESS_TOKEN","TW_ACCESS_SECRET"]))
+          PY
+
+      - name: Run shop bot
+        run: python scripts/post_shop.py
+
+      - name: Inspect generated JSON
+        run: |
+          echo "Listing fortnite:"
+          ls -la fortnite || true
+          echo "Head of shop.json (if exists):"
+          test -f fortnite/shop.json && head -c 400 fortnite/shop.json || echo "shop.json not found"
+
+      - name: Commit shop.json
+        if: ${{ hashFiles('fortnite/shop.json') != '' }}
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: "fortnite/shop.json"
+          message: "chore: update shop.json [skip ci]"
+          default_author: github_actions
