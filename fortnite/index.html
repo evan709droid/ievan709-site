@@ -109,9 +109,15 @@
       return map[r] || r || "—";
     }
 
+    function normalizeType(t){
+      // El JSON viene con "ala_delta"; en UI usamos "ala-delta"
+      if(!t) return "traje";
+      return t.replace('_','-');
+    }
+
     function card(it){
       const rar = (it.rarity||"common").toLowerCase();
-      const ty = it.type || "traje";
+      const ty = normalizeType(it.type || "traje");
       const valid = FILTER==="all" || ty===FILTER;
       if(!valid) return '';
       return `
@@ -133,15 +139,44 @@
       grid.innerHTML = DATA.items.map(card).join('');
     }
 
-   fetch('/fortnite/shop.json?ts=' + Date.now())
-    .then(r => r.json())
-    .then(renderShop)
-    .catch(e => {
-      document.querySelector('#status').textContent = 'No se pudo cargar la tienda.';
-      document.querySelector('#error').textContent = 'Error al cargar /fortnite/shop.json';
-      console.error(e);
-    });
+    // ---- NUEVO: función global que transforma el JSON y renderiza ----
+    function renderShop(json){
+      // Acepta {items:[...]} o {data:{items:[...]}}
+      const items = Array.isArray(json.items)
+        ? json.items
+        : (json.data && Array.isArray(json.data.items) ? json.data.items : []);
+
+      // Mapea campos que usa el front
+      DATA.items = items.map(it => ({
+        name: it.name,
+        img: it.image || it.img_url,          // <- aseguramos "img"
+        price: it.price,
+        rarity: (it.rarity || 'common').toLowerCase(),
+        type: it.type,                        // luego normalizamos con normalizeType()
+        expires: it.expires
+      }));
+
+      // Fecha bonita si viene en el JSON
+      if (json.updatedAt) {
+        try {
+          const d = new Date(json.updatedAt);
+          dateEl.textContent = `Actualizado: ${d.toLocaleString()}`;
+        } catch { dateEl.textContent = 'Actualizado'; }
+      } else {
+        dateEl.textContent = '';
+      }
+
+      render();
+    }
+
+    // Carga del JSON (misma carpeta /fortnite/)
+    fetch('/fortnite/shop.json?ts=' + Date.now(), { cache: 'no-store' })
+      .then(r => r.json())
+      .then(renderShop)
+      .catch(e => {
+        dateEl.textContent = 'No se pudo cargar la tienda.';
+        console.error('Error cargando shop.json:', e);
+      });
   </script>
 </body>
 </html>
-
