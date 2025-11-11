@@ -223,7 +223,7 @@ def fetch_shop_items(FN_API_KEY):
     """
     Devuelve:
       items  -> lista plana (compat) con groupId/groupPrice
-      groups -> dicts por lote: id, name, price, expires, items[]
+      groups -> dicts por lote: id, name, price, expires, expiresISO, images[], items[]
       shop_date_str
     """
     items = []
@@ -256,7 +256,7 @@ def fetch_shop_items(FN_API_KEY):
                 if entry_price is not None and not isinstance(entry_price, (int, float, str)):
                     entry_price = str(entry_price)
 
-                # expiración
+                # expiración (ISO si existe, sin inventar)
                 raw_exp = (
                     getattr(entry, "expiry", None)
                     or getattr(entry, "expires_at", None)
@@ -265,16 +265,19 @@ def fetch_shop_items(FN_API_KEY):
                     or getattr(entry, "offer_ends", None)
                     or getattr(entry, "end", None)
                 )
+                expire_iso = None
                 expire_txt = None
                 if raw_exp:
-                    try: expire_txt = str(raw_exp)
-                    except Exception: expire_txt = None
-                if expire_txt is None:
                     try:
-                        rota = (shop.date + timedelta(days=1)).date()
-                        expire_txt = rota.strftime("%d/%m/%Y")
+                        s = str(raw_exp)
+                        expire_iso = s
+                        if "T" in s and "-" in s:
+                            y, m, d = s[:10].split("-")
+                            expire_txt = f"{d}/{m}/{y}"
+                        else:
+                            expire_txt = s
                     except Exception:
-                        expire_txt = "Próxima rotación"
+                        pass
 
                 # sección y bundle
                 section = None
@@ -332,8 +335,11 @@ def fetch_shop_items(FN_API_KEY):
                         "indiv_price": None,  # la librería rara vez incluye precio individual
                     })
 
+                # imágenes para carrusel (hasta 8)
+                pics = [ti["img_url"] for ti in tmp_items if ti["img_url"]]
+
                 # key del grupo
-                group_id = offer_id or safe_id("|".join(sorted(ids_for_key)) + f"|{entry_price}|{expire_txt}")
+                group_id = offer_id or safe_id("|".join(sorted(ids_for_key)) + f"|{entry_price}|{expire_txt or ''}")
                 grp = groups.get(group_id)
                 if not grp:
                     groups[group_id] = grp = {
@@ -341,6 +347,8 @@ def fetch_shop_items(FN_API_KEY):
                         "name": group_name,
                         "price": entry_price,
                         "expires": expire_txt,
+                        "expiresISO": expire_iso,
+                        "images": pics[:8],
                         "items": [],
                     }
 
@@ -362,6 +370,7 @@ def fetch_shop_items(FN_API_KEY):
                         "rarity": ti["rarity"],
                         "price": entry_price,
                         "expires": expire_txt,
+                        "expiresISO": expire_iso,
                         "type": ti["type"],
                         "section": section,
                         "group": group_name,
@@ -398,7 +407,25 @@ def fetch_shop_items(FN_API_KEY):
             entries = sec.get("entries") or []
             for entry in entries:
                 entry_price = entry.get("regularPrice") or entry.get("finalPrice") or entry.get("price")
-                expire_txt = entry.get("offerExpires") or entry.get("expiresAt") or "Próxima rotación"
+
+                # expiración (ISO si existe)
+                raw_exp = (
+                    entry.get("offerExpires")
+                    or entry.get("expiresAt")
+                    or entry.get("expiration")
+                    or entry.get("end")
+                )
+                expire_iso = None
+                expire_txt = None
+                if raw_exp:
+                    s = str(raw_exp)
+                    expire_iso = s
+                    if "T" in s and "-" in s:
+                        y, m, d = s[:10].split("-")
+                        expire_txt = f"{d}/{m}/{y}"
+                    else:
+                        expire_txt = s
+
                 section = human_section(key)
                 bundle = entry.get("bundle") or {}
                 group_name = bundle.get("name") or entry.get("category") or entry.get("devName") or None
@@ -433,7 +460,10 @@ def fetch_shop_items(FN_API_KEY):
                         "indiv_price": indiv_price,
                     })
 
-                group_id = offer_id or safe_id("|".join(sorted(ids_for_key)) + f"|{entry_price}|{expire_txt}")
+                # imágenes para carrusel (hasta 8)
+                pics = [ti["img_url"] for ti in tmp_items if ti["img_url"]]
+
+                group_id = offer_id or safe_id("|".join(sorted(ids_for_key)) + f"|{entry_price}|{expire_txt or ''}")
                 grp = groups.get(group_id)
                 if not grp:
                     groups[group_id] = grp = {
@@ -441,6 +471,8 @@ def fetch_shop_items(FN_API_KEY):
                         "name": group_name,
                         "price": entry_price,
                         "expires": expire_txt,
+                        "expiresISO": expire_iso,
+                        "images": pics[:8],
                         "items": [],
                     }
 
@@ -460,6 +492,7 @@ def fetch_shop_items(FN_API_KEY):
                         "rarity": ti["rarity"],
                         "price": ti["indiv_price"] if ti["indiv_price"] is not None else entry_price,
                         "expires": expire_txt,
+                        "expiresISO": expire_iso,
                         "type": ti["type"],
                         "section": section,
                         "group": group_name,
@@ -512,6 +545,7 @@ export_items = [{
     "rarity": it["rarity"],
     "price": it["price"],
     "expires": it["expires"],
+    "expiresISO": it.get("expiresISO"),
     "type": it.get("type") or infer_type_by_name(it["name"]),
     "section": it.get("section"),
     "group": it.get("group"),
@@ -520,7 +554,7 @@ export_items = [{
     "series": it.get("series"),
 } for it in items]
 
-# Export por lotes
+# Export por lotes (para carrusel)
 export_groups = []
 for g in groups.values():
     export_groups.append({
@@ -528,13 +562,15 @@ for g in groups.values():
         "name": g["name"],
         "price": g["price"],
         "expires": g["expires"],
+        "expiresISO": g.get("expiresISO"),
+        "images": g.get("images", [])[:8],
         "items": [{
             "id": ti["id"],
             "name": ti["name"],
             "image": ti["image"],
             "rarity": ti["rarity"],
             "type": ti["type"],
-            "price": ti["price"],  # individual; puede ser None
+            "price": ti["price"],
         } for ti in g["items"]],
     })
 
@@ -543,8 +579,8 @@ payload = {
     "sourceDate": shop_date_str,
     "count": len(export_items),
     "ok": bool(export_items),
-    "items": export_items,     # vista individual
-    "groups": export_groups,   # ✅ vista por lote
+    "items": export_items,
+    "groups": export_groups,
 }
 
 out_path = WEB_OUT / "shop.json"
