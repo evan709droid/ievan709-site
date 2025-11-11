@@ -245,6 +245,7 @@ def fetch_shop_items(FN_API_KEY):
 
             entries = getattr(shop, "entries", []) or []
             for entry in entries:
+                # precio del entry (lote)
                 entry_price = (
                     getattr(entry, "final_price", None)
                     or getattr(entry, "regular_price", None)
@@ -255,6 +256,7 @@ def fetch_shop_items(FN_API_KEY):
                 if entry_price is not None and not isinstance(entry_price, (int, float, str)):
                     entry_price = str(entry_price)
 
+                # expiración
                 raw_exp = (
                     getattr(entry, "expiry", None)
                     or getattr(entry, "expires_at", None)
@@ -274,20 +276,20 @@ def fetch_shop_items(FN_API_KEY):
                     except Exception:
                         expire_txt = "Próxima rotación"
 
-                # sección y bundle name (si trae)
+                # sección y bundle
                 section = None
                 sec_obj = getattr(entry, "section", None)
                 if sec_obj:
                     section = getattr(sec_obj, "display_name", None) or getattr(sec_obj, "name", None)
+
                 group_name = None
                 bundle = getattr(entry, "bundle", None)
                 if bundle and hasattr(bundle, "name"):
                     group_name = bundle.name
 
-                # offer id u otra clave para agrupar
                 offer_id = getattr(entry, "offer_id", None) or getattr(entry, "offerId", None) or getattr(entry, "id", None)
 
-                # lista de cosméticos
+                # ítems del entry
                 try:
                     cosmetics = list(entry)
                 except TypeError:
@@ -297,11 +299,10 @@ def fetch_shop_items(FN_API_KEY):
                         or []
                     )
 
-                # recolecta ids para fallback de group_id
                 ids_for_key = []
                 tmp_items = []
                 for itm in cosmetics:
-                    itm_id = getattr(itm, "id", None) or getattr(itm, "templateId", None)
+                    itm_id = getattr(itm, "id", None) or getattr(itm, "templateId", None) or None
                     if itm_id: ids_for_key.append(str(itm_id))
 
                     url = clean_url(getattr(getattr(itm, "images", None), "icon", None))
@@ -328,9 +329,10 @@ def fetch_shop_items(FN_API_KEY):
                         "rarity": rty,
                         "type": typ,
                         "series": ser,
-                        "indiv_price": None,  # la librería casi nunca trae precio individual
+                        "indiv_price": None,  # la librería rara vez incluye precio individual
                     })
 
+                # key del grupo
                 group_id = offer_id or safe_id("|".join(sorted(ids_for_key)) + f"|{entry_price}|{expire_txt}")
                 grp = groups.get(group_id)
                 if not grp:
@@ -343,6 +345,7 @@ def fetch_shop_items(FN_API_KEY):
                     }
 
                 for ti in tmp_items:
+                    # añadir al grupo
                     grp["items"].append({
                         "id": ti["id"],
                         "name": ti["name"],
@@ -351,6 +354,7 @@ def fetch_shop_items(FN_API_KEY):
                         "type": ti["type"],
                         "price": ti["indiv_price"],
                     })
+                    # item plano compatible con front
                     items.append({
                         "id": ti["id"],
                         "name": ti["name"],
@@ -367,7 +371,7 @@ def fetch_shop_items(FN_API_KEY):
                     })
 
         if items:
-            print(f"🛍️ (fortnite_api) {len(items)} artículos.")
+            print(f"🛍️ (fortnite_api) items={len(items)}  groups={len(groups)}")
             return items, groups, shop_date_str
         else:
             print("⚠️ (fortnite_api) 0 items. Intentando fallback requests…")
@@ -464,7 +468,7 @@ def fetch_shop_items(FN_API_KEY):
                         "series": ti["series"],
                     })
 
-        print(f"🛍️ (requests) {len(items)} artículos.")
+        print(f"🛍️ (requests) items={len(items)}  groups={len(groups)}")
         return items, groups, shop_date_str
     except requests.exceptions.Timeout:
         print("❌ Timeout (30s) en fallback requests.")
@@ -500,7 +504,7 @@ print(f"🛍️ {len(items)} artículos planos. Lotes: {len(groups)}")
 
 WEB_OUT.mkdir(parents=True, exist_ok=True)
 
-# Export plano (compat con tu front actual)
+# Export plano (compat)
 export_items = [{
     "id": it.get("id"),
     "name": it["name"],
@@ -539,8 +543,8 @@ payload = {
     "sourceDate": shop_date_str,
     "count": len(export_items),
     "ok": bool(export_items),
-    "items": export_items,    # vista individual
-    "groups": export_groups,  # ✅ vista por lote
+    "items": export_items,     # vista individual
+    "groups": export_groups,   # ✅ vista por lote
 }
 
 out_path = WEB_OUT / "shop.json"
