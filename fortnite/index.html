@@ -25,43 +25,15 @@
     .chip{padding:8px 12px;border-radius:999px;background:#1a2236;color:#cfe0ff;cursor:pointer;border:1px solid #243150;font-size:13px}
     .chip.active{background:#244077;color:#fff;border-color:#2b57a3}
 
-    /* GRID robusta y fluida */
-    .grid{
-      display:grid;
-      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-      gap:12px;
-    }
+    .grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap:12px; }
 
     .card{
-      background:var(--card);
-      border-radius:14px;
-      overflow:hidden;
-      border:1px solid #1b2440;
-      display:flex;
-      flex-direction:column;
-      min-height:240px;
-      position:relative;
+      background:var(--card); border-radius:14px; overflow:hidden; border:1px solid #1b2440;
+      display:flex; flex-direction:column; min-height:240px; position:relative;
     }
 
-    /* Contenedor de imagen a prueba de desbordes */
-    .thumb{
-      position: relative;
-      width: 100%;
-      padding-top: 100%; /* 1:1 */
-      background:linear-gradient(180deg,#0f1629,#0a1124);
-      overflow:hidden;
-    }
-    .thumb img{
-      position:absolute;
-      top:7%;
-      left:7%;
-      width:86%;
-      height:86%;
-      object-fit:contain;
-      max-width:100%;
-      max-height:100%;
-      image-rendering:-webkit-optimize-contrast;
-    }
+    .thumb{ position:relative; width:100%; padding-top:100%; background:linear-gradient(180deg,#0f1629,#0a1124); overflow:hidden; }
+    .thumb img{ position:absolute; top:7%; left:7%; width:86%; height:86%; object-fit:contain; max-width:100%; max-height:100%; image-rendering:-webkit-optimize-contrast; }
 
     .price{position:absolute;left:8px;top:8px;background:#101827cc;border:1px solid #1f2c4d;color:#fff;padding:4px 7px;border-radius:8px;font-size:12px;z-index:2}
     .badge{position:absolute;right:8px;top:8px;padding:4px 7px;border-radius:8px;border:1px solid #1f2c4d;background:#101827cc;font-size:12px;z-index:2}
@@ -69,7 +41,6 @@
     .name{font-size:14px;font-weight:600;line-height:1.2;margin-bottom:6px;min-height:34px}
     .sub{font-size:12px;color:var(--muted);display:flex;justify-content:space-between;gap:8px}
 
-    /* aros por rareza */
     .ring{position:absolute;inset:0;pointer-events:none;border-radius:14px}
     .ring.common     {box-shadow: inset 0 0 0 var(--ring) color-mix(in oklab, var(--rare-common) 46%, transparent)}
     .ring.uncommon   {box-shadow: inset 0 0 0 var(--ring) color-mix(in oklab, var(--rare-uncommon) 38%, transparent)}
@@ -84,6 +55,9 @@
     .dot.epic{background:var(--rare-epic)} .dot.legendary{background:var(--rare-legendary)} .dot.mythic{background:var(--rare-mythic)}
     .empty{opacity:.5}
     footer{margin:28px 0 8px;color:var(--muted);font-size:12px}
+
+    /* chips de vista */
+    .viewbar{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 14px}
   </style>
 </head>
 <body>
@@ -106,7 +80,7 @@
       </div>
     </header>
 
-    <div class="legend" style="margin:10px 0 18px">
+    <div class="legend" style="margin:10px 0 8px">
       <span class="dot common"></span> Común
       <span class="dot uncommon"></span> Poco común
       <span class="dot rare"></span> Raro
@@ -115,7 +89,12 @@
       <span class="dot mythic"></span> Mítico
     </div>
 
-    <!-- IMPORTANTE: vuelve a tener class="grid" -->
+    <!-- Toggle de vista -->
+    <div class="viewbar">
+      <span class="chip chip-view active" data-view="groups">Lotes</span>
+      <span class="chip chip-view" data-view="individual">Individual</span>
+    </div>
+
     <section class="grid" id="grid"></section>
 
     <footer>Fuente: Fortnite-API · Render por iEvan709</footer>
@@ -125,13 +104,26 @@
   const grid = document.getElementById('grid');
   const dateEl = document.getElementById('date');
 
-  const chips = Array.from(document.querySelectorAll('.chip'));
-  let DATA = { items: [] }, FILTER = 'all';
+  // filtros por tipo
+  const filterChips = Array.from(document.querySelectorAll('.chip[data-filter]'));
+  let FILTER = 'all';
 
-  chips.forEach(ch => ch.addEventListener('click', () => {
-    chips.forEach(c => c.classList.remove('active'));
+  // toggle de vista
+  const viewChips = Array.from(document.querySelectorAll('.chip-view'));
+  let VIEW = 'groups'; // por defecto LOTES
+
+  const DATA = { items: [], groups: [] };
+
+  filterChips.forEach(ch => ch.addEventListener('click', () => {
+    filterChips.forEach(c => c.classList.remove('active'));
     ch.classList.add('active');
     FILTER = ch.dataset.filter;
+    render();
+  }));
+  viewChips.forEach(ch => ch.addEventListener('click', () => {
+    viewChips.forEach(c => c.classList.remove('active'));
+    ch.classList.add('active');
+    VIEW = ch.dataset.view;
     render();
   }));
 
@@ -153,7 +145,7 @@
     if (!t) {
       const n = (it.name||'').toLowerCase();
       if (/(compañer|compan|buddy|pet)/.test(n)) t = 'companero';
-      else if (/(pista|improvis|jam|track|music|música)/.test(n)) t = 'pista';
+      else if (/(pista|improvis|jam|track|music|música|musica)/.test(n)) t = 'pista';
       else if (/(gesto|emote|baile|dance)/.test(n)) t = 'gesto';
       else if (/(pico|hacha|pickaxe)/.test(n)) t = 'pico';
       else if (/(ala|glider|planeador|ala delta)/.test(n)) t = 'ala-delta';
@@ -189,7 +181,7 @@
     return by((a.name||'').toLowerCase(), (b.name||'').toLowerCase());
   }
 
-  function card(it){
+  function itemCard(it){
     const rar = (it.rarity||"common").toLowerCase();
     const ty  = normalizeType(it);
     const ok  = FILTER==="all" || ty===FILTER;
@@ -200,7 +192,7 @@
         <div class="thumb">
           <img loading="lazy" src="${it.image || it.img || it.img_url}" alt="${it.name}"
                onerror="this.closest('.card').classList.add('empty')" />
-          <span class="price">${priceFmt(it.price)}</span>
+          <span class="price">${priceFmt(it.price ?? it.groupPrice)}</span>
           <span class="badge">${rarityLabel(rar)}</span>
         </div>
         <div class="meta">
@@ -213,24 +205,83 @@
       </article>`;
   }
 
+  function groupCard(g){
+    // un grupo pasa el filtro si ALGUNO de sus ítems coincide
+    const matches = (it)=> FILTER==='all' || normalizeType(it)===FILTER;
+    if (FILTER!=='all' && !(g.items||[]).some(matches)) return '';
+
+    const first = g.items?.[0] || {};
+    const img = first.image || first.img || first.img_url;
+    const name = g.name || (first.name ? `${first.name} (Lote)` : 'Lote');
+    const count = (g.items||[]).length;
+
+    // Para la “rareza” del aro tomamos la más alta del grupo (si hubiera):
+    const rarityScore = { mythic:5, legendary:4, epic:3, rare:2, uncommon:1, common:0 };
+    let rar = 'common';
+    for (const it of g.items||[]) {
+      const r = (it.rarity||'common').toLowerCase();
+      if (rarityScore[r] > rarityScore[rar]) rar = r;
+    }
+
+    return `
+      <article class="card" data-type="group">
+        <div class="ring ${rar}"></div>
+        <div class="thumb">
+          <img loading="lazy" src="${img}" alt="${name}"
+               onerror="this.closest('.card').classList.add('empty')" />
+          <span class="price">${priceFmt(g.price)}</span>
+          <span class="badge">Lote · ${count} ítem${count>1?'s':''}</span>
+        </div>
+        <div class="meta">
+          <div class="name">${name}</div>
+          <div class="sub">
+            <span>Incluye ${count} · click para ver</span>
+            <span>${g.expires ? `Sale: ${g.expires}` : ''}</span>
+          </div>
+        </div>
+      </article>`;
+  }
+
   function render(){
-    const items = [...DATA.items].sort(sortItems);
-    grid.innerHTML = items.map(card).join('');
+    if (VIEW === 'groups' && DATA.groups.length){
+      grid.innerHTML = DATA.groups.map(groupCard).join('') || '<div class="empty">Sin resultados</div>';
+    } else {
+      const items = [...DATA.items].sort(sortItems);
+      grid.innerHTML = items.map(itemCard).join('') || '<div class="empty">Sin resultados</div>';
+    }
   }
 
   function renderShop(json){
-    const items = Array.isArray(json.items) ? json.items
-      : (json.data && Array.isArray(json.data.items) ? json.data.items : []);
+    const items = Array.isArray(json.items) ? json.items : [];
+    const groups = Array.isArray(json.groups) ? json.groups : [];
+
     DATA.items = items.map(x => ({
-      name: x.name,
+      id: x.id, name: x.name,
       image: x.image || x.img_url,
       price: x.price,
       rarity: (x.rarity||'common').toLowerCase(),
       type: x.type,
       section: x.section || x.block || x.category || null,
       group: x.group || x.bundle || null,
+      groupPrice: x.groupPrice,
       expires: x.expires
     }));
+
+    // Normaliza grupos para la vista por lote
+    DATA.groups = groups.map(g => ({
+      id: g.id,
+      name: g.name,
+      price: g.price,
+      expires: g.expires,
+      items: (g.items||[]).map(it => ({
+        id: it.id, name: it.name,
+        image: it.image || it.img_url,
+        rarity: (it.rarity||'common').toLowerCase(),
+        type: it.type,
+        price: it.price
+      }))
+    }));
+
     if (json.updatedAt) {
       try { dateEl.textContent = `Actualizado: ${new Date(json.updatedAt).toLocaleString()}`; }
       catch { dateEl.textContent = 'Actualizado'; }
