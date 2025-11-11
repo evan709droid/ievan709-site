@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write   # para commitear shop.json
+  contents: write
 
 jobs:
   post_fortnite_shop:
@@ -23,6 +23,7 @@ jobs:
       FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
       FB_PAGE_URL: "https://www.facebook.com/IEvan709"
       FB_MAX_IMAGES: "40"
+      WEB_OUT: fortnite              # <- aseguramos salida correcta
 
     steps:
       - uses: actions/checkout@v4
@@ -38,21 +39,48 @@ jobs:
       - name: Quick env sanity
         run: |
           python - << 'PY'
-          import os
+          import os, pathlib, hashlib, json
           print("FN_API_KEY set?:", bool(os.getenv("FN_API_KEY")))
           print("FB creds set?:", all(bool(os.getenv(k)) for k in ["FB_PAGE_ID","FB_PAGE_TOKEN"]))
           print("TW creds set?:", all(bool(os.getenv(k)) for k in ["TW_API_KEY","TW_API_SECRET","TW_ACCESS_TOKEN","TW_ACCESS_SECRET"]))
+          p = pathlib.Path("scripts/post_shop.py")
+          if p.exists():
+            h = hashlib.sha1(p.read_bytes()).hexdigest()
+            print("post_shop.py sha1:", h)
+            txt = p.read_text(encoding="utf-8", errors="ignore")
+            print("contains 'groups' in script?:", "groups" in txt)
+          else:
+            print("ERROR: scripts/post_shop.py no existe")
           PY
 
       - name: Run shop bot
         run: python scripts/post_shop.py
 
-      - name: Inspect generated JSON
+      - name: Inspect generated JSON (fortnite/shop.json)
         run: |
-          echo "Listing fortnite:"
           ls -la fortnite || true
-          echo "Head of shop.json (if exists):"
-          test -f fortnite/shop.json && head -c 400 fortnite/shop.json || echo "shop.json not found"
+          test -f fortnite/shop.json || (echo "❌ shop.json not found" && exit 1)
+          echo "---- first 40 lines ----"
+          sed -n '1,40p' fortnite/shop.json
+          echo "---- last 40 lines ----"
+          tail -n 40 fortnite/shop.json
+          echo "Has 'groups' key?"
+          if grep -q '"groups"' fortnite/shop.json; then
+            echo "✅ groups key present"
+          else
+            echo "❌ groups key NOT present"; exit 1
+          fi
+          echo "Has groups with elements?"
+          python - << 'PY'
+          import json, sys
+          with open("fortnite/shop.json","r",encoding="utf-8") as f:
+            data = json.load(f)
+          gs = data.get("groups", [])
+          print("groups length:", len(gs))
+          if not isinstance(gs, list) or len(gs)==0:
+              print("❌ groups está vacío"); sys.exit(1)
+          print("✅ groups OK")
+          PY
 
       - name: Commit shop.json
         if: ${{ hashFiles('fortnite/shop.json') != '' }}
