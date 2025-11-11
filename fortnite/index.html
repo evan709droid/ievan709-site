@@ -88,26 +88,20 @@
   </div>
 
   <script>
-  const grid  = document.getElementById('grid');
+  const grid = document.getElementById('grid');
   const dateEl = document.getElementById('date');
+
+  // añade chips si no están
+  const bar = document.querySelector('.legend');
+  if (!bar.querySelector('[data-filter="companero"]')) {
+    bar.insertAdjacentHTML('beforeend', `
+      <span class="chip" data-filter="companero">Compañero</span>
+      <span class="chip" data-filter="pista">Pistas</span>
+    `);
+  }
+
   const chips = Array.from(document.querySelectorAll('.chip'));
   let DATA = { items: [] }, FILTER = 'all';
-
-  // Aliases por filtro (para que nunca queden vacíos)
-  const FILTER_ALIASES = {
-    'all': null,
-    'traje': ['traje','outfit'],
-    'gesto': ['gesto','emote','emoji','baile','dance'],
-    'pico': ['pico','pickaxe','hacha'],
-    'ala-delta': ['ala-delta','ala_delta','glider','planeador'],
-    'envoltorio': ['envoltorio','wrap','weaponwrap'],
-    'mochila': ['mochila','backpack','back-bling','back bling','accesorio','back'],
-    'companero': ['companero','compañero','companion','buddy','pet','petcarrier','pet carrier'],
-    'pista': ['pista','pistas','music','musicpack','athenamusicpack','jam','jamtrack','jam track','festival_track','improvisacion','improvisación','track']
-  };
-
-  // Orden de secciones como la tienda oficial
-  const SECTION_ORDER = ['Featured','Special Featured','Special Daily','Daily'];
 
   chips.forEach(ch => ch.addEventListener('click', () => {
     chips.forEach(c => c.classList.remove('active'));
@@ -116,133 +110,112 @@
     render();
   }));
 
+  const RARITY_ORDER = { mythic:0, legendary:1, epic:2, rare:3, uncommon:4, common:5 };
+  const TYPE_ORDER = { traje:0, gesto:1, pico:2, 'ala-delta':3, envoltorio:4, mochila:5, companero:6, pista:7 };
+
   function priceFmt(p){
-    if (p == null || p === "") return "¿?";
+    if(p == null || p === "") return "¿?";
     const s = String(p);
     return /^\d+$/.test(s) ? `${s} V-Bucks` : s;
   }
-
   function rarityLabel(r){
     const map = {common:"Común",uncommon:"Poco común",rare:"Raro",epic:"Épico",legendary:"Legendario",mythic:"Mítico"};
     return map[r] || r || "—";
   }
 
-  function normalizeType(t){
-    if (!t) return 'traje';
-    return String(t).toLowerCase().replace(/_/g,'-');
+  // Normaliza y también intenta inferir si no viene
+  function normalizeType(it){
+    let t = (it.type || '').toString().toLowerCase().replace('_','-').trim();
+    if (!t) {
+      const n = (it.name||'').toLowerCase();
+      if (/(compañer|compan|buddy|pet)/.test(n)) t = 'companero';
+      else if (/(pista|improvis|jam|track|music|música)/.test(n)) t = 'pista';
+      else if (/(gesto|emote|baile|dance)/.test(n)) t = 'gesto';
+      else if (/(pico|hacha|pickaxe)/.test(n)) t = 'pico';
+      else if (/(ala|glider|planeador|ala delta)/.test(n)) t = 'ala-delta';
+      else if (/(envoltorio|wrap|camo)/.test(n)) t = 'envoltorio';
+      else if (/(mochila|back bling|backbling|accesorio)/.test(n)) t = 'mochila';
+      else t = 'traje';
+      console.debug('[inferido type]', it.name, '→', t);
+    }
+    if (t === 'ala_delta') t = 'ala-delta';
+    if (t === 'mascota') t = 'companero';
+    return t;
   }
 
-  function matchesFilter(it){
-    if (FILTER === 'all') return true;
-    const ty = normalizeType(it.type || 'traje');
-    const aliases = FILTER_ALIASES[FILTER] || [FILTER];
-    return aliases.some(a => ty === a || ty.includes(a));
+  // Orden por sección-bundle-tipo-rareza-nombre
+  function sortItems(a, b){
+    const secOrder = (s)=>({
+      'Featured':0,'Special Featured':1,'Special Daily':2,'Daily':3,'Votes':4,'Vote Winners':5
+    })[s] ?? 9;
+    const by = (x,y)=> x<y?-1: x>y?1:0;
+
+    const sa = secOrder(a.section||''), sb = secOrder(b.section||'');
+    if (sa !== sb) return sa - sb;
+
+    const ga = (a.group||'').toLowerCase(), gb = (b.group||'').toLowerCase();
+    if (ga !== gb) return by(ga, gb);
+
+    const ta = TYPE_ORDER[normalizeType(a)] ?? 99;
+    const tb = TYPE_ORDER[normalizeType(b)] ?? 99;
+    if (ta !== tb) return ta - tb;
+
+    const ra = RARITY_ORDER[(a.rarity||'').toLowerCase()] ?? 9;
+    const rb = RARITY_ORDER[(b.rarity||'').toLowerCase()] ?? 9;
+    if (ra !== rb) return ra - rb;
+
+    return by((a.name||'').toLowerCase(), (b.name||'').toLowerCase());
   }
 
   function card(it){
     const rar = (it.rarity||"common").toLowerCase();
-    const ty  = normalizeType(it.type || "traje");
+    const ty  = normalizeType(it);
+    const ok  = FILTER==="all" || ty===FILTER;
+    if(!ok) return '';
     return `
       <article class="card" data-type="${ty}">
         <div class="ring ${rar}"></div>
         <div class="thumb">
-          <img loading="lazy" src="${it.img}" alt="${it.name}" onerror="this.closest('.card').classList.add('empty')" />
+          <img loading="lazy" src="${it.image || it.img || it.img_url}" alt="${it.name}"
+               onerror="this.closest('.card').classList.add('empty')" />
           <span class="price">${priceFmt(it.price)}</span>
           <span class="badge">${rarityLabel(rar)}</span>
         </div>
         <div class="meta">
           <div class="name">${it.name}</div>
-          <div class="sub"><span>${ty}</span><span>Sale: ${it.expires||'—'}</span></div>
+          <div class="sub">
+            <span>${ty}${it.group ? ` · ${it.group}`:''}</span>
+            <span>${it.expires ? `Sale: ${it.expires}` : ''}</span>
+          </div>
         </div>
       </article>`;
   }
 
-  // Agrupa: Sección -> Bundle (group) -> Ítems. Si no hay sección, cae a tipo.
-  function groupItems(items){
-    const filtered = items.filter(matchesFilter);
-    const hasSection = filtered.some(i => !!i.section);
-
-    const buckets = new Map(); // key -> { section, group, items[] }
-
-    if (hasSection){
-      for (const it of filtered){
-        const section = it.section || 'Tienda';
-        const group = it.group || '';
-        const key = section + '||' + group;
-        if (!buckets.has(key)) buckets.set(key, { section, group, items: [] });
-        buckets.get(key).items.push(it);
-      }
-    } else {
-      for (const it of filtered){
-        const ty = normalizeType(it.type);
-        if (!buckets.has(ty)) buckets.set(ty, { section: ty, group: '', items: [] });
-        buckets.get(ty).items.push(it);
-      }
-    }
-
-    const arr = Array.from(buckets.values());
-    arr.sort((a,b)=>{
-      const ai = SECTION_ORDER.indexOf(a.section);
-      const bi = SECTION_ORDER.indexOf(b.section);
-      const as = ai === -1 ? 999 : ai;
-      const bs = bi === -1 ? 999 : bi;
-      if (as !== bs) return as - bs;
-      // Dentro de sección: bundles primero y por nombre
-      if (!!a.group !== !!b.group) return a.group ? -1 : 1;
-      return (a.group||'').localeCompare(b.group||'');
-    });
-
-    return arr;
-  }
-
   function render(){
-    const groups = groupItems(DATA.items);
-    if (!groups.length || groups.every(g => !g.items.length)){
-      grid.innerHTML = `<div class="empty" style="padding:16px">Sin resultados para este filtro.</div>`;
-      return;
-    }
-    const html = groups.map(g => `
-      <div class="group">
-        <h3 style="margin:12px 4px 8px;font-size:14px;color:#cfe0ff;">
-          ${g.section}${g.group ? ' — ' + g.group : ''} <small style="color:#9fb0c7">(${g.items.length})</small>
-        </h3>
-        <div class="grid">
-          ${g.items.map(card).join('')}
-        </div>
-      </div>
-    `).join('');
-    grid.innerHTML = html;
+    const items = [...DATA.items].sort(sortItems);
+    grid.innerHTML = items.map(card).join('');
   }
 
-  // Recibe JSON del backend y adapta campos
   function renderShop(json){
     const items = Array.isArray(json.items) ? json.items
-                 : (json.data && Array.isArray(json.data.items) ? json.data.items : []);
-
-    DATA.items = items.map(it => ({
-      name   : it.name,
-      img    : it.image || it.img_url,
-      price  : it.price,
-      rarity : (it.rarity || 'common').toLowerCase(),
-      type   : it.type,
-      expires: it.expires || null,
-      section: it.section || null,  // Featured, Daily, etc.
-      group  : it.group || null     // nombre del bundle/lote si hay
+      : (json.data && Array.isArray(json.data.items) ? json.data.items : []);
+    DATA.items = items.map(x => ({
+      name: x.name,
+      image: x.image || x.img_url,
+      price: x.price,
+      rarity: (x.rarity||'common').toLowerCase(),
+      type: x.type,              // puede venir del bot; si no, inferimos en normalizeType()
+      section: x.section || x.block || x.category || null,
+      group: x.group || x.bundle || null,
+      expires: x.expires
     }));
-
-    if (json.updatedAt){
-      try {
-        const d = new Date(json.updatedAt);
-        dateEl.textContent = `Actualizado: ${d.toLocaleString()}`;
-      } catch { dateEl.textContent = 'Actualizado'; }
-    } else {
-      dateEl.textContent = '';
+    if (json.updatedAt) {
+      try { dateEl.textContent = `Actualizado: ${new Date(json.updatedAt).toLocaleString()}`; }
+      catch { dateEl.textContent = 'Actualizado'; }
     }
-
     render();
   }
 
-  // Asegúrate que el contenedor padre sea <section id="grid"></section> (sin class="grid")
   fetch('/fortnite/shop.json?ts=' + Date.now(), { cache: 'no-store' })
     .then(r => r.json())
     .then(renderShop)
@@ -253,6 +226,7 @@
 </script>
 </body>
 </html>
+
 
 
 
