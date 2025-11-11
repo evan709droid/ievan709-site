@@ -68,6 +68,7 @@
         <span class="chip" data-filter="ala-delta">Ala delta</span>
         <span class="chip" data-filter="envoltorio">Envoltorio</span>
         <span class="chip" data-filter="mochila">Mochila</span>
+        <span class="chip" data-filter="mascota">Mascota</span>
       </div>
     </header>
 
@@ -86,41 +87,43 @@
   </div>
 
   <script>
-    const grid = document.getElementById('grid');
-    const dateEl = document.getElementById('date');
-    const chips = Array.from(document.querySelectorAll('.chip'));
-    let DATA = {items:[]}, FILTER = 'all';
+  const grid = document.getElementById('grid');
+  const dateEl = document.getElementById('date');
+  const chips = Array.from(document.querySelectorAll('.chip'));
+  let DATA = { items: [] }, FILTER = 'all';
 
-    chips.forEach(ch => ch.addEventListener('click', ()=>{
-      chips.forEach(c=>c.classList.remove('active'));
-      ch.classList.add('active');
-      FILTER = ch.dataset.filter;
-      render();
-    }));
+  chips.forEach(ch => ch.addEventListener('click', () => {
+    chips.forEach(c => c.classList.remove('active'));
+    ch.classList.add('active');
+    FILTER = ch.dataset.filter;
+    render();
+  }));
 
-    function priceFmt(p){
-      if(p == null || p === "") return "¿?";
-      const s = String(p);
-      return /^\d+$/.test(s) ? `${s} V-Bucks` : s;
-    }
+  function priceFmt(p) {
+    if (p == null || p === "") return "¿?";
+    const s = String(p);
+    return /^\d+$/.test(s) ? `${s} V-Bucks` : s;
+  }
 
-    function rarityLabel(r){
-      const map = {common:"Común",uncommon:"Poco común",rare:"Raro",epic:"Épico",legendary:"Legendario",mythic:"Mítico"};
-      return map[r] || r || "—";
-    }
+  function rarityLabel(r) {
+    const map = {common:"Común",uncommon:"Poco común",rare:"Raro",epic:"Épico",legendary:"Legendario",mythic:"Mítico"};
+    return map[r] || r || "—";
+  }
 
-    function normalizeType(t){
-      // El JSON viene con "ala_delta"; en UI usamos "ala-delta"
-      if(!t) return "traje";
-      return t.replace('_','-');
-    }
+  function normalizeType(t) {
+    // Acepta "ala_delta" -> "ala-delta", y normaliza aliases
+    const x = (t || 'traje').toLowerCase().replace(/_/g, '-');
+    if (x === 'ala delta') return 'ala-delta';
+    if (x === 'emote') return 'gesto';
+    if (x === 'back' || x === 'back-bling' || x === 'accesorio') return 'mochila';
+    if (x === 'pet' || x === 'mascotas') return 'mascota';
+    return x;
+  }
 
-    function card(it){
-      const rar = (it.rarity||"common").toLowerCase();
-      const ty = normalizeType(it.type || "traje");
-      const valid = FILTER==="all" || ty===FILTER;
-      if(!valid) return '';
-      return `
+  function card(it) {
+    const rar = (it.rarity || "common").toLowerCase();
+    const ty  = normalizeType(it.type || "traje");
+    return `
       <article class="card" data-type="${ty}">
         <div class="ring ${rar}"></div>
         <div class="thumb">
@@ -130,53 +133,127 @@
         </div>
         <div class="meta">
           <div class="name">${it.name}</div>
-          <div class="sub"><span>${ty}</span><span>Sale: ${it.expires||'—'}</span></div>
+          <div class="sub"><span>${ty}</span><span>Sale: ${it.expires || '—'}</span></div>
         </div>
       </article>`;
-    }
+  }
 
-    function render(){
-      grid.innerHTML = DATA.items.map(card).join('');
-    }
+  // ---------- AGRUPADOR ----------
+  // Agrupa por sección → grupo/bundle → items; si no hay esos campos, cae a tipo.
+  function groupItems(items) {
+    // 1) filtra por pestaña seleccionada
+    const filtered = items.filter(it => {
+      const ty = normalizeType(it.type);
+      return FILTER === 'all' ? true : (ty === FILTER);
+    });
 
-    // ---- NUEVO: función global que transforma el JSON y renderiza ----
-    function renderShop(json){
-      // Acepta {items:[...]} o {data:{items:[...]}}
-      const items = Array.isArray(json.items)
-        ? json.items
-        : (json.data && Array.isArray(json.data.items) ? json.data.items : []);
+    // 2) si el JSON trae sección/grupo, usamos eso; si no, agrupamos por tipo
+    const hasSection = filtered.some(i => i.section);
+    const hasGroup   = filtered.some(i => i.group);
 
-      // Mapea campos que usa el front
-      DATA.items = items.map(it => ({
-        name: it.name,
-        img: it.image || it.img_url,          // <- aseguramos "img"
-        price: it.price,
-        rarity: (it.rarity || 'common').toLowerCase(),
-        type: it.type,                        // luego normalizamos con normalizeType()
-        expires: it.expires
-      }));
+    const map = new Map();
 
-      // Fecha bonita si viene en el JSON
-      if (json.updatedAt) {
-        try {
-          const d = new Date(json.updatedAt);
-          dateEl.textContent = `Actualizado: ${d.toLocaleString()}`;
-        } catch { dateEl.textContent = 'Actualizado'; }
-      } else {
-        dateEl.textContent = '';
+    if (hasSection || hasGroup) {
+      // clave: section :: group (opcional)
+      for (const it of filtered) {
+        const section = it.section || 'Tienda';
+        const group   = it.group   || ''; // bundle o categoría
+        const key = section + '||' + group;
+        if (!map.has(key)) map.set(key, { section, group, items: [] });
+        map.get(key).items.push(it);
       }
-
-      render();
+    } else {
+      // fallback: agrupar por tipo
+      for (const it of filtered) {
+        const ty = normalizeType(it.type);
+        if (!map.has(ty)) map.set(ty, { section: ty, group: '', items: [] });
+        map.get(ty).items.push(it);
+      }
     }
 
-    // Carga del JSON (misma carpeta /fortnite/)
-    fetch('/fortnite/shop.json?ts=' + Date.now(), { cache: 'no-store' })
-      .then(r => r.json())
-      .then(renderShop)
-      .catch(e => {
-        dateEl.textContent = 'No se pudo cargar la tienda.';
-        console.error('Error cargando shop.json:', e);
-      });
-  </script>
+    // orden: Featured/Daily primero si existen
+    const orderHint = ['featured','specialfeatured','special','daily'];
+    const list = Array.from(map.values()).sort((a,b) => {
+      const A = (a.section || '').toLowerCase();
+      const B = (b.section || '').toLowerCase();
+      const ia = orderHint.findIndex(k => A.includes(k));
+      const ib = orderHint.findIndex(k => B.includes(k));
+      const sa = ia === -1 ? 99 : ia;
+      const sb = ib === -1 ? 99 : ib;
+      if (sa !== sb) return sa - sb;
+      // dentro de la sección, los que tienen group (bundle) primero
+      if (!!a.group !== !!b.group) return a.group ? -1 : 1;
+      return 0;
+    });
+
+    return list;
+  }
+
+  function render() {
+    const groups = groupItems(DATA.items);
+    if (!groups.length || groups.every(g => g.items.length === 0)) {
+      grid.innerHTML = `<div class="empty">Sin resultados para este filtro.</div>`;
+      return;
+    }
+
+    const parts = [];
+    for (const g of groups) {
+      const title = g.section || '';
+      const subtitle = g.group ? ` — ${g.group}` : '';
+      parts.push(`
+        <div class="group">
+          <h3 style="margin:12px 4px 8px;font-size:14px;color:#cfe0ff;">
+            ${title}${subtitle}
+          </h3>
+          <div class="grid">
+            ${g.items.map(card).join('')}
+          </div>
+        </div>
+      `);
+    }
+    grid.innerHTML = parts.join('');
+  }
+
+  // ---- Entrada: transforma JSON y hace primer render ----
+  function renderShop(json) {
+    // Acepta {items:[...]} o {data:{items:[...]}}
+    const items = Array.isArray(json.items)
+      ? json.items
+      : (json.data && Array.isArray(json.data.items) ? json.data.items : []);
+
+    DATA.items = items.map(it => ({
+      name   : it.name,
+      img    : it.image || it.img_url,
+      price  : it.price,
+      rarity : (it.rarity || 'common').toLowerCase(),
+      type   : normalizeType(it.type),
+      expires: it.expires || null,
+      // NUEVO: para agrupar si el backend lo envía
+      section: it.section || null,    // p.ej. "Featured", "Daily", etc.
+      group  : it.group   || null,    // p.ej. nombre del bundle/lote
+    }));
+
+    if (json.updatedAt) {
+      try {
+        const d = new Date(json.updatedAt);
+        dateEl.textContent = `Actualizado: ${d.toLocaleString()}`;
+      } catch { dateEl.textContent = 'Actualizado'; }
+    } else {
+      dateEl.textContent = '';
+    }
+
+    render();
+  }
+
+  // Carga del JSON (misma carpeta /fortnite/)
+  fetch('/fortnite/shop.json?ts=' + Date.now(), { cache: 'no-store' })
+    .then(r => r.json())
+    .then(renderShop)
+    .catch(e => {
+      dateEl.textContent = 'No se pudo cargar la tienda.';
+      console.error('Error cargando shop.json:', e);
+    });
+</script>
 </body>
 </html>
+
