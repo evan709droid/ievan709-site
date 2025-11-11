@@ -18,23 +18,16 @@
     *{box-sizing:border-box}
     body{margin:0;background:linear-gradient(180deg,#0b0f1a,#0d1324 40%,#0b0f1a);color:var(--txt);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Noto Sans',sans-serif}
     .wrap{max-width:1100px;margin:auto;padding:20px}
-    header{display:flex;gap:16px;align-items:center;justify-content:space-between;margin-bottom:18px}
+    header{display:flex;gap:16px;align-items:center;justify-content:space-between;margin-bottom:8px}
     .title h1{font-size:22px;margin:0}
     .title small{color:var(--muted)}
-    .legend{display:flex;gap:10px;align-items:center;color:var(--muted);font-size:12px}
-    .dot{width:10px;height:10px;border-radius:50%}
-    .dot.common{background:var(--rare-common)} .dot.uncommon{background:var(--rare-uncommon)} .dot.rare{background:var(--rare-rare)}
-    .dot.epic{background:var(--rare-epic)} .dot.legendary{background:var(--rare-legendary)} .dot.mythic{background:var(--rare-mythic)}
-    .filters{display:flex;gap:8px;flex-wrap:wrap}
+    .legend{display:flex;gap:10px;align-items:center;color:var(--muted);font-size:12px;flex-wrap:wrap}
     .chip{padding:8px 12px;border-radius:999px;background:#1a2236;color:#cfe0ff;cursor:pointer;border:1px solid #243150;font-size:13px}
     .chip.active{background:#244077;color:#fff;border-color:#2b57a3}
 
-    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;margin-top:6px}
 
-    .card{
-      background:var(--card);border-radius:14px;overflow:hidden;border:1px solid #1b2440;
-      display:flex;flex-direction:column;min-height:240px;position:relative;
-    }
+    .card{background:var(--card);border-radius:14px;overflow:hidden;border:1px solid #1b2440;display:flex;flex-direction:column;min-height:240px;position:relative}
     .thumb{position:relative;width:100%;padding-top:100%;background:linear-gradient(180deg,#0f1629,#0a1124);overflow:hidden}
     .thumb img{position:absolute;top:7%;left:7%;width:86%;height:86%;object-fit:contain;max-width:100%;max-height:100%;image-rendering:-webkit-optimize-contrast}
     .price{position:absolute;left:8px;top:8px;background:#101827cc;border:1px solid #1f2c4d;color:#fff;padding:4px 7px;border-radius:8px;font-size:12px;z-index:2}
@@ -42,6 +35,7 @@
     .meta{padding:10px 10px 12px}
     .name{font-size:14px;font-weight:600;line-height:1.2;margin-bottom:6px;min-height:34px}
     .sub{font-size:12px;color:var(--muted);display:flex;justify-content:space-between;gap:8px}
+
     .ring{position:absolute;inset:0;pointer-events:none;border-radius:14px}
     .ring.common{box-shadow:inset 0 0 0 var(--ring) color-mix(in oklab,var(--rare-common) 46%,transparent)}
     .ring.uncommon{box-shadow:inset 0 0 0 var(--ring) color-mix(in oklab,var(--rare-uncommon) 38%,transparent)}
@@ -49,20 +43,24 @@
     .ring.epic{box-shadow:inset 0 0 0 var(--ring) color-mix(in oklab,var(--rare-epic) 34%,transparent)}
     .ring.legendary{box-shadow:inset 0 0 0 var(--ring) color-mix(in oklab,var(--rare-legendary) 32%,transparent)}
     .ring.mythic{box-shadow:inset 0 0 0 var(--ring) color-mix(in oklab,var(--rare-mythic) 30%,transparent)}
-    .empty{opacity:.5}
+
+    .dot{width:10px;height:10px;border-radius:50%}
+    .dot.common{background:var(--rare-common)} .dot.uncommon{background:var(--rare-uncommon)} .dot.rare{background:var(--rare-rare)}
+    .dot.epic{background:var(--rare-epic)} .dot.legendary{background:var(--rare-legendary)} .dot.mythic{background:var(--rare-mythic)}
+    .empty{opacity:.6}
     footer{margin:28px 0 8px;color:var(--muted);font-size:12px}
 
-    .viewbar{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 14px}
+    /* barra de vista (solo en “Todo”) */
+    .viewbar{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 6px}
 
-    /* Carrusel simple dentro de cada lote */
-    .carousel{position:absolute;inset:0}
-    .carousel .slide{position:absolute;inset:7% 7% 7% 7%;width:86%;height:86%;object-fit:contain;display:none}
-    .carousel .slide.active{display:block}
-    .car-nav{position:absolute;top:50%;transform:translateY(-50%);background:#0b0f1acc;border:1px solid #1f2c4d;border-radius:8px;padding:4px 8px;cursor:pointer;font-size:12px;user-select:none}
-    .car-prev{left:8px} .car-next{right:8px}
-    .car-dots{position:absolute;left:0;right:0;bottom:6px;display:flex;gap:6px;justify-content:center}
-    .car-dot{width:6px;height:6px;border-radius:999px;background:#3a4a73;opacity:.8}
-    .car-dot.active{background:#cfe0ff;opacity:1}
+    /* Carrusel en lotes */
+    .slider{position:absolute;inset:0}
+    .slide{position:absolute;inset:7%;width:86%;height:86%;opacity:0;transition:opacity .4s ease;display:flex;align-items:center;justify-content:center}
+    .slide.active{opacity:1}
+    .dots{position:absolute;left:0;right:0;bottom:6px;display:flex;gap:6px;justify-content:center}
+    .dotb{width:6px;height:6px;border-radius:50%;background:#8691a9}
+    .dotb.active{background:#cfe0ff}
+    .section-title{margin:16px 2px 8px;font-size:18px;font-weight:800}
   </style>
 </head>
 <body>
@@ -72,7 +70,7 @@
         <h1>Tienda de Fortnite</h1>
         <small id="date">Cargando…</small>
       </div>
-      <div class="filters">
+      <div class="legend">
         <span class="chip active" data-filter="all">Todo</span>
         <span class="chip" data-filter="traje">Traje</span>
         <span class="chip" data-filter="gesto">Gesto</span>
@@ -85,7 +83,7 @@
       </div>
     </header>
 
-    <div class="legend" style="margin:10px 0 8px">
+    <div class="legend" style="margin:6px 0 4px">
       <span class="dot common"></span> Común
       <span class="dot uncommon"></span> Poco común
       <span class="dot rare"></span> Raro
@@ -94,223 +92,263 @@
       <span class="dot mythic"></span> Mítico
     </div>
 
+    <!-- toggle de vista (solo en “Todo”) -->
     <div class="viewbar" id="viewbar">
       <span class="chip chip-view active" data-view="groups">Lotes</span>
       <span class="chip chip-view" data-view="individual">Individual</span>
     </div>
+
+    <!-- Más vendido -->
+    <div id="hits-root"></div>
 
     <section class="grid" id="grid"></section>
 
     <footer>Fuente: Fortnite-API · Render por iEvan709</footer>
   </div>
 
-<script>
-const grid   = document.getElementById('grid');
-const dateEl = document.getElementById('date');
-const chips  = Array.from(document.querySelectorAll('.chip[data-filter]'));
-const viewChips = Array.from(document.querySelectorAll('.chip-view'));
-const viewBar   = document.getElementById('viewbar');
+  <script>
+  const grid   = document.getElementById('grid');
+  const dateEl = document.getElementById('date');
+  const hitsRoot = document.getElementById('hits-root');
+  const chips = Array.from(document.querySelectorAll('.chip[data-filter]'));
+  const viewBar = document.getElementById('viewbar');
+  const viewChips = Array.from(document.querySelectorAll('.chip-view'));
 
-let FILTER = 'all';      // pestaña elegida
-let VIEW   = 'groups';   // vista (sólo aplica cuando FILTER==='all')
-const DATA = { items: [], groups: [] };
+  let FILTER = 'all';
+  let VIEW   = 'groups';
+  const DATA = { items: [], groups: [] };
 
-const RARITY_ORDER = { mythic:0, legendary:1, epic:2, rare:3, uncommon:4, common:5 };
-const TYPE_ORDER   = { traje:0, gesto:1, pico:2, 'ala-delta':3, envoltorio:4, mochila:5, companero:6, pista:7 };
-const secOrder = s => ({'Featured':0,'Special Featured':1,'Special Daily':2,'Daily':3,'Votes':4,'Vote Winners':5})[s] ?? 9;
-const cmp = (a,b)=> a<b?-1:a>b?1:0;
+  const RARITY_ORDER = { mythic:0, legendary:1, epic:2, rare:3, uncommon:4, common:5 };
+  const TYPE_ORDER   = { traje:0, gesto:1, pico:2, 'ala-delta':3, envoltorio:4, mochila:5, companero:6, pista:7 };
 
-function priceFmt(p){ if(p==null||p==="")return "¿?"; const s=String(p); return /^\d+$/.test(s)?`${s} V-Bucks`:s; }
-function rarityLabel(r){const m={common:"Común",uncommon:"Poco común",rare:"Raro",epic:"Épico",legendary:"Legendario",mythic:"Mítico"};return m[r]||r||"—";}
-
-function normalizeType(o){
-  let t = (o.type||'').toString().toLowerCase().replace('_','-').trim();
-  if (!t) {
-    const n = (o.name||'').toLowerCase();
-    if (/(compañer|compan|buddy|pet)/.test(n)) t = 'companero';
-    else if (/(pista|improvis|jam|track|music|música|musica)/.test(n)) t = 'pista';
-    else if (/(gesto|emote|baile|dance)/.test(n)) t = 'gesto';
-    else if (/(pico|hacha|pickaxe)/.test(n)) t = 'pico';
-    else if (/(ala|glider|planeador|ala delta)/.test(n)) t = 'ala-delta';
-    else if (/(envoltorio|wrap|camo)/.test(n)) t = 'envoltorio';
-    else if (/(mochila|back bling|backbling|accesorio)/.test(n)) t = 'mochila';
-    else t = 'traje';
+  function priceFmt(p){ if(p==null||p==="") return "¿?"; const s=String(p); return /^\d+$/.test(s)?`${s} V-Bucks`:s; }
+  function rarityLabel(r){ const M={common:"Común",uncommon:"Poco común",rare:"Raro",epic:"Épico",legendary:"Legendario",mythic:"Mítico"}; return M[r]||r||"—"; }
+  function normalizeType(obj){
+    let t=(obj.type||'').toString().toLowerCase().replace('_','-').trim();
+    if(!t){
+      const n=(obj.name||'').toLowerCase();
+      if(/(compañer|compan|buddy|pet)/.test(n)) t='companero';
+      else if(/(pista|improvis|jam|track|music|música|musica)/.test(n)) t='pista';
+      else if(/(gesto|emote|baile|dance)/.test(n)) t='gesto';
+      else if(/(pico|hacha|pickaxe)/.test(n)) t='pico';
+      else if(/(ala|glider|planeador|ala delta)/.test(n)) t='ala-delta';
+      else if(/(envoltorio|wrap|camo)/.test(n)) t='envoltorio';
+      else if(/(mochila|back bling|backbling|accesorio)/.test(n)) t='mochila';
+      else t='traje';
+    }
+    if (t==='ala_delta') t='ala-delta';
+    if (t==='mascota')   t='companero';
+    return t;
   }
-  if (t==='ala_delta') t='ala-delta';
-  if (t==='mascota')   t='companero';
-  return t;
-}
+  const secOrder = s => ({'Featured':0,'Special Featured':1,'Special Daily':2,'Daily':3,'Votes':4,'Vote Winners':5})[s] ?? 9;
+  const cmp = (a,b)=> a<b?-1:a>b?1:0;
 
-/* --------- UI: filtros --------- */
-chips.forEach(ch => ch.addEventListener('click', () => {
-  chips.forEach(c=>c.classList.remove('active')); ch.classList.add('active');
-  FILTER = ch.dataset.filter;
-
-  // La barra Lotes/Individual sólo se muestra en "Todo"
-  if (FILTER === 'all') {
-    viewBar.style.display = 'flex';
-  } else {
-    viewBar.style.display = 'none';
-    // Forzamos vista Individual cuando no es "Todo"
-    VIEW = 'individual';
-    viewChips.forEach(c=>c.classList.remove('active'));
-  }
-  render();
-}));
-
-viewChips.forEach(ch => ch.addEventListener('click', () => {
-  if (FILTER !== 'all') return; // seguridad: no aplica
-  viewChips.forEach(c=>c.classList.remove('active')); ch.classList.add('active');
-  VIEW = ch.dataset.view;
-  render();
-}));
-
-/* --------- Tarjetas --------- */
-function cardItem(it){
-  const rar = (it.rarity||'common').toLowerCase();
-  const ty  = normalizeType(it);
-  if (FILTER!=='all' && ty!==FILTER) return '';
-  return `
-    <article class="card" data-type="${ty}">
-      <div class="ring ${rar}"></div>
-      <div class="thumb">
-        <img loading="lazy" src="${it.image||it.img||it.img_url}" alt="${it.name}"
-             onerror="this.closest('.card').classList.add('empty')" />
-        <span class="price">${priceFmt(it.price)}</span>
-        <span class="badge">${rarityLabel(rar)}</span>
-      </div>
-      <div class="meta">
-        <div class="name">${it.name}</div>
-        <div class="sub">
-          <span>${ty}${it.group?` · ${it.group}`:''}</span>
-          <span>${it.expires?`Sale: ${it.expires}`:''}</span>
-        </div>
-      </div>
-    </article>`;
-}
-
-function cardGroup(g){
-  const imgs = (g.items||[]).map(it => it.image||it.img||it.img_url).filter(Boolean);
-  if (!imgs.length) return '';                      // 🔒 no tarjetas vacías
-  if (FILTER!=='all') {
-    // En filtros por tipo, sólo mostrar lotes con al menos un item del tipo.
-    const ok = (g.items||[]).some(it => normalizeType(it)===FILTER);
-    if (!ok) return '';
-  }
-  const leadItem = g.items && g.items[0] || {};
-  const rar = (leadItem.rarity||'common').toLowerCase();
-  const total = (g.items||[]).length;
-  const title = g.name ? `${g.name} (Lote)` : `${leadItem.name||'Lote'} (Lote)`;
-  const dots = imgs.map((_,i)=>`<span class="car-dot ${i===0?'active':''}"></span>`).join('');
-  const slides = imgs.map((u,i)=>`<img class="slide ${i===0?'active':''}" src="${u}" alt="${title}">`).join('');
-  return `
-    <article class="card" data-type="lote">
-      <div class="ring ${rar}"></div>
-      <div class="thumb">
-        <div class="carousel" data-idx="0">
-          ${slides}
-          <button class="car-nav car-prev" aria-label="Anterior">‹</button>
-          <button class="car-nav car-next" aria-label="Siguiente">›</button>
-          <div class="car-dots">${dots}</div>
-        </div>
-        <span class="price">${priceFmt(g.price)}</span>
-        <span class="badge">Lote · ${total} item${total===1?'':'s'}</span>
-      </div>
-      <div class="meta">
-        <div class="name">${title}</div>
-        <div class="sub">
-          <span>Incluye ${total} · click para ver</span>
-          <span>${g.expires?`Sale: ${g.expires}`:''}</span>
-        </div>
-      </div>
-    </article>`;
-}
-
-/* --------- Ordenadores --------- */
-function sortItems(a,b){
-  const sa=secOrder(a.section||''), sb=secOrder(b.section||''); if(sa!==sb) return sa-sb;
-  const ga=(a.group||'').toLowerCase(), gb=(b.group||'').toLowerCase(); if(ga!==gb) return cmp(ga,gb);
-  const ta=TYPE_ORDER[normalizeType(a)]??99, tb=TYPE_ORDER[normalizeType(b)]??99; if(ta!==tb) return ta-tb;
-  const ra=RARITY_ORDER[(a.rarity||'').toLowerCase()]??9, rb=RARITY_ORDER[(b.rarity||'').toLowerCase()]??9; if(ra!==rb) return ra-rb;
-  return cmp((a.name||'').toLowerCase(),(b.name||'').toLowerCase());
-}
-function sortGroups(a,b){
-  // si ambos tienen nombre de “colección/tema” (p.ej. Kombate clásico), ordénalos por nombre; si no, por precio
-  const an = (a.name||'').toLowerCase(), bn = (b.name||'').toLowerCase();
-  if (an && bn && an!==bn) return cmp(an,bn);
-  const pa = a.price ?? 9e9, pb = b.price ?? 9e9;
-  if (pa!==pb) return pa-pb;
-  return cmp(an,bn);
-}
-
-/* --------- Render --------- */
-function render(){
-  if (FILTER==='all' && VIEW==='groups') {
-    const groups = [...DATA.groups].sort(sortGroups);
-    grid.innerHTML = groups.map(cardGroup).join('') || `<p class="empty">Sin resultados</p>`;
-    // activar carruseles
-    setupCarousels();
-    return;
-  }
-  // Vista individual (o cualquier pestaña de tipo)
-  const items = [...DATA.items].sort(sortItems);
-  const html = items.map(cardItem).join('');
-  grid.innerHTML = html || `<p class="empty">Sin resultados</p>`;
-}
-
-/* --------- Carrusel --------- */
-function setupCarousels(){
-  document.querySelectorAll('.carousel').forEach(car => {
-    const slides = Array.from(car.querySelectorAll('.slide'));
-    const dots   = Array.from(car.querySelectorAll('.car-dot'));
-    if (!slides.length) return;
-    let idx = 0;
-    const show = i => {
-      idx = (i+slides.length)%slides.length;
-      slides.forEach((img,k)=>img.classList.toggle('active', k===idx));
-      dots.forEach((d,k)=>d.classList.toggle('active', k===idx));
-      car.dataset.idx = String(idx);
-    };
-    car.querySelector('.car-prev')?.addEventListener('click', e => { e.stopPropagation(); show(idx-1); });
-    car.querySelector('.car-next')?.addEventListener('click', e => { e.stopPropagation(); show(idx+1); });
-    dots.forEach((d,k)=>d.addEventListener('click', e => { e.stopPropagation(); show(k); }));
-  });
-}
-
-/* --------- Ingest JSON --------- */
-function renderShop(json){
-  // ITEMS
-  const items = Array.isArray(json.items)? json.items
-    : (json.data && Array.isArray(json.data.items)? json.data.items : []);
-  DATA.items = items.map(x=>({
-    id:x.id, name:x.name, image:x.image||x.img_url, price:x.price,
-    rarity:(x.rarity||'common').toLowerCase(), type:x.type,
-    section:x.section||x.block||x.category||null, group:x.group||x.bundle||null,
-    expires:x.expires
+  chips.forEach(ch => ch.addEventListener('click', () => {
+    chips.forEach(c=>c.classList.remove('active')); ch.classList.add('active');
+    FILTER = ch.dataset.filter;
+    viewBar.style.display = (FILTER==='all') ? 'flex' : 'none';
+    render();
+  }));
+  viewChips.forEach(ch => ch.addEventListener('click', () => {
+    viewChips.forEach(c=>c.classList.remove('active')); ch.classList.add('active');
+    VIEW = ch.dataset.view; render();
   }));
 
-  // GROUPS
-  DATA.groups = (Array.isArray(json.groups)? json.groups : []).map(g=>({
-    id:g.id, name:g.name, price:g.price, expires:g.expires,
-    items:(g.items||[]).map(it=>({
-      name:it.name, image:it.image||it.img_url, rarity:(it.rarity||'common').toLowerCase(), type:it.type
-    }))
-  }));
-
-  if (json.updatedAt){
-    try{ dateEl.textContent = `Actualizado: ${new Date(json.updatedAt).toLocaleString()}`; }
-    catch{ dateEl.textContent = 'Actualizado'; }
+  // ---------- POPULARIDAD (heurística local) ----------
+  function typeWeight(t){
+    return {traje:5,pico:3,'ala-delta':2,envoltorio:1.5,mochila:1.2,companero:2.2,pista:1,gesto:1}[t] ?? 1;
   }
-  render();
-}
+  function seriesWeight(s){
+    if(!s) return 0;
+    const v = (''+s).toLowerCase();
+    if(/gaming|legends|legend/i.test(v)) return 2.5;
+    if(/marvel|dc|star wars|lamborghini|capcom|mk|mortal|street|spider|woman|riotu?/.test(v)) return 2.0;
+    return 0.8;
+  }
+  function scoreItem(it){
+    const t = normalizeType(it);
+    const base = typeWeight(t);
+    const price = Number(it.price)||0;
+    const priceScore = Math.min(price/800, 3); // hasta +3
+    const serScore = seriesWeight(it.series || it.group || '');
+    return base + priceScore + serScore;
+  }
 
-/* --------- Fetch --------- */
-fetch('/fortnite/shop.json?ts='+Date.now(), {cache:'no-store'})
-  .then(r=>r.json())
-  .then(renderShop)
-  .catch(e=>{ dateEl.textContent='No se pudo cargar la tienda.'; console.error(e); });
-</script>
+  // ---------- CARDS ----------
+  function plainDate(expiresISO){
+    // usa solo la parte de fecha para evitar saltos por huso
+    try {
+      if(!expiresISO) return null;
+      if(String(expiresISO).includes('T')) return String(expiresISO).slice(0,10).split('-').reverse().join('/');
+      // si ya viene dd/mm/yyyy lo dejo
+      return expiresISO;
+    } catch { return null; }
+  }
+
+  function cardItem(it){
+    const rar=(it.rarity||'common').toLowerCase();
+    const ty = normalizeType(it);
+    if(FILTER!=='all' && ty!==FILTER) return '';
+    const exp = plainDate(it.expiresISO || it.expires);
+    return `
+      <article class="card" data-type="${ty}">
+        <div class="ring ${rar}"></div>
+        <div class="thumb">
+          <img loading="lazy" src="${it.image || it.img || it.img_url}" alt="${it.name}"
+               onerror="this.closest('.card').classList.add('empty')" />
+          <span class="price">${priceFmt(it.price)}</span>
+          <span class="badge">${rarityLabel(rar)}</span>
+        </div>
+        <div class="meta">
+          <div class="name">${it.name}</div>
+          <div class="sub">
+            <span>${ty}${it.group ? ` · ${it.group}`:''}</span>
+            <span>${exp ? `Sale: ${exp}` : 'Próxima rotación'}</span>
+          </div>
+        </div>
+      </article>`;
+  }
+
+  // Carrusel por grupo
+  const sliders = new Map(); // groupId -> timer
+  function stopSliders(){ sliders.forEach(id=>clearInterval(id)); sliders.clear(); }
+
+  function cardGroup(g){
+    if(FILTER!=='all'){
+      const ok = (g.items||[]).some(it => normalizeType(it)===FILTER);
+      if(!ok) return '';
+    }
+    const pics = (g.images && g.images.length ? g.images : (g.items||[]).map(i=>i.image)).filter(Boolean);
+    const lead = (g.items && g.items[0]) || {};
+    const rar  = (lead.rarity||'common').toLowerCase();
+    const total = (g.items||[]).length;
+    const name = g.name ? `${g.name} (Lote)` : `${lead.name||'Lote'} (Lote)`;
+    const exp = plainDate(g.expiresISO || g.expires);
+    const gid = g.id || name.replace(/\s+/g,'-');
+
+    // slider html
+    const slides = pics.slice(0,8).map((u,i)=>`<div class="slide ${i===0?'active':''}"><img src="${u}" alt="${name}"></div>`).join('');
+    const dots   = pics.slice(0,8).map((_,i)=>`<span class="dotb ${i===0?'active':''}"></span>`).join('');
+
+    return `
+      <article class="card" data-type="lote" data-gid="${gid}">
+        <div class="ring ${rar}"></div>
+        <div class="thumb">
+          <div class="slider">${slides}</div>
+          <div class="dots">${dots}</div>
+          <span class="price">${priceFmt(g.price)}</span>
+          <span class="badge">Lote · ${total} item${total===1?'':'s'}</span>
+        </div>
+        <div class="meta">
+          <div class="name">${name}</div>
+          <div class="sub">
+            <span>Incluye ${total}</span>
+            <span>${exp ? `Sale: ${exp}` : 'Próxima rotación'}</span>
+          </div>
+        </div>
+      </article>`;
+  }
+
+  // ---------- ORDEN ----------
+  function sortItems(a,b){
+    const sa=secOrder(a.section||''), sb=secOrder(b.section||''); if(sa!==sb) return sa-sb;
+    const ta=TYPE_ORDER[normalizeType(a)]??99, tb=TYPE_ORDER[normalizeType(b)]??99; if(ta!==tb) return ta-tb;
+    const ra=RARITY_ORDER[(a.rarity||'').toLowerCase()]??9, rb=RARITY_ORDER[(b.rarity||'').toLowerCase()]??9; if(ra!==rb) return ra-rb;
+    return cmp((a.name||'').toLowerCase(),(b.name||'').toLowerCase());
+  }
+  // Lotes: primero grupos con trajes; luego orden por “popularidad”
+  function groupScore(g){
+    const hasOutfit = (g.items||[]).some(it=>normalizeType(it)==='traje') ? 20 : 0;
+    const maxItem   = Math.max(...(g.items||[]).map(scoreItem).concat([0]));
+    const priceBump = Math.min((Number(g.price)||0)/1000, 3);
+    return hasOutfit + maxItem + priceBump;
+  }
+  function sortGroups(a,b){
+    const sa = groupScore(a), sb = groupScore(b);
+    if (sa!==sb) return sb-sa; // desc
+    const pa = a.price??9e9, pb=b.price??9e9; if(pa!==pb) return pa-pb;
+    return cmp((a.name||'').toLowerCase(),(b.name||'').toLowerCase());
+  }
+
+  // ---------- RENDER & SLIDERS ----------
+  function attachSliders(){
+    stopSliders();
+    document.querySelectorAll('[data-gid]').forEach(card=>{
+      const slides = Array.from(card.querySelectorAll('.slide'));
+      const dots   = Array.from(card.querySelectorAll('.dotb'));
+      if(slides.length<=1) return;
+      let i=0;
+      const tick = ()=>{ slides[i].classList.remove('active'); dots[i].classList.remove('active'); i=(i+1)%slides.length; slides[i].classList.add('active'); dots[i].classList.add('active'); };
+      const id = setInterval(tick, 2000);
+      sliders.set(card.dataset.gid, id);
+      // pausa al hover
+      card.addEventListener('mouseenter', ()=>clearInterval(id));
+      card.addEventListener('mouseleave', ()=>{ if(!sliders.get(card.dataset.gid)) return; const nid=setInterval(tick,2000); sliders.set(card.dataset.gid,nid); });
+    });
+  }
+
+  function renderHits(){
+    // top 6 por score único por grupoId (si hay), si no por nombre
+    const seen = new Set();
+    const ranked = [...DATA.items].sort((a,b)=>scoreItem(b)-scoreItem(a))
+      .filter(it=>{
+        const key = it.groupId || it.group || it.name;
+        if(seen.has(key)) return false; seen.add(key); return true;
+      }).slice(0,6);
+
+    if(!ranked.length){ hitsRoot.innerHTML=''; return; }
+
+    const cards = ranked.map(it=>cardItem(it)).join('');
+    hitsRoot.innerHTML = `<div class="section-title">Lo más vendido de hoy</div><section class="grid">${cards}</section>`;
+  }
+
+  function render(){
+    if (FILTER==='all'){ viewBar.style.display='flex'; } else { viewBar.style.display='none'; }
+    if (VIEW==='groups'){
+      const groups=[...DATA.groups].sort(sortGroups);
+      const html=groups.map(cardGroup).join('');
+      grid.innerHTML = html || `<p class="empty">Sin resultados</p>`;
+      attachSliders();
+    }else{
+      stopSliders();
+      const items=[...DATA.items].sort(sortItems);
+      const html=items.map(cardItem).join('');
+      grid.innerHTML = html || `<p class="empty">Sin resultados</p>`;
+    }
+    // hits solo en Todo
+    if (FILTER==='all'){ renderHits(); } else { hitsRoot.innerHTML=''; }
+  }
+
+  // ---------- INGESTA JSON ----------
+  function renderShop(json){
+    const items = Array.isArray(json.items)?json.items:(json.data&&Array.isArray(json.data.items)?json.data.items:[]);
+    DATA.items = items.map(x=>({
+      id:x.id, name:x.name, image:x.image||x.img_url, price:x.price,
+      rarity:(x.rarity||'common').toLowerCase(),
+      type:x.type, section:x.section||x.block||x.category||null,
+      group:x.group||x.bundle||null, groupId:x.groupId, series:x.series,
+      expires:x.expires, expiresISO:x.expiresISO
+    }));
+
+    DATA.groups = Array.isArray(json.groups)?json.groups.map(g=>({
+      id:g.id, name:g.name, price:g.price,
+      expires:g.expires, expiresISO:g.expiresISO,
+      images:Array.isArray(g.images)?g.images.filter(Boolean):[],
+      items:(g.items||[]).map(it=>({
+        name:it.name, image:it.image||it.img_url, rarity:(it.rarity||'common').toLowerCase(), type:it.type
+      }))
+    })):[];
+
+    if (json.updatedAt){
+      try{ dateEl.textContent = `Actualizado: ${new Date(json.updatedAt).toLocaleString()}`; }
+      catch{ dateEl.textContent = 'Actualizado'; }
+    }
+    render();
+  }
+
+  fetch('/fortnite/shop.json?ts=' + Date.now(), { cache:'no-store' })
+    .then(r=>r.json()).then(renderShop)
+    .catch(e=>{ dateEl.textContent='No se pudo cargar la tienda.'; console.error('Error cargando shop.json:', e); });
+  </script>
 </body>
 </html>
-
-
