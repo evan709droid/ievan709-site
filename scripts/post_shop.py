@@ -156,13 +156,16 @@ def map_api_type(v: str) -> str | None:
     if not v:
         return None
     t = str(v).lower()
+    # Core
     if t in ("emote", "emoji"): return "gesto"
     if t in ("outfit",): return "traje"
     if t in ("backpack", "backbling", "back bling"): return "mochila"
     if t in ("pickaxe",): return "pico"
     if t in ("glider",): return "ala_delta"
     if t in ("wrap", "weaponwrap", "weapon wrap"): return "envoltorio"
-    if t in ("pet",): return "mascota"
+    # Nuevos
+    if t in ("pet", "petcarrier", "companion", "buddy"): return "companero"
+    if t in ("music", "musicpack", "athenamusicpack", "jam", "jamtrack", "jam track", "festival_track"): return "pista"
     return None
 
 def from_series(obj):
@@ -178,12 +181,27 @@ def from_series(obj):
 
 def infer_type(name: str, raw_series: str = "", section: str = "", raw_group: str = ""):
     n = (name or "").lower()
-    if any(k in n for k in ["mascota", "pet", "petcarrier", "pet carrier"]): return "mascota"
-    if any(k in n for k in ["gesto", "emote", "baile", "dance"]): return "gesto"
-    if any(k in n for k in ["pico", "hacha", "pickaxe"]): return "pico"
-    if any(k in n for k in ["ala", "planeador", "glider", "ala delta"]): return "ala_delta"
-    if any(k in n for k in ["envoltorio", "wrap", "camo"]): return "envoltorio"
-    if any(k in n for k in ["mochila", "back", "back bling", "accesorio"]): return "mochila"
+    # Compañero
+    if any(k in n for k in ["compañero", "companero", "companion", "buddy", "pet", "petcarrier", "pet carrier"]):
+        return "companero"
+    # Pistas (Jam Tracks / Music)
+    if any(k in n for k in ["pista", "improvisacion", "improvisación", "jam", "track", "music", "música"]):
+        return "pista"
+    # Gesto
+    if any(k in n for k in ["gesto", "emote", "baile", "dance"]):
+        return "gesto"
+    # Pico
+    if any(k in n for k in ["pico", "hacha", "pickaxe"]):
+        return "pico"
+    # Ala delta
+    if any(k in n for k in ["ala", "ala delta", "planeador", "glider"]):
+        return "ala_delta"
+    # Envoltorio
+    if any(k in n for k in ["envoltorio", "wrap", "camo"]):
+        return "envoltorio"
+    # Mochila
+    if any(k in n for k in ["mochila", "back", "back bling", "accesorio"]):
+        return "mochila"
     return "traje"
 
 def human_section(key: str | None) -> str | None:
@@ -207,7 +225,7 @@ def fetch_shop_items(FN_API_KEY):
     """
     out, shop_date_str = [], None
 
-    # -------- Intento 1: librería ----------
+    # -------- Intento 1: librería ---------- (mejor esfuerzo en sección)
     try:
         with fortnite_api.SyncClient(
             api_key=FN_API_KEY,
@@ -253,8 +271,18 @@ def fetch_shop_items(FN_API_KEY):
                     except Exception:
                         expire_txt = "Próxima rotación"
 
-                # sección/grupo (SDK: no siempre disponible)
+                # sección (SDK: mejor esfuerzo)
                 section = None
+                sec_obj = getattr(entry, "section", None)
+                if sec_obj:
+                    section = getattr(sec_obj, "display_name", None) or getattr(sec_obj, "name", None)
+                if not section:
+                    # algunos exponen category en la entry
+                    section = getattr(entry, "category", None)
+                if section:
+                    section = str(section)
+
+                # group/bundle
                 group = getattr(entry, "bundle", None)
                 if group and hasattr(group, "name"):
                     group = group.name
@@ -454,7 +482,7 @@ if items and all([TW_API_KEY, TW_API_SECRET, TW_ACCESS_TOKEN, TW_ACCESS_SECRET])
         items_destacados = destacados[:5]
 
         hoy = datetime.now(timezone.utc).strftime("%d/%m/%Y")
-        hr = datetime.now(timezone.utc).strftime("%H:%M")
+        hr  = datetime.now(timezone.utc).strftime("%H:%M")
         header = (
             f"🛍 Tienda de Fortnite ({hoy}) 🎮 {hr}\n"
             "Ya salió la tienda de hoy con TODOS los objetos y rareza.\n"
@@ -474,18 +502,12 @@ if items and all([TW_API_KEY, TW_API_SECRET, TW_ACCESS_TOKEN, TW_ACCESS_SECRET])
         )
         last = None
         for i, txt in enumerate(tweets):
-            r = (
-                client.create_tweet(text=txt, in_reply_to_tweet_id=last)
-                if last
-                else client.create_tweet(text=txt)
-            )
+            r = client.create_tweet(text=txt, in_reply_to_tweet_id=last) if last else client.create_tweet(text=txt)
             last = r.data["id"]
     except tweepy.Forbidden as e:
         print("❌ Forbidden Twitter:", e)
-        try:
-            print("Detalle:", e.response.text)
-        except Exception:
-            pass
+        try: print("Detalle:", e.response.text)
+        except Exception: pass
     except tweepy.TweepyException as e:
         print("❌ Error Tweepy:", e)
 else:
