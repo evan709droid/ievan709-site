@@ -136,10 +136,41 @@ def session_with_retries(total=3, backoff=0.5):
     s.mount("https://", HTTPAdapter(max_retries=retry))
     return s
 
-def fetch_shop_items(FN_API_KEY):
-    items, shop_date_str = [], None
+# ----------- tipo, sección, grupo, serie -----------
 
-    # Intento 1: librería
+def infer_type(name: str):
+    n = (name or "").lower()
+    if any(k in n for k in ["gesto","emote","baile","dance"]): return "gesto"
+    if any(k in n for k in ["pico","hacha","pickaxe"]): return "pico"
+    if any(k in n for k in ["ala","planeador","glider"]): return "ala_delta"
+    if any(k in n for k in ["envoltorio","wrap"]): return "envoltorio"
+    if any(k in n for k in ["mochila","back","back bling","accesorio"]): return "mochila"
+    if any(k in n for k in ["pet","mascota"]): return "mascota"
+    return "traje"
+
+def from_series(obj):
+    # REST: item.series.value / item.series.name ; SDK: itm.series.value/name
+    if not obj: return None
+    try:
+        v = getattr(obj, "value", None) or getattr(obj, "name", None)
+        if v: return str(v)
+    except Exception:
+        pass
+    if isinstance(obj, dict):
+        return obj.get("value") or obj.get("name")
+    return None
+
+def fetch_shop_items(FN_API_KEY):
+    """
+    Devuelve (items, shop_date_str) con campos extra:
+    - type (inferido)
+    - section (Featured/Daily/..., si se puede)
+    - group (nombre de bundle/lote si aplica)
+    - series (Marvel, Gaming Legends, etc.)
+    """
+    out, shop_date_str = [], None
+
+    # --- Intento 1: librería fortnite_api ---
     try:
         with fortnite_api.SyncClient(
             api_key=FN_API_KEY,
@@ -154,11 +185,13 @@ def fetch_shop_items(FN_API_KEY):
 
             entries = getattr(shop, "entries", []) or []
             for entry in entries:
+                # Precio a nivel de entry
                 price = (getattr(entry,"final_price",None) or getattr(entry,"regular_price",None) or getattr(entry,"price",None))
                 if hasattr(price,"final"): price = price.final
                 if hasattr(price,"total"): price = price.total
                 if price is not None and not isinstance(price,(int,float,str)): price = str(price)
 
+                # Expira
                 raw_exp = (getattr(entry,"expiry",None) or getattr(entry,"expires_at",None)
                            or getattr(entry,"expiration",None) or getattr(entry,"offer_expires",None)
                            or getattr(entry,"offer_ends",None) or getattr(entry,"end",None))
@@ -172,7 +205,20 @@ def fetch_shop_items(FN_API_KEY):
                         expire_txt = rota.strftime("%d/%m/%Y")
                     except: expire_txt = "Próxima rotación"
 
-                try: cosmetics = list(entry)
+                # Sección / grupo (best-effort con SDK)
+                section = getattr(entry, "section", None) or getattr(entry, "category", None) or None
+                if section:
+                    try: section = str(section)
+                    except: section = None
+
+                group = (getattr(entry, "bundle", None) or getattr(entry, "bundle_name", None) or None)
+                if group and hasattr(group, "name"):
+                    group = getattr(group, "name")
+                if group:
+                    group = str(group)
+
+                try:
+                    cosmetics = list(entry)
                 except TypeError:
                     cosmetics = (getattr(entry,"items",None) or getattr(entry,"br_items",None) or [])
 
@@ -180,22 +226,33 @@ def fetch_shop_items(FN_API_KEY):
                     img_raw = getattr(getattr(itm,"images",None),"icon",None)
                     url = clean_url(img_raw)
                     if not url: continue
-                    items.append({
-                        "name": getattr(itm,"name",None) or "Sin nombre",
+
+                    name = getattr(itm,"name",None) or "Sin nombre"
+                    rty  = normalize_rarity(getattr(itm,"rarity",None))
+                    ser  = from_series(getattr(itm, "series", None))
+                    typ  = infer_type(name)
+
+                    out.append({
+                        "name": name,
                         "img_url": url,
-                        "rarity": normalize_rarity(getattr(itm,"rarity",None)),
+                        "rarity": rty,
                         "price": price,
                         "expires": expire_txt,
+                        "type": typ,
+                        "section": section,
+                        "group": group,
+                        "series": ser,
                     })
-        if items:
-            print(f"🛍️ (fortnite_api) {len(items)} artículos.")
-            return items, shop_date_str
+
+        if out:
+            print(f"🛍️ (fortnite_api) {len(out)} artículos.")
+            return out, shop_date_str
         else:
             print("⚠️ (fortnite_api) 0 items. Intentando fallback requests…")
     except Exception as e:
         print("⚠️ Error usando fortnite_api, paso a requests:", repr(e))
 
-    # Intento 2: requests
+    # --- Intento 2: REST con requests (con sección/grupo explícitos) ---
     try:
         s = session_with_retries()
         headers = {"Authorization": FN_API_KEY} if FN_API_KEY else {}
@@ -204,31 +261,65 @@ def fetch_shop_items(FN_API_KEY):
         if r.status_code != 200:
             print("Body (primeros 300):", r.text[:300])
             return [], None
+
         data = r.json()
         shop = data.get("data") or {}
         shop_date_str = shop.get("date")
 
+        # (section_key, section_dict) para conservar la sección
         sections = []
-        for key in ("featured","daily","specialFeatured","specialDaily","votes","voteWinners"):
+        for key in ("featured","specialFeatured","specialDaily","daily","votes","voteWinners"):
             sec = shop.get(key)
             if not sec: continue
-            sections.extend(sec.get("entries") or [])
+            sections.append((key, sec))
 
-        for entry in sections:
-            price = entry.get("regularPrice") or entry.get("finalPrice") or entry.get("price")
-            expire_txt = entry.get("offerExpires") or entry.get("expiresAt") or "Próxima rotación"
-            for itm in (entry.get("items") or []):
-                url = clean_url((itm.get("images") or {}).get("icon"))
-                if not url: continue
-                items.append({
-                    "name": itm.get("name") or "Sin nombre",
-                    "img_url": url,
-                    "rarity": normalize_rarity(itm.get("rarity")),
-                    "price": price,
-                    "expires": expire_txt,
-                })
-        print(f"🛍️ (requests) {len(items)} artículos.")
-        return items, shop_date_str
+        for sec_key, sec in sections:
+            entries = sec.get("entries") or []
+            for entry in entries:
+                price = entry.get("regularPrice") or entry.get("finalPrice") or entry.get("price")
+                expire_txt = entry.get("offerExpires") or entry.get("expiresAt") or "Próxima rotación"
+
+                # sección legible
+                section = {
+                    "featured": "Featured",
+                    "specialFeatured": "Special Featured",
+                    "specialDaily": "Special Daily",
+                    "daily": "Daily",
+                    "votes": "Votes",
+                    "voteWinners": "Vote Winners",
+                }.get(sec_key, sec_key)
+
+                # bundle/lote si existe
+                bundle = entry.get("bundle") or {}
+                group = bundle.get("name") or entry.get("category") or entry.get("devName") or None
+
+                items = entry.get("items") or []
+                for itm in items:
+                    images = itm.get("images") or {}
+                    url = clean_url(images.get("icon"))
+                    if not url:
+                        continue
+
+                    name = itm.get("name") or "Sin nombre"
+                    rty  = normalize_rarity(itm.get("rarity"))
+                    ser  = from_series(itm.get("series"))
+                    typ  = infer_type(name)
+
+                    out.append({
+                        "name": name,
+                        "img_url": url,
+                        "rarity": rty,
+                        "price": price,
+                        "expires": expire_txt,
+                        "type": typ,
+                        "section": section,
+                        "group": group,
+                        "series": ser,
+                    })
+
+        print(f"🛍️ (requests) {len(out)} artículos.")
+        return out, shop_date_str
+
     except requests.exceptions.Timeout:
         print("❌ Timeout (30s) en fallback requests.")
         return [], None
@@ -250,7 +341,7 @@ FB_PAGE_TOKEN = os.getenv("FB_PAGE_TOKEN")
 FB_PAGE_URL   = os.getenv("FB_PAGE_URL")
 FB_MAX_IMAGES = int(os.getenv("FB_MAX_IMAGES", "40"))
 
-# IMPORTANTE: salida en la carpeta del sitio /fortnite
+# Salida en la carpeta del sitio /fortnite
 WEB_OUT = Path(os.getenv("WEB_OUT", "fortnite"))
 
 # ------------------ Descarga y JSON ------------------
@@ -264,22 +355,16 @@ print(f"🛍️ {len(items)} artículos encontrados.")
 
 WEB_OUT.mkdir(parents=True, exist_ok=True)
 
-def infer_type(name: str):
-    n = (name or "").lower()
-    if any(k in n for k in ["gesto","emote"]): return "gesto"
-    if any(k in n for k in ["pico","hacha","pickaxe"]): return "pico"
-    if any(k in n for k in ["ala","planeador","glider"]): return "ala_delta"
-    if any(k in n for k in ["envoltorio","wrap"]): return "envoltorio"
-    if any(k in n for k in ["mochila","back","accesorio"]): return "mochila"
-    return "traje"
-
 export_items = [{
     "name": it["name"],
     "image": it["img_url"],
     "rarity": it["rarity"],
     "price": it["price"],
     "expires": it["expires"],
-    "type": infer_type(it["name"]),
+    "type": it.get("type") or infer_type(it["name"]),
+    "section": it.get("section"),
+    "group": it.get("group"),
+    "series": it.get("series"),
 } for it in items]
 
 payload = {
@@ -287,7 +372,7 @@ payload = {
     "sourceDate": shop_date_str,
     "count": len(export_items),
     "items": export_items,
-    "ok": bool(items),
+    "ok": bool(export_items),
 }
 
 out_path = WEB_OUT / "shop.json"
