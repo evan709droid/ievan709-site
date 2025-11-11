@@ -24,19 +24,51 @@
     .filters{display:flex;gap:8px;flex-wrap:wrap}
     .chip{padding:8px 12px;border-radius:999px;background:#1a2236;color:#cfe0ff;cursor:pointer;border:1px solid #243150;font-size:13px}
     .chip.active{background:#244077;color:#fff;border-color:#2b57a3}
-    .grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
-    @media (max-width:1200px){.grid{grid-template-columns:repeat(5,1fr)}}
-    @media (max-width:980px){.grid{grid-template-columns:repeat(4,1fr)}}
-    @media (max-width:760px){.grid{grid-template-columns:repeat(3,1fr)}}
-    @media (max-width:520px){.grid{grid-template-columns:repeat(2,1fr)}}
-    .card{background:var(--card);border-radius:14px;overflow:hidden;border:1px solid #1b2440;display:flex;flex-direction:column;min-height:240px;position:relative}
-    .thumb{aspect-ratio:1/1;background:linear-gradient(180deg,#0f1629,#0a1124);display:flex;align-items:center;justify-content:center;position:relative}
-    .thumb img{width:86%;height:86%;object-fit:contain;image-rendering:-webkit-optimize-contrast}
-    .price{position:absolute;left:8px;top:8px;background:#101827cc;border:1px solid #1f2c4d;color:#fff;padding:4px 7px;border-radius:8px;font-size:12px}
-    .badge{position:absolute;right:8px;top:8px;padding:4px 7px;border-radius:8px;border:1px solid #1f2c4d;background:#101827cc;font-size:12px}
+
+    /* GRID robusta y fluida */
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap:12px;
+    }
+
+    .card{
+      background:var(--card);
+      border-radius:14px;
+      overflow:hidden;
+      border:1px solid #1b2440;
+      display:flex;
+      flex-direction:column;
+      min-height:240px;
+      position:relative;
+    }
+
+    /* Contenedor de imagen a prueba de desbordes */
+    .thumb{
+      position: relative;
+      width: 100%;
+      padding-top: 100%; /* 1:1 */
+      background:linear-gradient(180deg,#0f1629,#0a1124);
+      overflow:hidden;
+    }
+    .thumb img{
+      position:absolute;
+      top:7%;
+      left:7%;
+      width:86%;
+      height:86%;
+      object-fit:contain;
+      max-width:100%;
+      max-height:100%;
+      image-rendering:-webkit-optimize-contrast;
+    }
+
+    .price{position:absolute;left:8px;top:8px;background:#101827cc;border:1px solid #1f2c4d;color:#fff;padding:4px 7px;border-radius:8px;font-size:12px;z-index:2}
+    .badge{position:absolute;right:8px;top:8px;padding:4px 7px;border-radius:8px;border:1px solid #1f2c4d;background:#101827cc;font-size:12px;z-index:2}
     .meta{padding:10px 10px 12px}
     .name{font-size:14px;font-weight:600;line-height:1.2;margin-bottom:6px;min-height:34px}
     .sub{font-size:12px;color:var(--muted);display:flex;justify-content:space-between;gap:8px}
+
     /* aros por rareza */
     .ring{position:absolute;inset:0;pointer-events:none;border-radius:14px}
     .ring.common     {box-shadow: inset 0 0 0 var(--ring) color-mix(in oklab, var(--rare-common) 46%, transparent)}
@@ -45,6 +77,7 @@
     .ring.epic       {box-shadow: inset 0 0 0 var(--ring) color-mix(in oklab, var(--rare-epic) 34%, transparent)}
     .ring.legendary  {box-shadow: inset 0 0 0 var(--ring) color-mix(in oklab, var(--rare-legendary) 32%, transparent)}
     .ring.mythic     {box-shadow: inset 0 0 0 var(--ring) color-mix(in oklab, var(--rare-mythic) 30%, transparent)}
+
     .legend{display:flex;gap:10px;align-items:center;color:var(--muted);font-size:12px}
     .dot{width:10px;height:10px;border-radius:50%}
     .dot.common{background:var(--rare-common)} .dot.uncommon{background:var(--rare-uncommon)} .dot.rare{background:var(--rare-rare)}
@@ -61,15 +94,15 @@
         <small id="date">Cargando…</small>
       </div>
       <div class="legend">
-  <span class="chip active" data-filter="all">Todo</span>
-  <span class="chip" data-filter="traje">Traje</span>
-  <span class="chip" data-filter="gesto">Gesto</span>
-  <span class="chip" data-filter="pico">Pico</span>
-  <span class="chip" data-filter="ala-delta">Ala delta</span>
-  <span class="chip" data-filter="envoltorio">Envoltorio</span>
-  <span class="chip" data-filter="mochila">Mochila</span>
-  <span class="chip" data-filter="companero">Compañero</span>
-  <span class="chip" data-filter="pista">Pistas</span>
+        <span class="chip active" data-filter="all">Todo</span>
+        <span class="chip" data-filter="traje">Traje</span>
+        <span class="chip" data-filter="gesto">Gesto</span>
+        <span class="chip" data-filter="pico">Pico</span>
+        <span class="chip" data-filter="ala-delta">Ala delta</span>
+        <span class="chip" data-filter="envoltorio">Envoltorio</span>
+        <span class="chip" data-filter="mochila">Mochila</span>
+        <span class="chip" data-filter="companero">Compañero</span>
+        <span class="chip" data-filter="pista">Pistas</span>
       </div>
     </header>
 
@@ -82,7 +115,8 @@
       <span class="dot mythic"></span> Mítico
     </div>
 
-    <section id="grid"></section>
+    <!-- IMPORTANTE: vuelve a tener class="grid" -->
+    <section class="grid" id="grid"></section>
 
     <footer>Fuente: Fortnite-API · Render por iEvan709</footer>
   </div>
@@ -90,15 +124,6 @@
   <script>
   const grid = document.getElementById('grid');
   const dateEl = document.getElementById('date');
-
-  // añade chips si no están
-  const bar = document.querySelector('.legend');
-  if (!bar.querySelector('[data-filter="companero"]')) {
-    bar.insertAdjacentHTML('beforeend', `
-      <span class="chip" data-filter="companero">Compañero</span>
-      <span class="chip" data-filter="pista">Pistas</span>
-    `);
-  }
 
   const chips = Array.from(document.querySelectorAll('.chip'));
   let DATA = { items: [] }, FILTER = 'all';
@@ -123,7 +148,6 @@
     return map[r] || r || "—";
   }
 
-  // Normaliza y también intenta inferir si no viene
   function normalizeType(it){
     let t = (it.type || '').toString().toLowerCase().replace('_','-').trim();
     if (!t) {
@@ -136,14 +160,12 @@
       else if (/(envoltorio|wrap|camo)/.test(n)) t = 'envoltorio';
       else if (/(mochila|back bling|backbling|accesorio)/.test(n)) t = 'mochila';
       else t = 'traje';
-      console.debug('[inferido type]', it.name, '→', t);
     }
     if (t === 'ala_delta') t = 'ala-delta';
     if (t === 'mascota') t = 'companero';
     return t;
   }
 
-  // Orden por sección-bundle-tipo-rareza-nombre
   function sortItems(a, b){
     const secOrder = (s)=>({
       'Featured':0,'Special Featured':1,'Special Daily':2,'Daily':3,'Votes':4,'Vote Winners':5
@@ -204,7 +226,7 @@
       image: x.image || x.img_url,
       price: x.price,
       rarity: (x.rarity||'common').toLowerCase(),
-      type: x.type,              // puede venir del bot; si no, inferimos en normalizeType()
+      type: x.type,
       section: x.section || x.block || x.category || null,
       group: x.group || x.bundle || null,
       expires: x.expires
@@ -223,10 +245,6 @@
       dateEl.textContent = 'No se pudo cargar la tienda.';
       console.error('Error cargando shop.json:', e);
     });
-</script>
+  </script>
 </body>
 </html>
-
-
-
-
