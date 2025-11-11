@@ -2,9 +2,13 @@ name: Update Fortnite Shop (site)
 
 on:
   schedule:
-    - cron: '0 0 * * *'   # 00:00 UTC = 18:00 America/Mexico_City
-  workflow_dispatch:
-
+    - cron: '0 0 * * *'    # sigue el cron
+  workflow_dispatch:        # sigue el botón manual
+  push:
+    paths:
+      - "scripts/**"
+      - ".github/workflows/**"
+      
 permissions:
   contents: write
 
