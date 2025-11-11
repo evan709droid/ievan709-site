@@ -25,7 +25,7 @@ def normalize_rarity(r):
         s = str(r).lower()
     if "." in s:
         s = s.split(".")[-1]
-    for k in ("common","uncommon","rare","epic","legendary","mythic"):
+    for k in ("common", "uncommon", "rare", "epic", "legendary", "mythic"):
         if k in s:
             return k
     return s
@@ -47,17 +47,21 @@ def clean_url(u):
     return u
 
 RARITY_EMOJI = {
-    "common":"⚪ Común","uncommon":"🟢 Poco común","rare":"🔵 Raro",
-    "epic":"🟣 Épico","legendary":"🟠 Legendario","mythic":"🔴 Mítico",
+    "common": "⚪ Común",
+    "uncommon": "🟢 Poco común",
+    "rare": "🔵 Raro",
+    "epic": "🟣 Épico",
+    "legendary": "🟠 Legendario",
+    "mythic": "🔴 Mítico",
 }
 
 def make_line(item):
-    nombre = item.get("name","???")
+    nombre = item.get("name", "???")
     rare_leg = RARITY_EMOJI.get((item.get("rarity") or "").lower(), "?")
     price = str(item.get("price") or "?")
     if price.isdigit():
         price += " V-Bucks"
-    salida = item.get("expires","Próxima rotación")
+    salida = item.get("expires", "Próxima rotación")
     return f"• {nombre} ({rare_leg}) - {price} | Sale: {salida}"
 
 def chunk_lines_into_tweets(header, lines, footer, max_chars=270):
@@ -80,8 +84,9 @@ def chunk_lines_into_tweets(header, lines, footer, max_chars=270):
 
 def fb_upload_unpublished_photo(page_id, page_token, image_url, caption=None, timeout=120):
     url = f"https://graph.facebook.com/v24.0/{page_id}/photos"
-    data = {"published":"false","url":image_url,"access_token":page_token}
-    if caption: data["caption"]=caption
+    data = {"published": "false", "url": image_url, "access_token": page_token}
+    if caption:
+        data["caption"] = caption
     r = requests.post(url, data=data, timeout=timeout)
     if not r.ok:
         raise RuntimeError(f"FB upload photo failed: {r.status_code} {r.text}")
@@ -89,32 +94,37 @@ def fb_upload_unpublished_photo(page_id, page_token, image_url, caption=None, ti
 
 def fb_create_multiimage_post(page_id, page_token, message, media_fbids, timeout=120):
     url = f"https://graph.facebook.com/v24.0/{page_id}/feed"
-    data = {"message":message,"access_token":page_token}
-    for i,fid in enumerate(media_fbids):
-        data[f"attached_media[{i}]"] = json.dumps({"media_fbid":str(fid)})
+    data = {"message": message, "access_token": page_token}
+    for i, fid in enumerate(media_fbids):
+        data[f"attached_media[{i}]"] = json.dumps({"media_fbid": str(fid)})
     r = requests.post(url, data=data, timeout=timeout)
     if not r.ok:
         raise RuntimeError(f"FB create post failed: {r.status_code} {r.text}")
     return r.json()["id"]
 
 def fb_build_message_for_shop(fecha_larga_fb, items, max_headlines=6):
-    nombres = [it.get("name","???") for it in items[:max_headlines]]
+    nombres = [it.get("name", "???") for it in items[:max_headlines]]
     idx = " · ".join(nombres)
-    return (f"🛒 Tienda de Fortnite - {fecha_larga_fb}\n\n"
-            f"{idx}\n\n"
-            "Precios en V-Bucks, rareza y rotación diaria aquí mismo todos los días. 🎮🔥")
+    return (
+        f"🛒 Tienda de Fortnite - {fecha_larga_fb}\n\n"
+        f"{idx}\n\n"
+        "Precios en V-Bucks, rareza y rotación diaria aquí mismo todos los días. 🎮🔥"
+    )
 
 def post_multi_image_facebook(page_id, page_token, items, base_message, per_image_caption=True, max_images=40):
     media_fbids = []
     for count, it in enumerate(items, start=1):
-        if count > max_images: break
+        if count > max_images:
+            break
         img_url = it.get("img_url")
-        if not img_url: continue
+        if not img_url:
+            continue
         cap = None
         if per_image_caption:
-            pr = it.get("price","?")
-            if str(pr).isdigit(): pr = f"{pr} V-Bucks"
-            rare = RARITY_EMOJI.get((it.get("rarity") or "").lower(), it.get("rarity","?"))
+            pr = it.get("price", "?")
+            if str(pr).isdigit():
+                pr = f"{pr} V-Bucks"
+            rare = RARITY_EMOJI.get((it.get("rarity") or "").lower(), it.get("rarity", "?"))
             cap = f"{it.get('name','???')} — {pr} {f'({rare})' if rare else ''}".strip()
         fid = fb_upload_unpublished_photo(page_id, page_token, img_url, caption=cap)
         media_fbids.append(fid)
@@ -130,51 +140,27 @@ API_URL = "https://fortnite-api.com/v2/shop/br?language=es-MX"
 
 def session_with_retries(total=3, backoff=0.5):
     s = requests.Session()
-    retry = Retry(total=total, backoff_factor=backoff,
-                  status_forcelist=[429,500,502,503,504],
-                  allowed_methods=["GET"])
+    retry = Retry(
+        total=total,
+        backoff_factor=backoff,
+        status_forcelist=[429, 500, 502, 503, 504],
+        allowed_methods=["GET"],
+    )
     s.mount("https://", HTTPAdapter(max_retries=retry))
     return s
 
-# ----------- tipo, sección, grupo, serie -----------
-
-def infer_type(name: str):
-    n = (name or "").lower()
-    if any(k in n for k in ["gesto","emote","baile","dance"]): return "gesto"
-    if any(k in n for k in ["pico","hacha","pickaxe"]): return "pico"
-    if any(k in n for k in ["ala","planeador","glider"]): return "ala_delta"
-    if any(k in n for k in ["envoltorio","wrap"]): return "envoltorio"
-    if any(k in n for k in ["mochila","back","back bling","accesorio"]): return "mochila"
-    if any(k in n for k in ["pet","mascota"]): return "mascota"
-    return "traje"
-
-def from_series(obj):
-    # REST: item.series.value / item.series.name ; SDK: itm.series.value/name
-    if not obj: return None
-    try:
-        v = getattr(obj, "value", None) or getattr(obj, "name", None)
-        if v: return str(v)
-    except Exception:
-        pass
-    if isinstance(obj, dict):
-        return obj.get("value") or obj.get("name")
-    return None
-
 def fetch_shop_items(FN_API_KEY):
     """
-    Devuelve (items, shop_date_str) con campos extra:
-    - type (inferido)
-    - section (Featured/Daily/..., si se puede)
-    - group (nombre de bundle/lote si aplica)
-    - series (Marvel, Gaming Legends, etc.)
+    Devuelve (items, shop_date_str) con más metadatos:
+    cada item puede traer: name, img_url, rarity, price, expires, section, group, series
     """
-    out, shop_date_str = [], None
+    items, shop_date_str = [], None
 
-    # --- Intento 1: librería fortnite_api ---
+    # -------- Intento 1: librería ----------
     try:
         with fortnite_api.SyncClient(
             api_key=FN_API_KEY,
-            default_language=fortnite_api.GameLanguage.SPANISH_LATIN
+            default_language=fortnite_api.GameLanguage.SPANISH_LATIN,
         ) as fn_client:
             shop = fn_client.fetch_shop()
             try:
@@ -185,74 +171,90 @@ def fetch_shop_items(FN_API_KEY):
 
             entries = getattr(shop, "entries", []) or []
             for entry in entries:
-                # Precio a nivel de entry
-                price = (getattr(entry,"final_price",None) or getattr(entry,"regular_price",None) or getattr(entry,"price",None))
-                if hasattr(price,"final"): price = price.final
-                if hasattr(price,"total"): price = price.total
-                if price is not None and not isinstance(price,(int,float,str)): price = str(price)
+                # precio
+                price = (
+                    getattr(entry, "final_price", None)
+                    or getattr(entry, "regular_price", None)
+                    or getattr(entry, "price", None)
+                )
+                if hasattr(price, "final"):
+                    price = price.final
+                if hasattr(price, "total"):
+                    price = price.total
+                if price is not None and not isinstance(price, (int, float, str)):
+                    price = str(price)
 
-                # Expira
-                raw_exp = (getattr(entry,"expiry",None) or getattr(entry,"expires_at",None)
-                           or getattr(entry,"expiration",None) or getattr(entry,"offer_expires",None)
-                           or getattr(entry,"offer_ends",None) or getattr(entry,"end",None))
+                # expiración
+                raw_exp = (
+                    getattr(entry, "expiry", None)
+                    or getattr(entry, "expires_at", None)
+                    or getattr(entry, "expiration", None)
+                    or getattr(entry, "offer_expires", None)
+                    or getattr(entry, "offer_ends", None)
+                    or getattr(entry, "end", None)
+                )
                 expire_txt = None
                 if raw_exp:
-                    try: expire_txt = str(raw_exp)
-                    except: expire_txt = None
+                    try:
+                        expire_txt = str(raw_exp)
+                    except Exception:
+                        expire_txt = None
                 if expire_txt is None:
                     try:
                         rota = (shop.date + timedelta(days=1)).date()
                         expire_txt = rota.strftime("%d/%m/%Y")
-                    except: expire_txt = "Próxima rotación"
+                    except Exception:
+                        expire_txt = "Próxima rotación"
 
-                # Sección / grupo (best-effort con SDK)
-                section = getattr(entry, "section", None) or getattr(entry, "category", None) or None
-                if section:
-                    try: section = str(section)
-                    except: section = None
-
-                group = (getattr(entry, "bundle", None) or getattr(entry, "bundle_name", None) or None)
+                # sección (no siempre viene directo en la librería)
+                # la librería no expone el nombre del bloque tan fácil, así que lo dejamos vacío aquí
+                section = None
+                group = getattr(entry, "bundle", None)
                 if group and hasattr(group, "name"):
-                    group = getattr(group, "name")
-                if group:
-                    group = str(group)
+                    group = group.name
 
+                # items internos
                 try:
                     cosmetics = list(entry)
                 except TypeError:
-                    cosmetics = (getattr(entry,"items",None) or getattr(entry,"br_items",None) or [])
+                    cosmetics = (
+                        getattr(entry, "items", None)
+                        or getattr(entry, "br_items", None)
+                        or []
+                    )
 
                 for itm in cosmetics:
-                    img_raw = getattr(getattr(itm,"images",None),"icon",None)
+                    img_raw = getattr(getattr(itm, "images", None), "icon", None)
                     url = clean_url(img_raw)
-                    if not url: continue
+                    if not url:
+                        continue
+                    rarity = normalize_rarity(getattr(itm, "rarity", None))
+                    name = getattr(itm, "name", None) or "Sin nombre"
+                    series = getattr(itm, "series", None)
+                    if series and hasattr(series, "name"):
+                        series = series.name
 
-                    name = getattr(itm,"name",None) or "Sin nombre"
-                    rty  = normalize_rarity(getattr(itm,"rarity",None))
-                    ser  = from_series(getattr(itm, "series", None))
-                    typ  = infer_type(name)
-
-                    out.append({
-                        "name": name,
-                        "img_url": url,
-                        "rarity": rty,
-                        "price": price,
-                        "expires": expire_txt,
-                        "type": typ,
-                        "section": section,
-                        "group": group,
-                        "series": ser,
-                    })
-
-        if out:
-            print(f"🛍️ (fortnite_api) {len(out)} artículos.")
-            return out, shop_date_str
+                    items.append(
+                        {
+                            "name": name,
+                            "img_url": url,
+                            "rarity": rarity,
+                            "price": price,
+                            "expires": expire_txt,
+                            "section": section,
+                            "group": group,
+                            "series": series,
+                        }
+                    )
+        if items:
+            print(f"🛍️ (fortnite_api) {len(items)} artículos.")
+            return items, shop_date_str
         else:
             print("⚠️ (fortnite_api) 0 items. Intentando fallback requests…")
     except Exception as e:
         print("⚠️ Error usando fortnite_api, paso a requests:", repr(e))
 
-    # --- Intento 2: REST con requests (con sección/grupo explícitos) ---
+    # -------- Intento 2: requests ----------
     try:
         s = session_with_retries()
         headers = {"Authorization": FN_API_KEY} if FN_API_KEY else {}
@@ -261,65 +263,62 @@ def fetch_shop_items(FN_API_KEY):
         if r.status_code != 200:
             print("Body (primeros 300):", r.text[:300])
             return [], None
-
         data = r.json()
         shop = data.get("data") or {}
         shop_date_str = shop.get("date")
 
-        # (section_key, section_dict) para conservar la sección
-        sections = []
-        for key in ("featured","specialFeatured","specialDaily","daily","votes","voteWinners"):
+        # recorremos las secciones para poder guardar el nombre del bloque
+        for key in (
+            "featured",
+            "daily",
+            "specialFeatured",
+            "specialDaily",
+            "votes",
+            "voteWinners",
+        ):
             sec = shop.get(key)
-            if not sec: continue
-            sections.append((key, sec))
-
-        for sec_key, sec in sections:
+            if not sec:
+                continue
             entries = sec.get("entries") or []
             for entry in entries:
-                price = entry.get("regularPrice") or entry.get("finalPrice") or entry.get("price")
-                expire_txt = entry.get("offerExpires") or entry.get("expiresAt") or "Próxima rotación"
-
-                # sección legible
-                section = {
-                    "featured": "Featured",
-                    "specialFeatured": "Special Featured",
-                    "specialDaily": "Special Daily",
-                    "daily": "Daily",
-                    "votes": "Votes",
-                    "voteWinners": "Vote Winners",
-                }.get(sec_key, sec_key)
-
-                # bundle/lote si existe
-                bundle = entry.get("bundle") or {}
-                group = bundle.get("name") or entry.get("category") or entry.get("devName") or None
-
-                items = entry.get("items") or []
-                for itm in items:
-                    images = itm.get("images") or {}
-                    url = clean_url(images.get("icon"))
+                price = (
+                    entry.get("regularPrice")
+                    or entry.get("finalPrice")
+                    or entry.get("price")
+                )
+                expire_txt = (
+                    entry.get("offerExpires")
+                    or entry.get("expiresAt")
+                    or "Próxima rotación"
+                )
+                group = None
+                if entry.get("bundle"):
+                    # algunos traen entry["bundle"]["name"]
+                    group = entry["bundle"].get("name") or entry["bundle"].get("info")
+                cosmetics = entry.get("items") or []
+                for itm in cosmetics:
+                    url = clean_url((itm.get("images") or {}).get("icon"))
                     if not url:
                         continue
-
+                    rarity = normalize_rarity(itm.get("rarity"))
                     name = itm.get("name") or "Sin nombre"
-                    rty  = normalize_rarity(itm.get("rarity"))
-                    ser  = from_series(itm.get("series"))
-                    typ  = infer_type(name)
-
-                    out.append({
-                        "name": name,
-                        "img_url": url,
-                        "rarity": rty,
-                        "price": price,
-                        "expires": expire_txt,
-                        "type": typ,
-                        "section": section,
-                        "group": group,
-                        "series": ser,
-                    })
-
-        print(f"🛍️ (requests) {len(out)} artículos.")
-        return out, shop_date_str
-
+                    series = itm.get("series")
+                    if isinstance(series, dict):
+                        series = series.get("name")
+                    items.append(
+                        {
+                            "name": name,
+                            "img_url": url,
+                            "rarity": rarity,
+                            "price": price,
+                            "expires": expire_txt,
+                            "section": key,   # <- AQUÍ va el bloque
+                            "group": group,   # <- y el nombre del bundle si hay
+                            "series": series,
+                        }
+                    )
+        print(f"🛍️ (requests) {len(items)} artículos.")
+        return items, shop_date_str
     except requests.exceptions.Timeout:
         print("❌ Timeout (30s) en fallback requests.")
         return [], None
@@ -329,16 +328,16 @@ def fetch_shop_items(FN_API_KEY):
 
 # ------------------ Entorno ------------------
 
-FN_API_KEY       = os.getenv("FN_API_KEY")
+FN_API_KEY = os.getenv("FN_API_KEY")
 
-TW_API_KEY       = os.getenv("TW_API_KEY")
-TW_API_SECRET    = os.getenv("TW_API_SECRET")
-TW_ACCESS_TOKEN  = os.getenv("TW_ACCESS_TOKEN")
+TW_API_KEY = os.getenv("TW_API_KEY")
+TW_API_SECRET = os.getenv("TW_API_SECRET")
+TW_ACCESS_TOKEN = os.getenv("TW_ACCESS_TOKEN")
 TW_ACCESS_SECRET = os.getenv("TW_ACCESS_SECRET")
 
-FB_PAGE_ID    = os.getenv("FB_PAGE_ID")
+FB_PAGE_ID = os.getenv("FB_PAGE_ID")
 FB_PAGE_TOKEN = os.getenv("FB_PAGE_TOKEN")
-FB_PAGE_URL   = os.getenv("FB_PAGE_URL")
+FB_PAGE_URL = os.getenv("FB_PAGE_URL")
 FB_MAX_IMAGES = int(os.getenv("FB_MAX_IMAGES", "40"))
 
 # Salida en la carpeta del sitio /fortnite
@@ -355,24 +354,59 @@ print(f"🛍️ {len(items)} artículos encontrados.")
 
 WEB_OUT.mkdir(parents=True, exist_ok=True)
 
-export_items = [{
-    "name": it["name"],
-    "image": it["img_url"],
-    "rarity": it["rarity"],
-    "price": it["price"],
-    "expires": it["expires"],
-    "type": it.get("type") or infer_type(it["name"]),
-    "section": it.get("section"),
-    "group": it.get("group"),
-    "series": it.get("series"),
-} for it in items]
+def infer_type(name: str, raw_series: str = "", section: str = "", raw_group: str = ""):
+    n = (name or "").lower()
+
+    # 1) mascotas / pets (nuevo)
+    if any(k in n for k in ["mascota", "pet", "petcarrier", "pet carrier"]):
+        return "mascota"
+
+    # 2) gestos
+    if any(k in n for k in ["gesto", "emote"]):
+        return "gesto"
+
+    # 3) pico
+    if any(k in n for k in ["pico", "hacha", "pickaxe"]):
+        return "pico"
+
+    # 4) ala delta
+    if any(k in n for k in ["ala", "planeador", "glider", "ala delta"]):
+        return "ala_delta"
+
+    # 5) envoltorio
+    if any(k in n for k in ["envoltorio", "wrap", "camo"]):
+        return "envoltorio"
+
+    # 6) mochila / backbling
+    if any(k in n for k in ["mochila", "back", "back bling", "accesorio"]):
+        return "mochila"
+
+    # fallback
+    return "traje"
+
+export_items = []
+for it in items:
+    export_items.append(
+        {
+            "name": it["name"],
+            "image": it["img_url"],
+            "rarity": it["rarity"],
+            "price": it["price"],
+            "expires": it["expires"],
+            "type": infer_type(it["name"]),
+            # NUEVO: lo mandamos al front
+            "section": it.get("section"),
+            "group": it.get("group"),
+            "series": it.get("series"),
+        }
+    )
 
 payload = {
     "updatedAt": datetime.now(timezone.utc).isoformat(),
     "sourceDate": shop_date_str,
     "count": len(export_items),
     "items": export_items,
-    "ok": bool(export_items),
+    "ok": bool(items),
 }
 
 out_path = WEB_OUT / "shop.json"
@@ -387,9 +421,12 @@ if items and FB_PAGE_ID and FB_PAGE_TOKEN:
         caption_fb = fb_build_message_for_shop(fecha_larga_fb, items, max_headlines=6)
         print("📘 Publicando en Facebook Page (multi-imagen)…")
         post_multi_image_facebook(
-            page_id=FB_PAGE_ID, page_token=FB_PAGE_TOKEN,
-            items=items, base_message=caption_fb,
-            per_image_caption=True, max_images=FB_MAX_IMAGES
+            page_id=FB_PAGE_ID,
+            page_token=FB_PAGE_TOKEN,
+            items=items,
+            base_message=caption_fb,
+            per_image_caption=True,
+            max_images=FB_MAX_IMAGES,
         )
     except Exception as e:
         print("❌ Error al postear en Facebook:", repr(e))
@@ -408,30 +445,49 @@ if items and all([TW_API_KEY, TW_API_SECRET, TW_ACCESS_TOKEN, TW_ACCESS_SECRET])
             for it in items:
                 if it not in destacados:
                     destacados.append(it)
-                if len(destacados) >= 5: break
+                if len(destacados) >= 5:
+                    break
         items_destacados = destacados[:5]
 
         hoy = datetime.now(timezone.utc).strftime("%d/%m/%Y")
-        hr  = datetime.now(timezone.utc).strftime("%H:%M")
-        header = f"🛍 Tienda de Fortnite ({hoy}) 🎮 {hr}\nYa salió la tienda de hoy con TODOS los objetos y rareza.\n"
+        hr = datetime.now(timezone.utc).strftime("%H:%M")
+        header = (
+            f"🛍 Tienda de Fortnite ({hoy}) 🎮 {hr}\n"
+            "Ya salió la tienda de hoy con TODOS los objetos y rareza.\n"
+        )
         footer = "Catálogo completo + precios diarios en mi Facebook 📲"
-        if FB_PAGE_URL: footer += f"\n{FB_PAGE_URL}"
-        tweets = chunk_lines_into_tweets(header, [make_line(i) for i in items_destacados], footer)
+        if FB_PAGE_URL:
+            footer += f"\n{FB_PAGE_URL}"
+        tweets = chunk_lines_into_tweets(
+            header, [make_line(i) for i in items_destacados], footer
+        )
 
-        client = tweepy.Client(consumer_key=TW_API_KEY, consumer_secret=TW_API_SECRET,
-                               access_token=TW_ACCESS_TOKEN, access_token_secret=TW_ACCESS_SECRET)
+        client = tweepy.Client(
+            consumer_key=TW_API_KEY,
+            consumer_secret=TW_API_SECRET,
+            access_token=TW_ACCESS_TOKEN,
+            access_token_secret=TW_ACCESS_SECRET,
+        )
         last = None
         for i, txt in enumerate(tweets):
-            r = client.create_tweet(text=txt, in_reply_to_tweet_id=last) if last else client.create_tweet(text=txt)
+            r = (
+                client.create_tweet(text=txt, in_reply_to_tweet_id=last)
+                if last
+                else client.create_tweet(text=txt)
+            )
             last = r.data["id"]
     except tweepy.Forbidden as e:
         print("❌ Forbidden Twitter:", e)
-        try: print("Detalle:", e.response.text)
-        except: pass
+        try:
+            print("Detalle:", e.response.text)
+        except Exception:
+            pass
     except tweepy.TweepyException as e:
         print("❌ Error Tweepy:", e)
 else:
-    if not items: print("ℹ️ Saltando Twitter: 0 artículos.")
-    else: print("⚠️ Saltando Twitter: faltan credenciales.")
+    if not items:
+        print("ℹ️ Saltando Twitter: 0 artículos.")
+    else:
+        print("⚠️ Saltando Twitter: faltan credenciales.")
 
 print("🏁 Fin del script.")
