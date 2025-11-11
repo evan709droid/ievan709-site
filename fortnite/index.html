@@ -61,14 +61,15 @@
         <small id="date">Cargando…</small>
       </div>
       <div class="legend">
-        <span class="chip active" data-filter="all">Todo</span>
-        <span class="chip" data-filter="traje">Traje</span>
-        <span class="chip" data-filter="gesto">Gesto</span>
-        <span class="chip" data-filter="pico">Pico</span>
-        <span class="chip" data-filter="ala-delta">Ala delta</span>
-        <span class="chip" data-filter="envoltorio">Envoltorio</span>
-        <span class="chip" data-filter="mochila">Mochila</span>
-        <span class="chip" data-filter="mascota">Mascota</span>
+  <span class="chip active" data-filter="all">Todo</span>
+  <span class="chip" data-filter="traje">Traje</span>
+  <span class="chip" data-filter="gesto">Gesto</span>
+  <span class="chip" data-filter="pico">Pico</span>
+  <span class="chip" data-filter="ala-delta">Ala delta</span>
+  <span class="chip" data-filter="envoltorio">Envoltorio</span>
+  <span class="chip" data-filter="mochila">Mochila</span>
+  <span class="chip" data-filter="companero">Compañero</span>
+  <span class="chip" data-filter="pista">Pistas</span>
       </div>
     </header>
 
@@ -87,10 +88,26 @@
   </div>
 
   <script>
-  const grid = document.getElementById('grid');
+  const grid  = document.getElementById('grid');
   const dateEl = document.getElementById('date');
   const chips = Array.from(document.querySelectorAll('.chip'));
   let DATA = { items: [] }, FILTER = 'all';
+
+  // Aliases por filtro (para que nunca queden vacíos)
+  const FILTER_ALIASES = {
+    'all': null,
+    'traje': ['traje','outfit'],
+    'gesto': ['gesto','emote','emoji','baile','dance'],
+    'pico': ['pico','pickaxe','hacha'],
+    'ala-delta': ['ala-delta','ala_delta','glider','planeador'],
+    'envoltorio': ['envoltorio','wrap','weaponwrap'],
+    'mochila': ['mochila','backpack','back-bling','back bling','accesorio','back'],
+    'companero': ['companero','compañero','companion','buddy','pet','petcarrier','pet carrier'],
+    'pista': ['pista','pistas','music','musicpack','athenamusicpack','jam','jamtrack','jam track','festival_track','improvisacion','improvisación','track']
+  };
+
+  // Orden de secciones como la tienda oficial
+  const SECTION_ORDER = ['Featured','Special Featured','Special Daily','Daily'];
 
   chips.forEach(ch => ch.addEventListener('click', () => {
     chips.forEach(c => c.classList.remove('active'));
@@ -99,29 +116,31 @@
     render();
   }));
 
-  function priceFmt(p) {
+  function priceFmt(p){
     if (p == null || p === "") return "¿?";
     const s = String(p);
     return /^\d+$/.test(s) ? `${s} V-Bucks` : s;
   }
 
-  function rarityLabel(r) {
+  function rarityLabel(r){
     const map = {common:"Común",uncommon:"Poco común",rare:"Raro",epic:"Épico",legendary:"Legendario",mythic:"Mítico"};
     return map[r] || r || "—";
   }
 
-  function normalizeType(t) {
-    // Acepta "ala_delta" -> "ala-delta", y normaliza aliases
-    const x = (t || 'traje').toLowerCase().replace(/_/g, '-');
-    if (x === 'ala delta') return 'ala-delta';
-    if (x === 'emote') return 'gesto';
-    if (x === 'back' || x === 'back-bling' || x === 'accesorio') return 'mochila';
-    if (x === 'pet' || x === 'mascotas') return 'mascota';
-    return x;
+  function normalizeType(t){
+    if (!t) return 'traje';
+    return String(t).toLowerCase().replace(/_/g,'-');
   }
 
-  function card(it) {
-    const rar = (it.rarity || "common").toLowerCase();
+  function matchesFilter(it){
+    if (FILTER === 'all') return true;
+    const ty = normalizeType(it.type || 'traje');
+    const aliases = FILTER_ALIASES[FILTER] || [FILTER];
+    return aliases.some(a => ty === a || ty.includes(a));
+  }
+
+  function card(it){
+    const rar = (it.rarity||"common").toLowerCase();
     const ty  = normalizeType(it.type || "traje");
     return `
       <article class="card" data-type="${ty}">
@@ -133,107 +152,85 @@
         </div>
         <div class="meta">
           <div class="name">${it.name}</div>
-          <div class="sub"><span>${ty}</span><span>Sale: ${it.expires || '—'}</span></div>
+          <div class="sub"><span>${ty}</span><span>Sale: ${it.expires||'—'}</span></div>
         </div>
       </article>`;
   }
 
-  // ---------- AGRUPADOR ----------
-  // Agrupa por sección → grupo/bundle → items; si no hay esos campos, cae a tipo.
-  function groupItems(items) {
-    // 1) filtra por pestaña seleccionada
-    const filtered = items.filter(it => {
-      const ty = normalizeType(it.type);
-      return FILTER === 'all' ? true : (ty === FILTER);
-    });
+  // Agrupa: Sección -> Bundle (group) -> Ítems. Si no hay sección, cae a tipo.
+  function groupItems(items){
+    const filtered = items.filter(matchesFilter);
+    const hasSection = filtered.some(i => !!i.section);
 
-    // 2) si el JSON trae sección/grupo, usamos eso; si no, agrupamos por tipo
-    const hasSection = filtered.some(i => i.section);
-    const hasGroup   = filtered.some(i => i.group);
+    const buckets = new Map(); // key -> { section, group, items[] }
 
-    const map = new Map();
-
-    if (hasSection || hasGroup) {
-      // clave: section :: group (opcional)
-      for (const it of filtered) {
+    if (hasSection){
+      for (const it of filtered){
         const section = it.section || 'Tienda';
-        const group   = it.group   || ''; // bundle o categoría
+        const group = it.group || '';
         const key = section + '||' + group;
-        if (!map.has(key)) map.set(key, { section, group, items: [] });
-        map.get(key).items.push(it);
+        if (!buckets.has(key)) buckets.set(key, { section, group, items: [] });
+        buckets.get(key).items.push(it);
       }
     } else {
-      // fallback: agrupar por tipo
-      for (const it of filtered) {
+      for (const it of filtered){
         const ty = normalizeType(it.type);
-        if (!map.has(ty)) map.set(ty, { section: ty, group: '', items: [] });
-        map.get(ty).items.push(it);
+        if (!buckets.has(ty)) buckets.set(ty, { section: ty, group: '', items: [] });
+        buckets.get(ty).items.push(it);
       }
     }
 
-    // orden: Featured/Daily primero si existen
-    const orderHint = ['featured','specialfeatured','special','daily'];
-    const list = Array.from(map.values()).sort((a,b) => {
-      const A = (a.section || '').toLowerCase();
-      const B = (b.section || '').toLowerCase();
-      const ia = orderHint.findIndex(k => A.includes(k));
-      const ib = orderHint.findIndex(k => B.includes(k));
-      const sa = ia === -1 ? 99 : ia;
-      const sb = ib === -1 ? 99 : ib;
-      if (sa !== sb) return sa - sb;
-      // dentro de la sección, los que tienen group (bundle) primero
+    const arr = Array.from(buckets.values());
+    arr.sort((a,b)=>{
+      const ai = SECTION_ORDER.indexOf(a.section);
+      const bi = SECTION_ORDER.indexOf(b.section);
+      const as = ai === -1 ? 999 : ai;
+      const bs = bi === -1 ? 999 : bi;
+      if (as !== bs) return as - bs;
+      // Dentro de sección: bundles primero y por nombre
       if (!!a.group !== !!b.group) return a.group ? -1 : 1;
-      return 0;
+      return (a.group||'').localeCompare(b.group||'');
     });
 
-    return list;
+    return arr;
   }
 
-  function render() {
+  function render(){
     const groups = groupItems(DATA.items);
-    if (!groups.length || groups.every(g => g.items.length === 0)) {
-      grid.innerHTML = `<div class="empty">Sin resultados para este filtro.</div>`;
+    if (!groups.length || groups.every(g => !g.items.length)){
+      grid.innerHTML = `<div class="empty" style="padding:16px">Sin resultados para este filtro.</div>`;
       return;
     }
-
-    const parts = [];
-    for (const g of groups) {
-      const title = g.section || '';
-      const subtitle = g.group ? ` — ${g.group}` : '';
-      parts.push(`
-        <div class="group">
-          <h3 style="margin:12px 4px 8px;font-size:14px;color:#cfe0ff;">
-            ${title}${subtitle}
-          </h3>
-          <div class="grid">
-            ${g.items.map(card).join('')}
-          </div>
+    const html = groups.map(g => `
+      <div class="group">
+        <h3 style="margin:12px 4px 8px;font-size:14px;color:#cfe0ff;">
+          ${g.section}${g.group ? ' — ' + g.group : ''} <small style="color:#9fb0c7">(${g.items.length})</small>
+        </h3>
+        <div class="grid">
+          ${g.items.map(card).join('')}
         </div>
-      `);
-    }
-    grid.innerHTML = parts.join('');
+      </div>
+    `).join('');
+    grid.innerHTML = html;
   }
 
-  // ---- Entrada: transforma JSON y hace primer render ----
-  function renderShop(json) {
-    // Acepta {items:[...]} o {data:{items:[...]}}
-    const items = Array.isArray(json.items)
-      ? json.items
-      : (json.data && Array.isArray(json.data.items) ? json.data.items : []);
+  // Recibe JSON del backend y adapta campos
+  function renderShop(json){
+    const items = Array.isArray(json.items) ? json.items
+                 : (json.data && Array.isArray(json.data.items) ? json.data.items : []);
 
     DATA.items = items.map(it => ({
       name   : it.name,
       img    : it.image || it.img_url,
       price  : it.price,
       rarity : (it.rarity || 'common').toLowerCase(),
-      type   : normalizeType(it.type),
+      type   : it.type,
       expires: it.expires || null,
-      // NUEVO: para agrupar si el backend lo envía
-      section: it.section || null,    // p.ej. "Featured", "Daily", etc.
-      group  : it.group   || null,    // p.ej. nombre del bundle/lote
+      section: it.section || null,  // Featured, Daily, etc.
+      group  : it.group || null     // nombre del bundle/lote si hay
     }));
 
-    if (json.updatedAt) {
+    if (json.updatedAt){
       try {
         const d = new Date(json.updatedAt);
         dateEl.textContent = `Actualizado: ${d.toLocaleString()}`;
@@ -245,7 +242,7 @@
     render();
   }
 
-  // Carga del JSON (misma carpeta /fortnite/)
+  // Asegúrate que el contenedor padre sea <section id="grid"></section> (sin class="grid")
   fetch('/fortnite/shop.json?ts=' + Date.now(), { cache: 'no-store' })
     .then(r => r.json())
     .then(renderShop)
@@ -256,5 +253,6 @@
 </script>
 </body>
 </html>
+
 
 
