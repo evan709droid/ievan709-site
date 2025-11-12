@@ -62,7 +62,7 @@ def make_line(item):
     price = str(item.get("price") or "?")
     if price.isdigit():
         price += " V-Bucks"
-    salida = item.get("expires") or "Próxima rotación"
+    salida = item.get("expires", "Próxima rotación")
     return f"• {nombre} ({rare_leg}) - {price} | Sale: {salida}"
 
 def chunk_lines_into_tweets(header, lines, footer, max_chars=270):
@@ -219,22 +219,12 @@ def session_with_retries(total=3, backoff=0.5):
 
 # ------------------ Fetch + Agrupación por lote ------------------
 
-def _fmt_exp(raw_exp):
-    """Devuelve (expire_iso, expire_txt) o (None, None). No inventa fechas."""
-    if not raw_exp:
-        return None, None
-    s = str(raw_exp)
-    iso = s
-    if "T" in s and "-" in s and len(s) >= 10:
-        y, m, d = s[:10].split("-")
-        return iso, f"{d}/{m}/{y}"
-    return iso, s
-
 def fetch_shop_items(FN_API_KEY):
     """
     Devuelve:
-      items  -> lista plana con groupId/groupPrice/standalone
-      groups -> dicts por lote: id, name, price, expires, expiresISO, images[], items[]
+      items  -> lista plana con: id, name, img_url, rarity, price (solo individual), expires/expiresISO,
+                 type, section, group (nombre), groupId, groupPrice, groupCount, series
+      groups -> { id, name, price, expires, expiresISO, images[], items[] }
       shop_date_str
     """
     items = []
@@ -267,7 +257,7 @@ def fetch_shop_items(FN_API_KEY):
                 if entry_price is not None and not isinstance(entry_price, (int, float, str)):
                     entry_price = str(entry_price)
 
-                # expiración (no inventar)
+                # expiración (ISO solo si existe)
                 raw_exp = (
                     getattr(entry, "expiry", None)
                     or getattr(entry, "expires_at", None)
@@ -276,7 +266,16 @@ def fetch_shop_items(FN_API_KEY):
                     or getattr(entry, "offer_ends", None)
                     or getattr(entry, "end", None)
                 )
-                expire_iso, expire_txt = _fmt_exp(raw_exp)
+                expire_iso = None
+                expire_txt = None
+                if raw_exp:
+                    s = str(raw_exp)
+                    expire_iso = s
+                    if "T" in s and "-" in s:
+                        y, m, d = s[:10].split("-")
+                        expire_txt = f"{d}/{m}/{y}"
+                    else:
+                        expire_txt = s
 
                 # sección y bundle
                 section = None
@@ -306,7 +305,6 @@ def fetch_shop_items(FN_API_KEY):
                 for itm in cosmetics:
                     itm_id = getattr(itm, "id", None) or getattr(itm, "templateId", None) or None
                     if itm_id: ids_for_key.append(str(itm_id))
-
                     url = clean_url(getattr(getattr(itm, "images", None), "icon", None))
                     if not url:
                         continue
@@ -331,13 +329,10 @@ def fetch_shop_items(FN_API_KEY):
                         "rarity": rty,
                         "type": typ,
                         "series": ser,
-                        "indiv_price": None,  # librería casi nunca trae precio individual
+                        "indiv_price": None,  # librería casi nunca lo trae
                     })
 
-                # imágenes para carrusel (hasta 8)
                 pics = [ti["img_url"] for ti in tmp_items if ti["img_url"]]
-
-                # key del grupo
                 group_id = offer_id or safe_id("|".join(sorted(ids_for_key)) + f"|{entry_price}|{expire_txt or ''}")
                 grp = groups.get(group_id)
                 if not grp:
@@ -352,7 +347,6 @@ def fetch_shop_items(FN_API_KEY):
                     }
 
                 for ti in tmp_items:
-                    # añadir al grupo
                     grp["items"].append({
                         "id": ti["id"],
                         "name": ti["name"],
@@ -361,13 +355,12 @@ def fetch_shop_items(FN_API_KEY):
                         "type": ti["type"],
                         "price": ti["indiv_price"],
                     })
-                    # item plano compatible con front (estos NO son standalone)
                     items.append({
                         "id": ti["id"],
                         "name": ti["name"],
                         "img_url": ti["img_url"],
                         "rarity": ti["rarity"],
-                        "price": entry_price,
+                        "price": None,                     # SIN precio individual
                         "expires": expire_txt,
                         "expiresISO": expire_iso,
                         "type": ti["type"],
@@ -375,8 +368,8 @@ def fetch_shop_items(FN_API_KEY):
                         "group": group_name,
                         "groupId": group_id,
                         "groupPrice": entry_price,
+                        "groupCount": len(tmp_items),
                         "series": ti["series"],
-                        "standalone": False,
                     })
 
         if items:
@@ -408,14 +401,22 @@ def fetch_shop_items(FN_API_KEY):
             for entry in entries:
                 entry_price = entry.get("regularPrice") or entry.get("finalPrice") or entry.get("price")
 
-                # expiración (ISO si existe)
                 raw_exp = (
                     entry.get("offerExpires")
                     or entry.get("expiresAt")
                     or entry.get("expiration")
                     or entry.get("end")
                 )
-                expire_iso, expire_txt = _fmt_exp(raw_exp)
+                expire_iso = None
+                expire_txt = None
+                if raw_exp:
+                    s = str(raw_exp)
+                    expire_iso = s
+                    if "T" in s and "-" in s:
+                        y, m, d = s[:10].split("-")
+                        expire_txt = f"{d}/{m}/{y}"
+                    else:
+                        expire_txt = s
 
                 section = human_section(key)
                 bundle = entry.get("bundle") or {}
@@ -448,11 +449,10 @@ def fetch_shop_items(FN_API_KEY):
                         "rarity": rty,
                         "type": typ,
                         "series": ser,
-                        "indiv_price": indiv_price,
+                        "indiv_price": indiv_price,  # aquí sí puede venir
                     })
 
                 pics = [ti["img_url"] for ti in tmp_items if ti["img_url"]]
-
                 group_id = offer_id or safe_id("|".join(sorted(ids_for_key)) + f"|{entry_price}|{expire_txt or ''}")
                 grp = groups.get(group_id)
                 if not grp:
@@ -473,16 +473,15 @@ def fetch_shop_items(FN_API_KEY):
                         "image": ti["img_url"],
                         "rarity": ti["rarity"],
                         "type": ti["type"],
-                        "price": ti["indiv_price"],  # puede ser None
+                        "price": ti["indiv_price"],
                     })
-                    # standalone = tiene precio propio distinto al del lote
-                    standalone = ti["indiv_price"] is not None and str(ti["indiv_price"]) != str(entry_price)
                     items.append({
                         "id": ti["id"],
                         "name": ti["name"],
                         "img_url": ti["img_url"],
                         "rarity": ti["rarity"],
-                        "price": ti["indiv_price"] if ti["indiv_price"] is not None else entry_price,
+                        # precio individual: solo si lo trae el item
+                        "price": ti["indiv_price"] if ti["indiv_price"] is not None else None,
                         "expires": expire_txt,
                         "expiresISO": expire_iso,
                         "type": ti["type"],
@@ -490,8 +489,8 @@ def fetch_shop_items(FN_API_KEY):
                         "group": group_name,
                         "groupId": group_id,
                         "groupPrice": entry_price,
+                        "groupCount": len(tmp_items),
                         "series": ti["series"],
-                        "standalone": standalone,
                     })
 
         print(f"🛍️ (requests) items={len(items)}  groups={len(groups)}")
@@ -530,13 +529,13 @@ print(f"🛍️ {len(items)} artículos planos. Lotes: {len(groups)}")
 
 WEB_OUT.mkdir(parents=True, exist_ok=True)
 
-# Export plano (compat + standalone)
+# Export plano (individual)
 export_items = [{
     "id": it.get("id"),
     "name": it["name"],
     "image": it["img_url"],
     "rarity": it["rarity"],
-    "price": it["price"],
+    "price": it["price"],                 # solo individual (None si no hay)
     "expires": it["expires"],
     "expiresISO": it.get("expiresISO"),
     "type": it.get("type") or infer_type_by_name(it["name"]),
@@ -544,8 +543,8 @@ export_items = [{
     "group": it.get("group"),
     "groupId": it.get("groupId"),
     "groupPrice": it.get("groupPrice"),
+    "groupCount": it.get("groupCount"),
     "series": it.get("series"),
-    "standalone": bool(it.get("standalone", False)),
 } for it in items]
 
 # Export por lotes (para carrusel)
@@ -564,7 +563,7 @@ for g in groups.values():
             "image": ti["image"],
             "rarity": ti["rarity"],
             "type": ti["type"],
-            "price": ti["price"],
+            "price": ti["price"],  # puede ser None
         } for ti in g["items"]],
     })
 
@@ -608,7 +607,7 @@ else:
 if items and all([TW_API_KEY, TW_API_SECRET, TW_ACCESS_TOKEN, TW_ACCESS_SECRET]):
     try:
         print("📣 Publicando hilo en Twitter (solo texto)…")
-        destacados = [it for it in items if "1500" in str(it.get("price"))]
+        destacados = [it for it in items if str(it.get("price") or "").isdigit()]
         if len(destacados) < 5:
             for it in items:
                 if it not in destacados:
