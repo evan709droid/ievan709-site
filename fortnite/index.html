@@ -22,7 +22,7 @@
     .title h1{font-size:22px;margin:0}
     .title small{color:var(--muted)}
     .filters{display:flex;gap:8px;flex-wrap:wrap}
-    .chip{padding:8px 12px;border-radius:999px;background:#1a2236;color:#cfe0ff;cursor:pointer;border:1px solid #243150;font-size:13px;user-select:none}
+    .chip{padding:8px 12px;border-radius:999px;background:#1a2236;color:#cfe0ff;cursor:pointer;border:1px solid #243150;font-size:13px}
     .chip.active{background:#244077;color:#fff;border-color:#2b57a3}
 
     .grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap:12px; }
@@ -37,7 +37,6 @@
 
     .price{position:absolute;left:8px;top:8px;background:#101827cc;border:1px solid #1f2c4d;color:#fff;padding:4px 7px;border-radius:8px;font-size:12px;z-index:2}
     .badge{position:absolute;right:8px;top:8px;padding:4px 7px;border-radius:8px;border:1px solid #1f2c4d;background:#101827cc;font-size:12px;z-index:2}
-    .badge2{position:absolute;left:8px;bottom:8px;padding:3px 6px;border-radius:6px;border:1px solid #33406a;background:#12203acc;font-size:11px;color:#cfe0ff}
     .meta{padding:10px 10px 12px}
     .name{font-size:14px;font-weight:600;line-height:1.2;margin-bottom:6px;min-height:34px}
     .sub{font-size:12px;color:var(--muted);display:flex;justify-content:space-between;gap:8px}
@@ -57,9 +56,12 @@
     .empty{opacity:.5}
     footer{margin:28px 0 8px;color:var(--muted);font-size:12px}
 
-    /* barras de vista/filtros */
+    /* chips de vista */
     .viewbar{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 14px}
-    .auxbar{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}
+    /* mini carrusel (puntos) */
+    .dots{position:absolute;bottom:8px;left:0;right:0;display:flex;justify-content:center;gap:6px}
+    .dots span{width:6px;height:6px;border-radius:50%;background:#cfe0ff20}
+    .dots span.active{background:#cfe0ff;}
   </style>
 </head>
 <body>
@@ -91,15 +93,10 @@
       <span class="dot mythic"></span> Mítico
     </div>
 
-    <!-- Toggle de vista (solo en "Todo") -->
+    <!-- Toggle de vista (solo “Todo”) -->
     <div class="viewbar" id="viewbar">
       <span class="chip chip-view active" data-view="groups">Lotes</span>
       <span class="chip chip-view" data-view="individual">Individual</span>
-    </div>
-
-    <!-- Filtro auxiliar (solo en Individual) -->
-    <div class="auxbar" id="auxbar" style="display:none">
-      <span class="chip" id="onlyPricedChip">Solo con precio</span>
     </div>
 
     <section class="grid" id="grid"></section>
@@ -113,13 +110,10 @@
   const chips = Array.from(document.querySelectorAll('.chip[data-filter]')); // filtros de tipo
   const viewChips = Array.from(document.querySelectorAll('.chip-view'));     // Lotes / Individual
   const viewBar = document.getElementById('viewbar');
-  const auxBar  = document.getElementById('auxbar');
-  const onlyPricedChip = document.getElementById('onlyPricedChip');
 
   // estado
-  let FILTER = 'all';          // 'all' | 'traje' | 'gesto' | ...
-  let VIEW   = 'groups';       // 'groups' | 'individual'
-  let ONLY_PRICED = false;     // ocultar items sin precio individual
+  let FILTER = 'all';      // 'all' | 'traje' | 'gesto' | ...
+  let VIEW   = 'groups';   // 'groups' | 'individual'
   const DATA = { items: [], groups: [] };
 
   // ordenes
@@ -128,7 +122,7 @@
 
   // helpers
   function priceFmt(p){
-    if (p === null || p === undefined || p === "") return "¿?";
+    if (p == null || p === "") return "¿?";
     const s = String(p); return /^\d+$/.test(s) ? `${s} V-Bucks` : s;
   }
   function rarityLabel(r){
@@ -136,8 +130,7 @@
     return map[r] || r || "—";
   }
   function normalizeType(obj){
-    const raw = (obj.type || '').toString().toLowerCase().replace('_','-').trim();
-    let t = raw;
+    let t = (obj.type || '').toString().toLowerCase().replace('_','-').trim();
     if (!t) {
       const n = (obj.name||'').toLowerCase();
       if (/(compañer|compan|buddy|pet)/.test(n)) t = 'companero';
@@ -161,31 +154,42 @@
     chips.forEach(c => c.classList.remove('active'));
     ch.classList.add('active');
     FILTER = ch.dataset.filter;
+
     // Mostrar/ocultar barra de vistas: solo en "Todo"
-    viewBar.style.display = (FILTER === 'all') ? 'flex' : 'none';
-    // Aux bar solo visible en Individual + Todo
-    auxBar.style.display = (FILTER === 'all' && VIEW === 'individual') ? 'flex' : 'none';
+    const isAll = FILTER === 'all';
+    viewBar.style.display = isAll ? 'flex' : 'none';
+    // Si salimos de "Todo", forzar vista Individual
+    if (!isAll && VIEW !== 'individual') {
+      VIEW = 'individual';
+      viewChips.forEach(c => c.classList.remove('active'));
+      document.querySelector('.chip-view[data-view="individual"]').classList.add('active');
+    }
     render();
   }));
   viewChips.forEach(ch => ch.addEventListener('click', () => {
     viewChips.forEach(c => c.classList.remove('active'));
     ch.classList.add('active');
     VIEW = ch.dataset.view;
-    auxBar.style.display = (FILTER === 'all' && VIEW === 'individual') ? 'flex' : 'none';
     render();
   }));
-  onlyPricedChip.addEventListener('click', () => {
-    ONLY_PRICED = !ONLY_PRICED;
-    onlyPricedChip.classList.toggle('active', ONLY_PRICED);
-    render();
-  });
+  // estado inicial barra
+  viewBar.style.display = 'flex';
+
+  // -------- mini-carrusel auto 2s (para lotes) ----------
+  function buildDots(n, idx){ 
+    if (!n || n<2) return '';
+    let s='<div class="dots">';
+    for(let i=0;i<n;i++) s += `<span class="${i===idx?'active':''}"></span>`;
+    s+='</div>'; return s;
+  }
 
   // cards
   function cardItem(it){
     const rar = (it.rarity||"common").toLowerCase();
     const ty  = normalizeType(it);
+
+    // filtro por tipo
     if (FILTER !== 'all' && ty !== FILTER) return '';
-    const onlyBundle = !(it.price || it.price===0) || (it.groupPrice && it.price === it.groupPrice);
     return `
       <article class="card" data-type="${ty}">
         <div class="ring ${rar}"></div>
@@ -194,7 +198,6 @@
                onerror="this.closest('.card').classList.add('empty')" />
           <span class="price">${priceFmt(it.price)}</span>
           <span class="badge">${rarityLabel(rar)}</span>
-          ${onlyBundle ? `<span class="badge2" title="Este artículo no tiene precio individual hoy. Solo viene en lote.">Solo en lote</span>` : ``}
         </div>
         <div class="meta">
           <div class="name">${it.name}</div>
@@ -207,31 +210,42 @@
   }
 
   function cardGroup(g){
-    // Si hay filtro de tipo, se muestran solo lotes que tengan al menos un item de ese tipo
-    if (FILTER !== 'all') {
-      const ok = (g.items||[]).some(it => normalizeType(it) === FILTER);
-      if (!ok) return '';
-    }
+    // Los lotes solo se muestran cuando FILTER === 'all'
+    if (FILTER !== 'all') return '';
+    // Imagen portada = primer item o imagen del grupo
+    const imgs = (g.images && g.images.length ? g.images : (g.items||[]).map(x=>x.image)).filter(Boolean);
     const lead = (g.items && g.items[0]) || {};
-    const rar  = (lead.rarity || 'common').toLowerCase();
+    const rar  = ((lead && lead.rarity) || 'common').toLowerCase();
     const total = (g.items||[]).length;
     const name = g.name ? `${g.name} (Lote)` : `${lead.name||'Lote'} (Lote)`;
-    const pics = g.images && g.images.length ? g.images : (g.items||[]).map(x=>x.image).filter(Boolean);
-    const dots = (pics||[]).slice(0,5).map((_,i)=> i===0? '●':'○').join(' ');
+
+    // carrusel simple (auto-advance)
+    const cid = `c_${g.id}`;
+    let idx = 0;
+    setInterval(() => {
+      const cont = document.getElementById(cid);
+      if (!cont || imgs.length < 2) return;
+      idx = (idx + 1) % imgs.length;
+      cont.querySelector('img').src = imgs[idx];
+      const dots = cont.parentElement.querySelectorAll('.dots span');
+      dots.forEach((d,i)=>d.classList.toggle('active', i===idx));
+    }, 2000);
+
     return `
       <article class="card" data-type="lote">
         <div class="ring ${rar}"></div>
-        <div class="thumb">
-          <img loading="lazy" src="${(pics&&pics[0]) || lead.image}" alt="${name}"
+        <div class="thumb" id="${cid}">
+          <img loading="eager" src="${imgs[0]||lead.image||lead.img||lead.img_url||''}" alt="${name}"
                onerror="this.closest('.card').classList.add('empty')" />
           <span class="price">${priceFmt(g.price)}</span>
           <span class="badge">Lote · ${total} item${total===1?'':'s'}</span>
+          ${buildDots(imgs.length, 0)}
         </div>
         <div class="meta">
           <div class="name">${name}</div>
           <div class="sub">
-            <span>Incluye ${total}</span>
-            <span>${g.expires ? `Próxima rotación` : ''}</span>
+            <span>Incluye ${total} · auto</span>
+            <span>${g.expires ? `Próx. rotación` : ''}</span>
           </div>
         </div>
       </article>`;
@@ -257,48 +271,65 @@
     return cmp((a.name||'').toLowerCase(), (b.name||'').toLowerCase());
   }
 
+  // elegibilidad en vista “Individual”: precio individual real
+  function buildGroupMultiSet(){
+    const s = new Set();
+    (DATA.groups||[]).forEach(g => { if ((g.items||[]).length > 1) s.add(g.id); });
+    return s;
+  }
+  function hasRealIndividualPrice(it, groupMultiSet){
+    if (it.price == null || it.price === '') return false;
+    // si pertenece a un lote con >1 item y su precio == precio del lote, no es individual
+    if (it.groupId && groupMultiSet.has(it.groupId)) {
+      if (String(it.price) === String(it.groupPrice)) return false;
+    }
+    return true;
+  }
+
   function render(){
-    if (VIEW === 'groups') {
+    if (VIEW === 'groups' && FILTER === 'all') {
       const groups = [...DATA.groups].sort(sortGroups);
       const html = groups.map(cardGroup).join('');
       grid.innerHTML = html || `<p class="empty">Sin resultados</p>`;
       return;
     }
-    // Vista Individual
-    let items = [...DATA.items];
-    if (ONLY_PRICED) {
-      items = items.filter(it => it.price !== null && it.price !== undefined && it.price !== "" && it.price !== it.groupPrice);
-    }
-    items.sort(sortItems);
+    // Vista Individual (o cualquier filtro distinto de “Todo”)
+    const gset = buildGroupMultiSet();
+    const items = [...DATA.items]
+      .filter(it => hasRealIndividualPrice(it, gset))      // solo con precio individual real
+      .sort(sortItems);
     const html = items.map(cardItem).join('');
     grid.innerHTML = html || `<p class="empty">Sin resultados</p>`;
   }
 
   // ingest JSON
   function renderShop(json){
+    // ITEMS (individual)
     const items = Array.isArray(json.items) ? json.items
       : (json.data && Array.isArray(json.data.items) ? json.data.items : []);
     DATA.items = items.map(x => ({
       id: x.id,
       name: x.name,
       image: x.image || x.img_url,
-      price: (x.price === x.groupPrice) ? null : x.price,   // <- nunca mostrar precio del lote
-      groupPrice: x.groupPrice ?? null,
+      price: x.price,                 // puede ser null si es solo-de-lote
       rarity: (x.rarity||'common').toLowerCase(),
       type: x.type,
       section: x.section || x.block || x.category || null,
       group: x.group || x.bundle || null,
-      expires: x.expires || null
+      groupId: x.groupId || null,
+      groupPrice: x.groupPrice ?? null,
+      expires: x.expires || null,
+      expiresISO: x.expiresISO || null
     }));
-
+    // GROUPS (lotes)
     DATA.groups = Array.isArray(json.groups) ? json.groups.map(g => ({
       id: g.id,
       name: g.name,
       price: g.price,
-      expires: g.expires,
-      images: g.images || [],
+      expires: g.expires || null,
+      images: Array.isArray(g.images) ? g.images : [],
       items: (g.items||[]).map(it => ({
-        name: it.name, image: it.image,
+        name: it.name, image: it.image || it.img_url,
         rarity: (it.rarity||'common').toLowerCase(),
         type: it.type
       }))
@@ -308,9 +339,6 @@
       try { dateEl.textContent = `Actualizado: ${new Date(json.updatedAt).toLocaleString()}`; }
       catch { dateEl.textContent = 'Actualizado'; }
     }
-    // estado inicial UI
-    viewBar.style.display = (FILTER === 'all') ? 'flex' : 'none';
-    auxBar.style.display  = (FILTER === 'all' && VIEW === 'individual') ? 'flex' : 'none';
     render();
   }
 
