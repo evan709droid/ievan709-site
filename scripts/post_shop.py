@@ -2,7 +2,7 @@
 import os
 import json
 import hashlib
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timezone
 from pathlib import Path
 
 import requests
@@ -62,7 +62,7 @@ def make_line(item):
     price = str(item.get("price") or "?")
     if price.isdigit():
         price += " V-Bucks"
-    salida = item.get("expires", "Próxima rotación")
+    salida = item.get("expires") or "Próxima rotación"
     return f"• {nombre} ({rare_leg}) - {price} | Sale: {salida}"
 
 def chunk_lines_into_tweets(header, lines, footer, max_chars=270):
@@ -219,10 +219,21 @@ def session_with_retries(total=3, backoff=0.5):
 
 # ------------------ Fetch + Agrupación por lote ------------------
 
+def _fmt_exp(raw_exp):
+    """Devuelve (expire_iso, expire_txt) o (None, None). No inventa fechas."""
+    if not raw_exp:
+        return None, None
+    s = str(raw_exp)
+    iso = s
+    if "T" in s and "-" in s and len(s) >= 10:
+        y, m, d = s[:10].split("-")
+        return iso, f"{d}/{m}/{y}"
+    return iso, s
+
 def fetch_shop_items(FN_API_KEY):
     """
     Devuelve:
-      items  -> lista plana (compat) con groupId/groupPrice
+      items  -> lista plana con groupId/groupPrice/standalone
       groups -> dicts por lote: id, name, price, expires, expiresISO, images[], items[]
       shop_date_str
     """
@@ -256,7 +267,7 @@ def fetch_shop_items(FN_API_KEY):
                 if entry_price is not None and not isinstance(entry_price, (int, float, str)):
                     entry_price = str(entry_price)
 
-                # expiración (ISO si existe, sin inventar)
+                # expiración (no inventar)
                 raw_exp = (
                     getattr(entry, "expiry", None)
                     or getattr(entry, "expires_at", None)
@@ -265,19 +276,7 @@ def fetch_shop_items(FN_API_KEY):
                     or getattr(entry, "offer_ends", None)
                     or getattr(entry, "end", None)
                 )
-                expire_iso = None
-                expire_txt = None
-                if raw_exp:
-                    try:
-                        s = str(raw_exp)
-                        expire_iso = s
-                        if "T" in s and "-" in s:
-                            y, m, d = s[:10].split("-")
-                            expire_txt = f"{d}/{m}/{y}"
-                        else:
-                            expire_txt = s
-                    except Exception:
-                        pass
+                expire_iso, expire_txt = _fmt_exp(raw_exp)
 
                 # sección y bundle
                 section = None
@@ -332,7 +331,7 @@ def fetch_shop_items(FN_API_KEY):
                         "rarity": rty,
                         "type": typ,
                         "series": ser,
-                        "indiv_price": None,  # la librería rara vez incluye precio individual
+                        "indiv_price": None,  # librería casi nunca trae precio individual
                     })
 
                 # imágenes para carrusel (hasta 8)
@@ -362,7 +361,7 @@ def fetch_shop_items(FN_API_KEY):
                         "type": ti["type"],
                         "price": ti["indiv_price"],
                     })
-                    # item plano compatible con front
+                    # item plano compatible con front (estos NO son standalone)
                     items.append({
                         "id": ti["id"],
                         "name": ti["name"],
@@ -377,6 +376,7 @@ def fetch_shop_items(FN_API_KEY):
                         "groupId": group_id,
                         "groupPrice": entry_price,
                         "series": ti["series"],
+                        "standalone": False,
                     })
 
         if items:
@@ -415,16 +415,7 @@ def fetch_shop_items(FN_API_KEY):
                     or entry.get("expiration")
                     or entry.get("end")
                 )
-                expire_iso = None
-                expire_txt = None
-                if raw_exp:
-                    s = str(raw_exp)
-                    expire_iso = s
-                    if "T" in s and "-" in s:
-                        y, m, d = s[:10].split("-")
-                        expire_txt = f"{d}/{m}/{y}"
-                    else:
-                        expire_txt = s
+                expire_iso, expire_txt = _fmt_exp(raw_exp)
 
                 section = human_section(key)
                 bundle = entry.get("bundle") or {}
@@ -460,7 +451,6 @@ def fetch_shop_items(FN_API_KEY):
                         "indiv_price": indiv_price,
                     })
 
-                # imágenes para carrusel (hasta 8)
                 pics = [ti["img_url"] for ti in tmp_items if ti["img_url"]]
 
                 group_id = offer_id or safe_id("|".join(sorted(ids_for_key)) + f"|{entry_price}|{expire_txt or ''}")
@@ -485,6 +475,8 @@ def fetch_shop_items(FN_API_KEY):
                         "type": ti["type"],
                         "price": ti["indiv_price"],  # puede ser None
                     })
+                    # standalone = tiene precio propio distinto al del lote
+                    standalone = ti["indiv_price"] is not None and str(ti["indiv_price"]) != str(entry_price)
                     items.append({
                         "id": ti["id"],
                         "name": ti["name"],
@@ -499,6 +491,7 @@ def fetch_shop_items(FN_API_KEY):
                         "groupId": group_id,
                         "groupPrice": entry_price,
                         "series": ti["series"],
+                        "standalone": standalone,
                     })
 
         print(f"🛍️ (requests) items={len(items)}  groups={len(groups)}")
@@ -537,7 +530,7 @@ print(f"🛍️ {len(items)} artículos planos. Lotes: {len(groups)}")
 
 WEB_OUT.mkdir(parents=True, exist_ok=True)
 
-# Export plano (compat)
+# Export plano (compat + standalone)
 export_items = [{
     "id": it.get("id"),
     "name": it["name"],
@@ -552,6 +545,7 @@ export_items = [{
     "groupId": it.get("groupId"),
     "groupPrice": it.get("groupPrice"),
     "series": it.get("series"),
+    "standalone": bool(it.get("standalone", False)),
 } for it in items]
 
 # Export por lotes (para carrusel)
