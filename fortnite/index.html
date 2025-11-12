@@ -13,7 +13,7 @@
       --bg:#0b0f1a; --panel:#111726; --card:#141c2e;
       --txt:#e8ecf1; --muted:#9fb0c7;
       --rare-common:#888; --rare-uncommon:#29c059; --rare-rare:#3a82ff; --rare-epic:#a45bff; --rare-legendary:#ff8f2b; --rare-mythic:#ffd400;
-      --ring: 10px; --accent:#2b57a3; --chip:#1a2236;
+      --ring:10px; --chip:#1a2236;
     }
     *{box-sizing:border-box}
     body{margin:0;background:linear-gradient(180deg,#0b0f1a,#0d1324 40%,#0b0f1a);color:var(--txt);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Noto Sans',sans-serif}
@@ -24,11 +24,11 @@
     .legend{display:flex;gap:10px;align-items:center;color:var(--muted);font-size:12px;flex-wrap:wrap}
     .chip{padding:8px 12px;border-radius:999px;background:var(--chip);color:#cfe0ff;cursor:pointer;border:1px solid #243150;font-size:13px}
     .chip.active{background:#244077;color:#fff;border-color:#2b57a3}
-    .grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap:12px; }
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
 
-    .card{background:var(--card);border-radius:14px;overflow:hidden;border:1px solid #1b2440;display:flex;flex-direction:column;min-height:240px;position:relative;}
-    .thumb{position:relative;width:100%;padding-top:100%;background:linear-gradient(180deg,#0f1629,#0a1124);overflow:hidden;}
-    .thumb img{position:absolute;top:7%;left:7%;width:86%;height:86%;object-fit:contain;max-width:100%;max-height:100%;image-rendering:-webkit-optimize-contrast;}
+    .card{background:var(--card);border-radius:14px;overflow:hidden;border:1px solid #1b2440;display:flex;flex-direction:column;min-height:240px;position:relative}
+    .thumb{position:relative;width:100%;padding-top:100%;background:linear-gradient(180deg,#0f1629,#0a1124);overflow:hidden}
+    .thumb img{position:absolute;top:7%;left:7%;width:86%;height:86%;object-fit:contain;max-width:100%;max-height:100%}
     .dots{position:absolute;bottom:6px;left:0;right:0;display:flex;justify-content:center;gap:6px}
     .dot{width:6px;height:6px;border-radius:50%;background:#94a3b833}
     .dot.active{background:#cbd5e1}
@@ -39,14 +39,15 @@
     .name{font-size:14px;font-weight:600;line-height:1.2;margin-bottom:6px;min-height:34px}
     .sub{font-size:12px;color:var(--muted);display:flex;justify-content:space-between;gap:8px}
     .ring{position:absolute;inset:0;pointer-events:none;border-radius:14px}
-    .ring.common     {box-shadow: inset 0 0 0 var(--ring) color-mix(in oklab, var(--rare-common) 46%, transparent)}
-    .ring.uncommon   {box-shadow: inset 0 0 0 var(--ring) color-mix(in oklab, var(--rare-uncommon) 38%, transparent)}
-    .ring.rare       {box-shadow: inset 0 0 0 var(--ring) color-mix(in oklab, var(--rare-rare) 34%, transparent)}
-    .ring.epic       {box-shadow: inset 0 0 0 var(--ring) color-mix(in oklab, var(--rare-epic) 34%, transparent)}
-    .ring.legendary  {box-shadow: inset 0 0 0 var(--ring) color-mix(in oklab, var(--rare-legendary) 32%, transparent)}
-    .ring.mythic     {box-shadow: inset 0 0 0 var(--ring) color-mix(in oklab, var(--rare-mythic) 30%, transparent)}
+    .ring.common{box-shadow:inset 0 0 0 var(--ring) color-mix(in oklab,var(--rare-common) 46%,transparent)}
+    .ring.uncommon{box-shadow:inset 0 0 0 var(--ring) color-mix(in oklab,var(--rare-uncommon) 38%,transparent)}
+    .ring.rare{box-shadow:inset 0 0 0 var(--ring) color-mix(in oklab,var(--rare-rare) 34%,transparent)}
+    .ring.epic{box-shadow:inset 0 0 0 var(--ring) color-mix(in oklab,var(--rare-epic) 34%,transparent)}
+    .ring.legendary{box-shadow:inset 0 0 0 var(--ring) color-mix(in oklab,var(--rare-legendary) 32%,transparent)}
+    .ring.mythic{box-shadow:inset 0 0 0 var(--ring) color-mix(in oklab,var(--rare-mythic) 30%,transparent)}
     .empty{opacity:.6}
     footer{margin:28px 0 8px;color:var(--muted);font-size:12px}
+
     .viewbar{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 14px}
     .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 10px}
   </style>
@@ -80,49 +81,48 @@
       <span class="dot" style="background:var(--rare-mythic)"></span> Mítico
     </div>
 
-    <!-- Toggle de vista (solo en "Todo") -->
+    <!-- Toggle Lotes/Individual (solo visible en "Todo") -->
     <div class="viewbar" id="viewbar">
       <span class="chip chip-view active" data-view="groups">Lotes</span>
       <span class="chip chip-view" data-view="individual">Individual</span>
     </div>
 
-    <!-- Filtros secundarios (solo para Individual) -->
+    <!-- Herramienta “Solo con precio”: visible en Individual -->
     <div class="toolbar" id="tool-individual" style="display:none">
       <span class="chip" id="only-priced">Solo con precio</span>
     </div>
 
     <section class="grid" id="grid"></section>
-
     <footer>Fuente: Fortnite-API · Render por iEvan709</footer>
   </div>
 
 <script>
-const grid   = document.getElementById('grid');
+const grid = document.getElementById('grid');
 const dateEl = document.getElementById('date');
 const typeChips = [...document.querySelectorAll('.chip[data-filter]')];
 const viewChips = [...document.querySelectorAll('.chip-view')];
-const viewBar   = document.getElementById('viewbar');
-const toolInd   = document.getElementById('tool-individual');
+const viewBar = document.getElementById('viewbar');
+const toolInd = document.getElementById('tool-individual');
 const onlyPricedChip = document.getElementById('only-priced');
 
-// estado
-let FILTER = 'all';        // 'all' | 'traje' | 'gesto' | ...
-let VIEW   = 'groups';     // 'groups' | 'individual'
+// Estado
+let FILTER = 'all';            // 'all' | 'traje' | 'gesto' | ...
+let VIEW   = 'groups';         // 'groups' | 'individual'
 let ONLY_PRICED = false;
 
 const DATA = { items: [], groups: [] };
-const GROUP_SIZE = new Map();     // groupId -> cantidad de ítems
-const GROUP_PRICE = new Map();    // groupId -> precio de lote
+const GROUP_SIZE  = new Map(); // groupId -> cantidad
+const GROUP_PRICE = new Map(); // groupId -> precio lote
 
 const RARITY_ORDER = { mythic:0, legendary:1, epic:2, rare:3, uncommon:4, common:5 };
 const TYPE_ORDER   = { traje:0, gesto:1, pico:2, 'ala-delta':3, envoltorio:4, mochila:5, companero:6, pista:7 };
 const secOrder = s => ({'Featured':0,'Special Featured':1,'Special Daily':2,'Daily':3,'Votes':4,'Vote Winners':5})[s] ?? 9;
-const cmp = (a,b)=> a<b?-1:a>b?1:0;
+const cmp = (a,b)=>a<b?-1:a>b?1:0;
 
-// helpers
+// Helpers
 function priceFmt(p){
   if (p == null || p === "") return "¿?";
-  const s = String(p); return /^\d+$/.test(s) ? s + " V-Bucks" : s;
+  const s = String(p); return /^\d+$/.test(s) ? `${s} V-Bucks` : s;
 }
 function rarityLabel(r){
   const map = {common:"Común",uncommon:"Poco común",rare:"Raro",epic:"Épico",legendary:"Legendario",mythic:"Mítico"};
@@ -132,30 +132,46 @@ function normalizeType(obj){
   let t = (obj.type || '').toString().toLowerCase().replace('_','-').trim();
   if (!t) {
     const n = (obj.name||'').toLowerCase();
-    if (/(compañer|compan|buddy|pet)/.test(n)) t = 'companero';
-    else if (/(pista|improvis|jam|track|music|música|musica)/.test(n)) t = 'pista';
-    else if (/(gesto|emote|baile|dance)/.test(n)) t = 'gesto';
-    else if (/(pico|hacha|pickaxe)/.test(n)) t = 'pico';
-    else if (/(ala|glider|planeador|ala delta)/.test(n)) t = 'ala-delta';
-    else if (/(envoltorio|wrap|camo)/.test(n)) t = 'envoltorio';
-    else if (/(mochila|back bling|backbling|accesorio)/.test(n)) t = 'mochila';
-    else t = 'traje';
+    if (/(compañer|compan|buddy|pet)/.test(n)) t='companero';
+    else if (/(pista|improvis|jam|track|music|música|musica)/.test(n)) t='pista';
+    else if (/(gesto|emote|baile|dance)/.test(n)) t='gesto';
+    else if (/(pico|hacha|pickaxe)/.test(n)) t='pico';
+    else if (/(ala|glider|planeador|ala delta)/.test(n)) t='ala-delta';
+    else if (/(envoltorio|wrap|camo)/.test(n)) t='envoltorio';
+    else if (/(mochila|back bling|backbling|accesorio)/.test(n)) t='mochila';
+    else t='traje';
   }
   if (t === 'ala_delta') t = 'ala-delta';
   if (t === 'mascota')   t = 'companero';
   return t;
 }
+function effectiveItemPrice(it){
+  const gid = it.groupId;
+  const gsize = GROUP_SIZE.get(gid) || 0;
+  const gprice = GROUP_PRICE.get(gid);
 
-// UI events
+  // Preferimos precio individual si existe y es distinto al del lote
+  if (it.price != null && it.price !== '' && String(it.price) !== String(gprice)) {
+    return it.price;
+  }
+  // Si el lote tiene exactamente 1 ítem, aceptamos el precio del lote
+  if (gsize === 1 && (it.price == null || it.price === '')) {
+    return gprice ?? it.groupPrice ?? null;
+  }
+  // Si no hay precio individual y el lote trae >1 items, “solo en lote”
+  return null;
+}
+
+// UI
 typeChips.forEach(ch => ch.addEventListener('click', () => {
   typeChips.forEach(c => c.classList.remove('active'));
   ch.classList.add('active');
   FILTER = ch.dataset.filter;
 
-  // La barra Lotes/Individual solo en “Todo”; si no, fuerza Individual
   if (FILTER === 'all') {
     viewBar.style.display = 'flex';
   } else {
+    // En filtros específicos, siempre Individual y sin lotes
     VIEW = 'individual';
     viewChips.forEach(c => c.classList.remove('active'));
     document.querySelector('.chip-view[data-view="individual"]').classList.add('active');
@@ -177,25 +193,7 @@ onlyPricedChip.addEventListener('click', () => {
   render();
 }));
 
-// --------- Precio efectivo del item ----------
-function effectiveItemPrice(it){
-  const gid = it.groupId;
-  const gsize = GROUP_SIZE.get(gid) || 0;
-  const gprice = GROUP_PRICE.get(gid);
-
-  // preferimos precio individual si existe y es distinto al del lote
-  if (it.price != null && it.price !== '' && String(it.price) !== String(gprice)) {
-    return it.price;
-  }
-  // si el lote solo tiene 1 ítem y el item no trae precio, aceptamos el del lote
-  if (gsize === 1 && (it.price == null || it.price === '')) {
-    return gprice ?? it.groupPrice ?? null;
-  }
-  // en otro caso, “solo en lote”
-  return null;
-}
-
-// --------- Card: individual ----------
+// Cards
 function cardItem(it){
   const rar = (it.rarity||"common").toLowerCase();
   const ty  = normalizeType(it);
@@ -205,103 +203,109 @@ function cardItem(it){
   const exp = it.expires || it.expiresISO || '';
   const soloLote = (p == null);
 
-  return (
-    '<article class="card" data-type="'+ty+'">'+
-      '<div class="ring '+rar+'"></div>'+
-      '<div class="thumb">'+
-        '<img loading="lazy" src="'+(it.image || it.img_url)+'" alt="'+(it.name||'')+'" onerror="this.closest(\\'.card\\').classList.add(\\'empty\\')" />'+
-        (soloLote ? '<span class="tag">Solo en lote</span>' : '<span class="price">'+priceFmt(p)+'</span>')+
-        '<span class="badge">'+rarityLabel(rar)+'</span>'+
-      '</div>'+
-      '<div class="meta">'+
-        '<div class="name">'+(it.name||'')+'</div>'+
-        '<div class="sub"><span>'+ty+(it.group?(' · '+it.group):'')+'</span><span>'+(exp?('Sale: '+exp):'')+'</span></div>'+
-      '</div>'+
-    '</article>'
-  );
+  return `
+    <article class="card" data-type="${ty}">
+      <div class="ring ${rar}"></div>
+      <div class="thumb">
+        <img loading="lazy" src="${it.image || it.img_url}" alt="${it.name}" onerror="this.closest('.card').classList.add('empty')" />
+        ${soloLote ? `<span class="tag">Solo en lote</span>` : `<span class="price">${priceFmt(p)}</span>`}
+        <span class="badge">${rarityLabel(rar)}</span>
+      </div>
+      <div class="meta">
+        <div class="name">${it.name}</div>
+        <div class="sub">
+          <span>${ty}${it.group ? ` · ${it.group}`:''}</span>
+          <span>${exp ? `Sale: ${exp}` : ''}</span>
+        </div>
+      </div>
+    </article>`;
 }
 
-// --------- Card: lote con carrusel (data-pics) ----------
 function cardGroup(g){
   if (FILTER !== 'all') return '';
-  const lead = (g.items && g.items[0]) || {};
-  const rar  = (lead.rarity || 'common').toLowerCase();
-  const total = (g.items||[]).length;
-  const name = g.name ? (g.name+' (Lote)') : (((lead.name||'Lote'))+' (Lote)');
-  const exp  = g.expires || g.expiresISO || '';
-  const pics = (g.images && g.images.length ? g.images : (g.items||[]).map(x=>x.image)).filter(Boolean).slice(0,8);
-  const first = pics[0] || lead.image || lead.img || lead.img_url || '';
+  const items = g.items || [];
+  const total = items.length;
+  const name  = g.name ? `${g.name} (Lote)` : `${(items[0]?.name)||'Lote'} (Lote)`;
+  const rar   = (items[0]?.rarity || 'common').toLowerCase();
+  const exp   = g.expires || g.expiresISO || '';
 
-  let dots = '';
-  const maxDots = Math.max(1, pics.length);
-  for (let i=0;i<maxDots;i++) dots += '<span class="dot'+(i===0?' active':'')+'"></span>';
+  const pics = (g.images && g.images.length ? g.images : items.map(x=>x.image)).slice(0,8);
+  const lead = pics[0] || '';
 
-  return (
-    '<article class="card" data-type="lote" data-id="'+(g.id||'')+'" data-pics=\''+JSON.stringify(pics)+'\'>'+
-      '<div class="ring '+rar+'"></div>'+
-      '<div class="thumb">'+
-        '<img class="slide" loading="lazy" src="'+first+'" alt="'+name+'" onerror="this.closest(\\'.card\\').classList.add(\\'empty\\')" />'+
-        '<span class="price">'+priceFmt(g.price)+'</span>'+
-        '<span class="badge">Lote · '+total+' item'+(total===1?'':'s')+'</span>'+
-        '<div class="dots">'+dots+'</div>'+
-      '</div>'+
-      '<div class="meta">'+
-        '<div class="name">'+name+'</div>'+
-        '<div class="sub"><span>Incluye '+total+'</span><span>'+(exp?('Sale: '+exp):'')+'</span></div>'+
-      '</div>'+
-    '</article>'
-  );
+  // Guardamos las imágenes en data-images (URI encoded) para no romper el HTML
+  const picsAttr = encodeURIComponent(JSON.stringify(pics));
+
+  return `
+    <article class="card" data-type="lote" data-id="${g.id}" data-images="${picsAttr}">
+      <div class="ring ${rar}"></div>
+      <div class="thumb">
+        <img class="slide" loading="lazy" src="${lead}" alt="${name}" onerror="this.closest('.card').classList.add('empty')" />
+        <span class="price">${priceFmt(g.price)}</span>
+        <span class="badge">Lote · ${total} item${total===1?'':'s'}</span>
+        <div class="dots">${pics.map((_,i)=>`<span class="dot ${i===0?'active':''}"></span>`).join('')}</div>
+      </div>
+      <div class="meta">
+        <div class="name">${name}</div>
+        <div class="sub">
+          <span>Incluye ${total}</span>
+          <span>${exp ? `Sale: ${exp}` : ''}</span>
+        </div>
+      </div>
+    </article>`;
 }
 
-// ---------- Sorters ----------
+// Orden
 function sortItems(a,b){
-  const sa = secOrder(a.section||''), sb = secOrder(b.section||''); if (sa !== sb) return sa - sb;
-  const ta = TYPE_ORDER[normalizeType(a)] ?? 99, tb = TYPE_ORDER[normalizeType(b)] ?? 99; if (ta !== tb) return ta - tb;
-  const ra = RARITY_ORDER[(a.rarity||'').toLowerCase()] ?? 9, rb = RARITY_ORDER[(b.rarity||'').toLowerCase()] ?? 9; if (ra !== rb) return ra - rb;
+  const sa = secOrder(a.section||''), sb = secOrder(b.section||'');
+  if (sa !== sb) return sa - sb;
+  const ta = TYPE_ORDER[normalizeType(a)] ?? 99;
+  const tb = TYPE_ORDER[normalizeType(b)] ?? 99;
+  if (ta !== tb) return ta - tb;
+  const ra = RARITY_ORDER[(a.rarity||'').toLowerCase()] ?? 9;
+  const rb = RARITY_ORDER[(b.rarity||'').toLowerCase()] ?? 9;
+  if (ra !== rb) return ra - rb;
   return cmp((a.name||'').toLowerCase(), (b.name||'').toLowerCase());
 }
 function sortGroups(a,b){
-  const pa = a.price ?? 9e9, pb = b.price ?? 9e9; if (pa !== pb) return pa - pb;
+  const pa = a.price ?? 9e9, pb = b.price ?? 9e9;
+  if (pa !== pb) return pa - pb;
   return cmp((a.name||'').toLowerCase(), (b.name||'').toLowerCase());
 }
 
-// ---------- Render ----------
-function activateCarousels(){
-  document.querySelectorAll('.card[data-type="lote"]').forEach(card=>{
-    const img = card.querySelector('img.slide');
-    const dots = [...card.querySelectorAll('.dot')];
-    let pics = [];
-    try { pics = JSON.parse(card.getAttribute('data-pics') || '[]'); } catch {}
-    if (!pics.length) return;
-    let i = 0;
-    setInterval(()=>{
-      i = (i + 1) % pics.length;
-      img.src = pics[i];
-      dots.forEach((d,k)=> d.classList.toggle('active', k === i));
-    }, 2000);
-  });
-}
-
+// Render
 function render(){
-  // Mostrar barra de vista solo en “Todo”
+  // Visibilidad de barras
   viewBar.style.display = (FILTER === 'all') ? 'flex' : 'none';
-  // La barra “Solo con precio”
   toolInd.style.display = (FILTER === 'all' && VIEW === 'individual') || (FILTER !== 'all' ? 'block' : 'none');
 
   if (FILTER !== 'all') {
-    // fuera de “Todo”: siempre Individual sin lotes
+    // Filtros específicos: lista individual sin lotes
     const items = DATA.items
       .filter(it => normalizeType(it) === FILTER)
       .filter(it => !ONLY_PRICED || effectiveItemPrice(it) != null)
       .sort(sortItems);
-    grid.innerHTML = items.map(cardItem).join('') || '<p class="empty">Sin resultados</p>';
+    grid.innerHTML = items.map(cardItem).join('') || `<p class="empty">Sin resultados</p>`;
     return;
   }
 
   if (VIEW === 'groups') {
     const groups = [...DATA.groups].sort(sortGroups);
-    grid.innerHTML = groups.map(cardGroup).join('') || '<p class="empty">Sin resultados</p>';
-    activateCarousels();
+    grid.innerHTML = groups.map(cardGroup).join('') || `<p class="empty">Sin resultados</p>`;
+
+    // Activar carruseles (2s)
+    [...grid.querySelectorAll('.card[data-type="lote"]')].forEach(card=>{
+      const img  = card.querySelector('img.slide');
+      const dots = [...card.querySelectorAll('.dot')];
+      let pics = [];
+      try { pics = JSON.parse(decodeURIComponent(card.dataset.images || '[]')); } catch {}
+      if (!pics || !pics.length) return;
+      let i = 0;
+      setInterval(()=>{
+        i = (i+1) % pics.length;
+        img.src = pics[i];
+        dots.forEach((d,k)=>d.classList.toggle('active', k===i));
+      }, 2000);
+    });
     return;
   }
 
@@ -309,20 +313,20 @@ function render(){
   const items = DATA.items
     .filter(it => !ONLY_PRICED || effectiveItemPrice(it) != null)
     .sort(sortItems);
-  grid.innerHTML = items.map(cardItem).join('') || '<p class="empty">Sin resultados</p>';
+  grid.innerHTML = items.map(cardItem).join('') || `<p class="empty">Sin resultados</p>`;
 }
 
-// ---------- Ingest ----------
+// Ingesta
 function renderShop(json){
-  // ITEMS (individual)
+  // Items
   const items = Array.isArray(json.items) ? json.items
     : (json.data && Array.isArray(json.data.items) ? json.data.items : []);
   DATA.items = items.map(x => ({
     id: x.id,
     name: x.name,
     image: x.image || x.img_url,
-    price: x.price,                // puede ser null si solo en lote
-    groupPrice: x.groupPrice,      // precio del lote
+    price: x.price,
+    groupPrice: x.groupPrice,
     groupId: x.groupId || null,
     rarity: (x.rarity||'common').toLowerCase(),
     type: x.type,
@@ -332,7 +336,7 @@ function renderShop(json){
     expiresISO: x.expiresISO || null,
   }));
 
-  // GROUPS (lotes)
+  // Groups
   DATA.groups = Array.isArray(json.groups) ? json.groups.map(g => ({
     id: g.id,
     name: g.name,
@@ -345,7 +349,7 @@ function renderShop(json){
     }))
   })) : [];
 
-  // mapa de tamaños y precio por grupo
+  // Mapas auxiliares
   GROUP_SIZE.clear(); GROUP_PRICE.clear();
   DATA.items.forEach(it => {
     if (it.groupId) {
@@ -359,20 +363,17 @@ function renderShop(json){
   });
 
   if (json.updatedAt) {
-    try { dateEl.textContent = 'Actualizado: ' + new Date(json.updatedAt).toLocaleString(); }
+    try { dateEl.textContent = `Actualizado: ${new Date(json.updatedAt).toLocaleString()}`; }
     catch { dateEl.textContent = 'Actualizado'; }
   }
   render();
 }
 
-// fetch JSON
-fetch('/fortnite/shop.json?ts=' + Date.now(), { cache: 'no-store' })
+// Carga JSON (cache-busting)
+fetch('/fortnite/shop.json?ts=' + Date.now(), { cache:'no-store' })
   .then(r => r.json())
   .then(renderShop)
-  .catch(e => {
-    dateEl.textContent = 'No se pudo cargar la tienda.';
-    console.error('Error cargando shop.json:', e);
-  });
+  .catch(e => { dateEl.textContent = 'No se pudo cargar la tienda.'; console.error(e); });
 </script>
 </body>
 </html>
