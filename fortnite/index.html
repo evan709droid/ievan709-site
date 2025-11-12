@@ -42,7 +42,6 @@
 
     .price{position:absolute;left:8px;top:8px;background:#101827cc;border:1px solid #1f2c4d;color:#fff;padding:4px 7px;border-radius:8px;font-size:12px;z-index:2}
     .badge{position:absolute;right:8px;top:8px;padding:4px 7px;border-radius:8px;border:1px solid #1f2c4d;background:#101827cc;font-size:12px;z-index:2}
-    .tag{position:absolute;left:8px;top:8px;background:#38224f;border:1px solid #5b3c86;color:#eedbff;padding:4px 7px;border-radius:8px;font-size:12px;z-index:2}
     .meta{padding:10px 10px 12px}
     .name{font-size:14px;font-weight:600;line-height:1.2;margin-bottom:6px;min-height:34px}
     .sub{font-size:12px;color:var(--muted);display:flex;justify-content:space-between;gap:8px}
@@ -97,7 +96,7 @@
 
     <!-- Filtros secundarios (solo para Individual) -->
     <div class="toolbar" id="tool-individual" style="display:none">
-      <span class="chip" id="only-priced">Solo con precio</span>
+      <span class="chip active" id="only-priced">Solo con precio</span>
     </div>
 
     <section class="grid" id="grid"></section>
@@ -120,7 +119,7 @@ const onlyPricedChip = document.getElementById('only-priced');
 // ---------- Estado ----------
 let FILTER = 'all';        // 'all' | 'traje' | 'gesto' | ...
 let VIEW   = 'groups';     // 'groups' | 'individual'
-let ONLY_PRICED = false;
+let ONLY_PRICED = true;    // ✅ por defecto activo para evitar “solo en lote” en Individual
 
 const DATA = { items: [], groups: [] };
 const GROUP_SIZE  = new Map(); // groupId -> cantidad de ítems
@@ -214,7 +213,9 @@ function cardItem(it){
 
   const p   = effectiveItemPrice(it);
   const exp = it.expires || it.expiresISO || '';
-  const soloLote = (p == null);
+
+  // En Individual (o en filtros ≠ “Todo”), ocultar ítems sin precio individual
+  if ((VIEW === 'individual' || FILTER !== 'all') && p == null) return '';
 
   return `
   <article class="card" data-type="${ty}">
@@ -222,7 +223,7 @@ function cardItem(it){
     <div class="thumb">
       <img loading="lazy" src="${it.image || it.img_url}" alt="${it.name}"
            onerror="this.closest('article').classList.add('empty')" />
-      ${soloLote ? `<span class="tag">Solo en lote</span>` : `<span class="price">${priceFmt(p)}</span>`}
+      ${p != null ? `<span class="price">${priceFmt(p)}</span>` : ``}
       <span class="badge">${rarityLabel(rar)}</span>
     </div>
     <div class="meta">
@@ -242,8 +243,11 @@ function cardGroup(g){
   const name  = g.name ? `${g.name} (Lote)` : `${(g.items?.[0]?.name)||'Lote'} (Lote)`;
   const rar   = ((g.items && g.items[0] && g.items[0].rarity) || 'common').toLowerCase();
   const exp   = g.expires || g.expiresISO || '';
-  const pics  = (g.images && g.images.length ? g.images : (g.items||[]).map(x=>x.image)).slice(0,8);
+  const pics  = (g.images && g.images.length ? g.images : (g.items||[]).map(x=>x.image)).filter(Boolean).slice(0,8);
   const lead  = pics[0] || '';
+
+  // si no hay imagen válida, no renderizamos para evitar “casilla vacía”
+  if (!lead) return '';
 
   return `
   <article class="card" data-type="lote" data-id="${g.id}" data-pics='${JSON.stringify(pics).replace(/'/g,"&#39;")}'>
@@ -290,12 +294,13 @@ function render(){
 
   // “Solo con precio” visible si: (Todo + Individual) o (cualquier filtro ≠ Todo)
   toolInd.style.display = (FILTER === 'all' && VIEW === 'individual') || (FILTER !== 'all' ? 'block' : 'none');
+  onlyPricedChip.classList.toggle('active', ONLY_PRICED);
 
   if (FILTER !== 'all') {
-    // Fuera de “Todo”: siempre Individual sin lotes
+    // Fuera de “Todo”: siempre Individual y sin lotes/solo-lote
     const items = DATA.items
       .filter(it => normalizeType(it) === FILTER)
-      .filter(it => !ONLY_PRICED || effectiveItemPrice(it) != null)
+      .filter(it => !ONLY_PRICED ? true : (effectiveItemPrice(it) != null))
       .sort(sortItems);
     grid.innerHTML = items.map(cardItem).join('') || `<p class="empty">Sin resultados</p>`;
     return;
@@ -307,7 +312,9 @@ function render(){
 
     // Activa carruseles (2 s)
     [...grid.querySelectorAll('.card[data-type="lote"]')].forEach(card => {
-      const pics = JSON.parse((card.dataset.pics || '[]').replace(/&[#]39;/g,"'"));
+      const picsRaw = (card.dataset.pics || '[]').replace(/&[#]39;/g,"'");
+      let pics = [];
+      try { pics = JSON.parse(picsRaw); } catch {}
       if (!pics.length) return;
       const img  = card.querySelector('img.slide');
       const dots = [...card.querySelectorAll('.dot')];
@@ -321,9 +328,9 @@ function render(){
     return;
   }
 
-  // “Todo” + Individual
+  // “Todo” + Individual (sin lotes/solo-lote por defecto)
   const items = DATA.items
-    .filter(it => !ONLY_PRICED || effectiveItemPrice(it) != null)
+    .filter(it => !ONLY_PRICED ? true : (effectiveItemPrice(it) != null))
     .sort(sortItems);
   grid.innerHTML = items.map(cardItem).join('') || `<p class="empty">Sin resultados</p>`;
 }
@@ -355,7 +362,7 @@ function renderShop(json){
     price: g.price,
     expires: g.expires || null,
     expiresISO: g.expiresISO || null,
-    images: g.images || [],
+    images: (g.images || []).filter(Boolean),
     items: (g.items||[]).map(it => ({
       name: it.name, image: it.image, rarity: (it.rarity||'common').toLowerCase(), type: it.type
     }))
