@@ -107,248 +107,275 @@
   </div>
 
   <script>
-  const grid   = document.getElementById('grid');
-  const dateEl = document.getElementById('date');
-  const hitsRoot = document.getElementById('hits-root');
-  const chips = Array.from(document.querySelectorAll('.chip[data-filter]'));
-  const viewBar = document.getElementById('viewbar');
-  const viewChips = Array.from(document.querySelectorAll('.chip-view'));
+/* ---------- refs y estado ---------- */
+const grid   = document.getElementById('grid');
+const dateEl = document.getElementById('date');
 
-  let FILTER = 'all';
-  let VIEW   = 'groups';
-  const DATA = { items: [], groups: [] };
+const chips     = Array.from(document.querySelectorAll('.chip[data-filter]'));
+const viewChips = Array.from(document.querySelectorAll('.chip-view'));
+const viewBar   = document.querySelector('.viewbar');
 
-  const RARITY_ORDER = { mythic:0, legendary:1, epic:2, rare:3, uncommon:4, common:5 };
-  const TYPE_ORDER   = { traje:0, gesto:1, pico:2, 'ala-delta':3, envoltorio:4, mochila:5, companero:6, pista:7 };
+let FILTER = 'all';            // 'all' | 'traje' | 'gesto' | ...
+let VIEW   = 'groups';         // 'groups' | 'individual'
+const DATA = { items: [], groups: [] };
 
-  function priceFmt(p){ if(p==null||p==="") return "¿?"; const s=String(p); return /^\d+$/.test(s)?`${s} V-Bucks`:s; }
-  function rarityLabel(r){ const M={common:"Común",uncommon:"Poco común",rare:"Raro",epic:"Épico",legendary:"Legendario",mythic:"Mítico"}; return M[r]||r||"—"; }
-  function normalizeType(obj){
-    let t=(obj.type||'').toString().toLowerCase().replace('_','-').trim();
-    if(!t){
-      const n=(obj.name||'').toLowerCase();
-      if(/(compañer|compan|buddy|pet)/.test(n)) t='companero';
-      else if(/(pista|improvis|jam|track|music|música|musica)/.test(n)) t='pista';
-      else if(/(gesto|emote|baile|dance)/.test(n)) t='gesto';
-      else if(/(pico|hacha|pickaxe)/.test(n)) t='pico';
-      else if(/(ala|glider|planeador|ala delta)/.test(n)) t='ala-delta';
-      else if(/(envoltorio|wrap|camo)/.test(n)) t='envoltorio';
-      else if(/(mochila|back bling|backbling|accesorio)/.test(n)) t='mochila';
-      else t='traje';
-    }
-    if (t==='ala_delta') t='ala-delta';
-    if (t==='mascota')   t='companero';
-    return t;
+/* ---------- orden y helpers ---------- */
+const RARITY_ORDER = { mythic:0, legendary:1, epic:2, rare:3, uncommon:4, common:5 };
+const TYPE_ORDER   = { traje:0, gesto:1, pico:2, 'ala-delta':3, envoltorio:4, mochila:5, companero:6, pista:7 };
+
+const cmp = (a,b)=> a<b?-1:a>b?1:0;
+const secOrder = s => ({'Featured':0,'Special Featured':1,'Special Daily':2,'Daily':3,'Votes':4,'Vote Winners':5})[s] ?? 9;
+
+function priceFmt(p){
+  if (p == null || p === "") return "¿?";
+  const s = String(p); return /^\d+$/.test(s) ? `${s} V-Bucks` : s;
+}
+function rarityLabel(r){
+  const map = {common:"Común",uncommon:"Poco común",rare:"Raro",epic:"Épico",legendary:"Legendario",mythic:"Mítico"};
+  return map[r] || r || "—";
+}
+function normalizeType(obj){
+  let t = (obj.type || '').toString().toLowerCase().trim().replace('_','-');
+  if (!t) {
+    const n = (obj.name||'').toLowerCase();
+    if (/(compañer|compan|buddy|pet)/.test(n)) t = 'companero';
+    else if (/(pista|improvis|jam|track|music|m[uú]sica)/.test(n)) t = 'pista';
+    else if (/(gesto|emote|baile|dance)/.test(n)) t = 'gesto';
+    else if (/(pico|hacha|pickaxe)/.test(n)) t = 'pico';
+    else if (/(ala|glider|planeador|ala delta)/.test(n)) t = 'ala-delta';
+    else if (/(envoltorio|wrap|camo)/.test(n)) t = 'envoltorio';
+    else if (/(mochila|back bling|backbling|accesorio)/.test(n)) t = 'mochila';
+    else t = 'traje';
   }
-  const secOrder = s => ({'Featured':0,'Special Featured':1,'Special Daily':2,'Daily':3,'Votes':4,'Vote Winners':5})[s] ?? 9;
-  const cmp = (a,b)=> a<b?-1:a>b?1:0;
+  if (t === 'ala_delta') t = 'ala-delta';
+  if (t === 'mascota')   t = 'companero';
+  return t;
+}
 
-  chips.forEach(ch => ch.addEventListener('click', () => {
-    chips.forEach(c=>c.classList.remove('active')); ch.classList.add('active');
-    FILTER = ch.dataset.filter;
-    viewBar.style.display = (FILTER==='all') ? 'flex' : 'none';
-    render();
+/* ---------- UI events ---------- */
+chips.forEach(ch => ch.addEventListener('click', () => {
+  chips.forEach(c => c.classList.remove('active'));
+  ch.classList.add('active');
+  FILTER = ch.dataset.filter;
+  // La barra “Lotes / Individual” sólo se muestra en “Todo”
+  if (viewBar) viewBar.style.display = (FILTER === 'all') ? 'flex' : 'none';
+  render();
+}));
+viewChips.forEach(ch => ch.addEventListener('click', () => {
+  viewChips.forEach(c => c.classList.remove('active'));
+  ch.classList.add('active');
+  VIEW = ch.dataset.view;
+  render();
+}));
+if (viewBar) viewBar.style.display = 'flex';
+
+/* ---------- dedupe y utilidades ---------- */
+// Quita duplicados por id (mantiene el primero)
+function uniqueById(arr){
+  const seen = new Set();
+  const out = [];
+  for (const it of arr){
+    const k = it.id || `${it.name}|${it.image}`;
+    if (seen.has(k)) continue;
+    seen.add(k);
+    out.push(it);
+  }
+  return out;
+}
+
+// En “Individual” mostramos SOLO artículos con precio propio.
+// Si vienen con precio del lote (groupPrice) y sin precio individual, NO se muestran
+function isStandalone(it){
+  const p = it.price;
+  const gp = it.groupPrice;
+  // precio vacío = no standalone
+  if (p == null || p === "") return false;
+  // si el precio del item coincide con el del lote y hay groupId => no es individual
+  if (it.groupId && gp != null && String(p) === String(gp)) return false;
+  return true;
+}
+
+/* ---------- tarjetas ---------- */
+function cardItem(it){
+  const rar = (it.rarity||"common").toLowerCase();
+  const ty  = normalizeType(it);
+  if (FILTER !== 'all' && ty !== FILTER) return '';
+  // en Individual sólo mostramos standalone
+  if (VIEW === 'individual' && !isStandalone(it)) return '';
+
+  return `
+    <article class="card" data-type="${ty}">
+      <div class="ring ${rar}"></div>
+      <div class="thumb">
+        <img loading="lazy" src="${it.image || it.img || it.img_url}" alt="${it.name}"
+             onerror="this.closest('.card').classList.add('empty')" />
+        <span class="price">${priceFmt(it.price)}</span>
+        <span class="badge">${rarityLabel(rar)}</span>
+      </div>
+      <div class="meta">
+        <div class="name">${it.name}</div>
+        <div class="sub">
+          <span>${ty}${it.group ? ` · ${it.group}`:''}</span>
+          <span>${it.expires ? `Sale: ${it.expires}` : ''}</span>
+        </div>
+      </div>
+    </article>`;
+}
+
+// Elige “lead” del grupo priorizando el tipo filtrado (si existe)
+function pickLeadForGroup(g){
+  if (!g.items || !g.items.length) return {};
+  if (FILTER !== 'all'){
+    const chosen = g.items.find(it => normalizeType(it) === FILTER);
+    if (chosen) return chosen;
+  }
+  return g.items[0];
+}
+
+function cardGroup(g){
+  // Lote visible sólo si contiene al menos 1 item del tipo filtrado (si hay filtro)
+  if (FILTER !== 'all' && !(g.items||[]).some(it => normalizeType(it) === FILTER)) return '';
+
+  // Carrusel (todas las imágenes del lote)
+  const imgs = (g.items||[]).map(it => it.image || it.img_url).filter(Boolean);
+  const lead = pickLeadForGroup(g);
+  const rar  = (lead.rarity || 'common').toLowerCase();
+  const total = (g.items||[]).length;
+  const name = g.name ? `${g.name} (Lote)` : `${lead.name||'Lote'} (Lote)`;
+
+  const dots = imgs.map((_,i)=>`<span class="dot" data-i="${i}"></span>`).join('');
+  const frames = imgs.map((u,i)=>`
+      <img class="frame" data-i="${i}" src="${u}" alt="${name}"
+           style="position:absolute;inset:7% 7%;width:86%;height:86%;object-fit:contain;display:${i? 'none':'block'}">`
+  ).join('');
+
+  return `
+    <article class="card group-card" data-type="lote">
+      <div class="ring ${rar}"></div>
+      <div class="thumb carousel" data-interval="2000">
+        ${frames}
+        <span class="price">${priceFmt(g.price)}</span>
+        <span class="badge">Lote · ${total} item${total===1?'':'s'}</span>
+        <div class="carousel-dots" style="position:absolute;left:0;right:0;bottom:6px;text-align:center;font-size:0;">
+          ${dots}
+        </div>
+      </div>
+      <div class="meta">
+        <div class="name">${name}</div>
+        <div class="sub">
+          <span>Incluye ${total}</span>
+          <span>${g.expires ? `Sale: ${g.expires}` : 'Próxima rotación'}</span>
+        </div>
+      </div>
+    </article>`;
+}
+
+/* ---------- sorters ---------- */
+function sortItems(a,b){
+  // Prioriza LOTES arriba en la home al usar VIEW=groups, y en individual mantiene secciones/tipo/rareza
+  const sa = secOrder(a.section||''), sb = secOrder(b.section||'');
+  if (sa !== sb) return sa - sb;
+  const ga = (a.group||'').toLowerCase(), gb = (b.group||'').toLowerCase();
+  if (ga !== gb) return cmp(ga, gb);
+  const ta = TYPE_ORDER[normalizeType(a)] ?? 99;
+  const tb = TYPE_ORDER[normalizeType(b)] ?? 99;
+  if (ta !== tb) return ta - tb;
+  const ra = RARITY_ORDER[(a.rarity||'').toLowerCase()] ?? 9;
+  const rb = RARITY_ORDER[(b.rarity||'').toLowerCase()] ?? 9;
+  if (ra !== rb) return ra - rb;
+  return cmp((a.name||'').toLowerCase(), (b.name||'').toLowerCase());
+}
+function sortGroups(a,b){
+  // Lotes primero por precio asc y luego por nombre
+  const pa = a.price ?? 9e9, pb = b.price ?? 9e9;
+  if (pa !== pb) return pa - pb;
+  return cmp((a.name||'').toLowerCase(), (b.name||'').toLowerCase());
+}
+
+/* ---------- render + carrusel ---------- */
+function initCarousels(scope=document){
+  const carousels = Array.from(scope.querySelectorAll('.carousel'));
+  carousels.forEach(car => {
+    const frames = Array.from(car.querySelectorAll('.frame'));
+    const dots   = Array.from(car.querySelectorAll('.carousel-dots .dot'));
+    if (!frames.length) return;
+    let i = 0;
+    const show = (k)=>{
+      frames.forEach((f,idx)=> f.style.display = (idx===k?'block':'none'));
+      dots.forEach((d,idx)=> d.style.opacity = (idx===k? '1':'0.3'));
+    };
+    show(0);
+    const every = parseInt(car.dataset.interval || '2000', 10);
+    let t = setInterval(()=>{ i = (i+1)%frames.length; show(i); }, every);
+    car.addEventListener('mouseenter', ()=> clearInterval(t));
+    car.addEventListener('mouseleave', ()=> t = setInterval(()=>{ i=(i+1)%frames.length; show(i); }, every));
+  });
+}
+
+function render(){
+  if (VIEW === 'groups') {
+    const groups = [...DATA.groups].sort(sortGroups);
+    const html = groups.map(cardGroup).join('');
+    grid.innerHTML = html || `<p class="empty">Sin resultados</p>`;
+    initCarousels(grid);
+    return;
+  }
+  // INDIVIDUAL: dedupe por id y filtra “standalone”
+  const items = uniqueById([...DATA.items]).filter(isStandalone).sort(sortItems);
+  const html = items.map(cardItem).join('');
+  grid.innerHTML = html || `<p class="empty">Sin resultados</p>`;
+}
+
+/* ---------- ingest JSON ---------- */
+function renderShop(json){
+  // items (individual)
+  const items = Array.isArray(json.items) ? json.items
+    : (json.data && Array.isArray(json.data.items) ? json.data.items : []);
+  DATA.items = items.map(x => ({
+    id: x.id,
+    name: x.name,
+    image: x.image || x.img_url,
+    price: x.price,
+    rarity: (x.rarity||'common').toLowerCase(),
+    type: x.type,
+    section: x.section || x.block || x.category || null,
+    group: x.group || x.bundle || null,
+    groupId: x.groupId || null,
+    groupPrice: x.groupPrice ?? null,
+    expires: x.expires
   }));
-  viewChips.forEach(ch => ch.addEventListener('click', () => {
-    viewChips.forEach(c=>c.classList.remove('active')); ch.classList.add('active');
-    VIEW = ch.dataset.view; render();
-  }));
 
-  // ---------- POPULARIDAD (heurística local) ----------
-  function typeWeight(t){
-    return {traje:5,pico:3,'ala-delta':2,envoltorio:1.5,mochila:1.2,companero:2.2,pista:1,gesto:1}[t] ?? 1;
+  // groups (lotes)
+  DATA.groups = Array.isArray(json.groups) ? json.groups.map(g => ({
+    id: g.id,
+    name: g.name,
+    price: g.price,
+    expires: g.expires,
+    items: (g.items||[]).map(it => ({
+      id: it.id,
+      name: it.name,
+      image: it.image || it.img_url,
+      rarity: (it.rarity||'common').toLowerCase(),
+      type: it.type
+    }))
+  })) : [];
+
+  if (json.updatedAt) {
+    try { dateEl.textContent = `Actualizado: ${new Date(json.updatedAt).toLocaleString()}`; }
+    catch { dateEl.textContent = 'Actualizado'; }
   }
-  function seriesWeight(s){
-    if(!s) return 0;
-    const v = (''+s).toLowerCase();
-    if(/gaming|legends|legend/i.test(v)) return 2.5;
-    if(/marvel|dc|star wars|lamborghini|capcom|mk|mortal|street|spider|woman|riotu?/.test(v)) return 2.0;
-    return 0.8;
-  }
-  function scoreItem(it){
-    const t = normalizeType(it);
-    const base = typeWeight(t);
-    const price = Number(it.price)||0;
-    const priceScore = Math.min(price/800, 3); // hasta +3
-    const serScore = seriesWeight(it.series || it.group || '');
-    return base + priceScore + serScore;
-  }
+  render();
+}
 
-  // ---------- CARDS ----------
-  function plainDate(expiresISO){
-    // usa solo la parte de fecha para evitar saltos por huso
-    try {
-      if(!expiresISO) return null;
-      if(String(expiresISO).includes('T')) return String(expiresISO).slice(0,10).split('-').reverse().join('/');
-      // si ya viene dd/mm/yyyy lo dejo
-      return expiresISO;
-    } catch { return null; }
-  }
-
-  function cardItem(it){
-    const rar=(it.rarity||'common').toLowerCase();
-    const ty = normalizeType(it);
-    if(FILTER!=='all' && ty!==FILTER) return '';
-    const exp = plainDate(it.expiresISO || it.expires);
-    return `
-      <article class="card" data-type="${ty}">
-        <div class="ring ${rar}"></div>
-        <div class="thumb">
-          <img loading="lazy" src="${it.image || it.img || it.img_url}" alt="${it.name}"
-               onerror="this.closest('.card').classList.add('empty')" />
-          <span class="price">${priceFmt(it.price)}</span>
-          <span class="badge">${rarityLabel(rar)}</span>
-        </div>
-        <div class="meta">
-          <div class="name">${it.name}</div>
-          <div class="sub">
-            <span>${ty}${it.group ? ` · ${it.group}`:''}</span>
-            <span>${exp ? `Sale: ${exp}` : 'Próxima rotación'}</span>
-          </div>
-        </div>
-      </article>`;
-  }
-
-  // Carrusel por grupo
-  const sliders = new Map(); // groupId -> timer
-  function stopSliders(){ sliders.forEach(id=>clearInterval(id)); sliders.clear(); }
-
-  function cardGroup(g){
-    if(FILTER!=='all'){
-      const ok = (g.items||[]).some(it => normalizeType(it)===FILTER);
-      if(!ok) return '';
-    }
-    const pics = (g.images && g.images.length ? g.images : (g.items||[]).map(i=>i.image)).filter(Boolean);
-    const lead = (g.items && g.items[0]) || {};
-    const rar  = (lead.rarity||'common').toLowerCase();
-    const total = (g.items||[]).length;
-    const name = g.name ? `${g.name} (Lote)` : `${lead.name||'Lote'} (Lote)`;
-    const exp = plainDate(g.expiresISO || g.expires);
-    const gid = g.id || name.replace(/\s+/g,'-');
-
-    // slider html
-    const slides = pics.slice(0,8).map((u,i)=>`<div class="slide ${i===0?'active':''}"><img src="${u}" alt="${name}"></div>`).join('');
-    const dots   = pics.slice(0,8).map((_,i)=>`<span class="dotb ${i===0?'active':''}"></span>`).join('');
-
-    return `
-      <article class="card" data-type="lote" data-gid="${gid}">
-        <div class="ring ${rar}"></div>
-        <div class="thumb">
-          <div class="slider">${slides}</div>
-          <div class="dots">${dots}</div>
-          <span class="price">${priceFmt(g.price)}</span>
-          <span class="badge">Lote · ${total} item${total===1?'':'s'}</span>
-        </div>
-        <div class="meta">
-          <div class="name">${name}</div>
-          <div class="sub">
-            <span>Incluye ${total}</span>
-            <span>${exp ? `Sale: ${exp}` : 'Próxima rotación'}</span>
-          </div>
-        </div>
-      </article>`;
-  }
-
-  // ---------- ORDEN ----------
-  function sortItems(a,b){
-    const sa=secOrder(a.section||''), sb=secOrder(b.section||''); if(sa!==sb) return sa-sb;
-    const ta=TYPE_ORDER[normalizeType(a)]??99, tb=TYPE_ORDER[normalizeType(b)]??99; if(ta!==tb) return ta-tb;
-    const ra=RARITY_ORDER[(a.rarity||'').toLowerCase()]??9, rb=RARITY_ORDER[(b.rarity||'').toLowerCase()]??9; if(ra!==rb) return ra-rb;
-    return cmp((a.name||'').toLowerCase(),(b.name||'').toLowerCase());
-  }
-  // Lotes: primero grupos con trajes; luego orden por “popularidad”
-  function groupScore(g){
-    const hasOutfit = (g.items||[]).some(it=>normalizeType(it)==='traje') ? 20 : 0;
-    const maxItem   = Math.max(...(g.items||[]).map(scoreItem).concat([0]));
-    const priceBump = Math.min((Number(g.price)||0)/1000, 3);
-    return hasOutfit + maxItem + priceBump;
-  }
-  function sortGroups(a,b){
-    const sa = groupScore(a), sb = groupScore(b);
-    if (sa!==sb) return sb-sa; // desc
-    const pa = a.price??9e9, pb=b.price??9e9; if(pa!==pb) return pa-pb;
-    return cmp((a.name||'').toLowerCase(),(b.name||'').toLowerCase());
-  }
-
-  // ---------- RENDER & SLIDERS ----------
-  function attachSliders(){
-    stopSliders();
-    document.querySelectorAll('[data-gid]').forEach(card=>{
-      const slides = Array.from(card.querySelectorAll('.slide'));
-      const dots   = Array.from(card.querySelectorAll('.dotb'));
-      if(slides.length<=1) return;
-      let i=0;
-      const tick = ()=>{ slides[i].classList.remove('active'); dots[i].classList.remove('active'); i=(i+1)%slides.length; slides[i].classList.add('active'); dots[i].classList.add('active'); };
-      const id = setInterval(tick, 2000);
-      sliders.set(card.dataset.gid, id);
-      // pausa al hover
-      card.addEventListener('mouseenter', ()=>clearInterval(id));
-      card.addEventListener('mouseleave', ()=>{ if(!sliders.get(card.dataset.gid)) return; const nid=setInterval(tick,2000); sliders.set(card.dataset.gid,nid); });
-    });
-  }
-
-  function renderHits(){
-    // top 6 por score único por grupoId (si hay), si no por nombre
-    const seen = new Set();
-    const ranked = [...DATA.items].sort((a,b)=>scoreItem(b)-scoreItem(a))
-      .filter(it=>{
-        const key = it.groupId || it.group || it.name;
-        if(seen.has(key)) return false; seen.add(key); return true;
-      }).slice(0,6);
-
-    if(!ranked.length){ hitsRoot.innerHTML=''; return; }
-
-    const cards = ranked.map(it=>cardItem(it)).join('');
-    hitsRoot.innerHTML = `<div class="section-title">Lo más vendido de hoy</div><section class="grid">${cards}</section>`;
-  }
-
-  function render(){
-    if (FILTER==='all'){ viewBar.style.display='flex'; } else { viewBar.style.display='none'; }
-    if (VIEW==='groups'){
-      const groups=[...DATA.groups].sort(sortGroups);
-      const html=groups.map(cardGroup).join('');
-      grid.innerHTML = html || `<p class="empty">Sin resultados</p>`;
-      attachSliders();
-    }else{
-      stopSliders();
-      const items=[...DATA.items].sort(sortItems);
-      const html=items.map(cardItem).join('');
-      grid.innerHTML = html || `<p class="empty">Sin resultados</p>`;
-    }
-    // hits solo en Todo
-    if (FILTER==='all'){ renderHits(); } else { hitsRoot.innerHTML=''; }
-  }
-
-  // ---------- INGESTA JSON ----------
-  function renderShop(json){
-    const items = Array.isArray(json.items)?json.items:(json.data&&Array.isArray(json.data.items)?json.data.items:[]);
-    DATA.items = items.map(x=>({
-      id:x.id, name:x.name, image:x.image||x.img_url, price:x.price,
-      rarity:(x.rarity||'common').toLowerCase(),
-      type:x.type, section:x.section||x.block||x.category||null,
-      group:x.group||x.bundle||null, groupId:x.groupId, series:x.series,
-      expires:x.expires, expiresISO:x.expiresISO
-    }));
-
-    DATA.groups = Array.isArray(json.groups)?json.groups.map(g=>({
-      id:g.id, name:g.name, price:g.price,
-      expires:g.expires, expiresISO:g.expiresISO,
-      images:Array.isArray(g.images)?g.images.filter(Boolean):[],
-      items:(g.items||[]).map(it=>({
-        name:it.name, image:it.image||it.img_url, rarity:(it.rarity||'common').toLowerCase(), type:it.type
-      }))
-    })):[];
-
-    if (json.updatedAt){
-      try{ dateEl.textContent = `Actualizado: ${new Date(json.updatedAt).toLocaleString()}`; }
-      catch{ dateEl.textContent = 'Actualizado'; }
-    }
-    render();
-  }
-
-  fetch('/fortnite/shop.json?ts=' + Date.now(), { cache:'no-store' })
-    .then(r=>r.json()).then(renderShop)
-    .catch(e=>{ dateEl.textContent='No se pudo cargar la tienda.'; console.error('Error cargando shop.json:', e); });
-  </script>
+/* ---------- fetch ---------- */
+fetch('/fortnite/shop.json?ts=' + Date.now(), { cache: 'no-store' })
+  .then(r => r.json())
+  .then(renderShop)
+  .catch(e => {
+    dateEl.textContent = 'No se pudo cargar la tienda.';
+    console.error('Error cargando shop.json:', e);
+  });
+</script>
 </body>
 </html>
+
