@@ -13,8 +13,7 @@
       --bg:#0b0f1a; --panel:#111726; --card:#141c2e;
       --txt:#e8ecf1; --muted:#9fb0c7;
       --rare-common:#888; --rare-uncommon:#29c059; --rare-rare:#3a82ff; --rare-epic:#a45bff; --rare-legendary:#ff8f2b; --rare-mythic:#ffd400;
-      --ring: 10px;
-      --accent:#2b57a3; --chip:#1a2236;
+      --ring: 10px; --accent:#2b57a3; --chip:#1a2236;
     }
     *{box-sizing:border-box}
     body{margin:0;background:linear-gradient(180deg,#0b0f1a,#0d1324 40%,#0b0f1a);color:var(--txt);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Noto Sans',sans-serif}
@@ -27,18 +26,12 @@
     .chip.active{background:#244077;color:#fff;border-color:#2b57a3}
     .grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap:12px; }
 
-    .card{
-      background:var(--card); border-radius:14px; overflow:hidden; border:1px solid #1b2440;
-      display:flex; flex-direction:column; min-height:240px; position:relative;
-    }
-    .thumb{ position:relative; width:100%; padding-top:100%; background:linear-gradient(180deg,#0f1629,#0a1124); overflow:hidden; }
-    .thumb img{ position:absolute; top:7%; left:7%; width:86%; height:86%; object-fit:contain; max-width:100%; max-height:100%; image-rendering:-webkit-optimize-contrast; }
-
-    /* carrusel puntos */
+    .card{background:var(--card);border-radius:14px;overflow:hidden;border:1px solid #1b2440;display:flex;flex-direction:column;min-height:240px;position:relative;}
+    .thumb{position:relative;width:100%;padding-top:100%;background:linear-gradient(180deg,#0f1629,#0a1124);overflow:hidden;}
+    .thumb img{position:absolute;top:7%;left:7%;width:86%;height:86%;object-fit:contain;max-width:100%;max-height:100%;image-rendering:-webkit-optimize-contrast;}
     .dots{position:absolute;bottom:6px;left:0;right:0;display:flex;justify-content:center;gap:6px}
     .dot{width:6px;height:6px;border-radius:50%;background:#94a3b833}
     .dot.active{background:#cbd5e1}
-
     .price{position:absolute;left:8px;top:8px;background:#101827cc;border:1px solid #1f2c4d;color:#fff;padding:4px 7px;border-radius:8px;font-size:12px;z-index:2}
     .badge{position:absolute;right:8px;top:8px;padding:4px 7px;border-radius:8px;border:1px solid #1f2c4d;background:#101827cc;font-size:12px;z-index:2}
     .tag{position:absolute;left:8px;top:8px;background:#38224f;border:1px solid #5b3c86;color:#eedbff;padding:4px 7px;border-radius:8px;font-size:12px;z-index:2}
@@ -54,7 +47,6 @@
     .ring.mythic     {box-shadow: inset 0 0 0 var(--ring) color-mix(in oklab, var(--rare-mythic) 30%, transparent)}
     .empty{opacity:.6}
     footer{margin:28px 0 8px;color:var(--muted);font-size:12px}
-
     .viewbar{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 14px}
     .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 10px}
   </style>
@@ -130,7 +122,7 @@ const cmp = (a,b)=> a<b?-1:a>b?1:0;
 // helpers
 function priceFmt(p){
   if (p == null || p === "") return "¿?";
-  const s = String(p); return /^\d+$/.test(s) ? `${s} V-Bucks` : s;
+  const s = String(p); return /^\d+$/.test(s) ? s + " V-Bucks" : s;
 }
 function rarityLabel(r){
   const map = {common:"Común",uncommon:"Poco común",rare:"Raro",epic:"Épico",legendary:"Legendario",mythic:"Mítico"};
@@ -183,26 +175,27 @@ onlyPricedChip.addEventListener('click', () => {
   ONLY_PRICED = !ONLY_PRICED;
   onlyPricedChip.classList.toggle('active', ONLY_PRICED);
   render();
-});
+}));
 
-// --------- Card builders ----------
+// --------- Precio efectivo del item ----------
 function effectiveItemPrice(it){
   const gid = it.groupId;
   const gsize = GROUP_SIZE.get(gid) || 0;
   const gprice = GROUP_PRICE.get(gid);
 
-  // preferimos precio individual si existe y es diferente del precio del lote
+  // preferimos precio individual si existe y es distinto al del lote
   if (it.price != null && it.price !== '' && String(it.price) !== String(gprice)) {
     return it.price;
   }
-  // si el lote tiene exactamente 1 ítem, aceptamos el precio del lote
+  // si el lote solo tiene 1 ítem y el item no trae precio, aceptamos el del lote
   if (gsize === 1 && (it.price == null || it.price === '')) {
     return gprice ?? it.groupPrice ?? null;
   }
-  // en cualquier otro caso, lo consideramos “solo en lote”
+  // en otro caso, “solo en lote”
   return null;
 }
 
+// --------- Card: individual ----------
 function cardItem(it){
   const rar = (it.rarity||"common").toLowerCase();
   const ty  = normalizeType(it);
@@ -212,128 +205,103 @@ function cardItem(it){
   const exp = it.expires || it.expiresISO || '';
   const soloLote = (p == null);
 
-  return `
-    <article class="card" data-type="${ty}">
-      <div class="ring ${rar}"></div>
-      <div class="thumb">
-        <img loading="lazy" src="${it.image || it.img_url}" alt="${it.name}"
-             onerror="this.closest('.card').classList.add('empty')" />
-        ${soloLote ? `<span class="tag">Solo en lote</span>` : `<span class="price">${priceFmt(p)}</span>`}
-        <span class="badge">${rarityLabel(rar)}</span>
-      </div>
-      <div class="meta">
-        <div class="name">${it.name}</div>
-        <div class="sub">
-          <span>${ty}${it.group ? ` · ${it.group}`:''}</span>
-          <span>${exp ? `Sale: ${exp}` : ''}</span>
-        </div>
-      </div>
-    </article>`;
+  return (
+    '<article class="card" data-type="'+ty+'">'+
+      '<div class="ring '+rar+'"></div>'+
+      '<div class="thumb">'+
+        '<img loading="lazy" src="'+(it.image || it.img_url)+'" alt="'+(it.name||'')+'" onerror="this.closest(\\'.card\\').classList.add(\\'empty\\')" />'+
+        (soloLote ? '<span class="tag">Solo en lote</span>' : '<span class="price">'+priceFmt(p)+'</span>')+
+        '<span class="badge">'+rarityLabel(rar)+'</span>'+
+      '</div>'+
+      '<div class="meta">'+
+        '<div class="name">'+(it.name||'')+'</div>'+
+        '<div class="sub"><span>'+ty+(it.group?(' · '+it.group):'')+'</span><span>'+(exp?('Sale: '+exp):'')+'</span></div>'+
+      '</div>'+
+    '</article>'
+  );
 }
 
+// --------- Card: lote con carrusel (data-pics) ----------
 function cardGroup(g){
-  // Lotes nunca aparecen fuera de “Todo”
   if (FILTER !== 'all') return '';
-  // si hay filtro de tipo (no aplica ahora) se podría filtrar por items del grupo
-  const leadImg = (g.images && g.images[0]) || (g.items && g.items[0] && g.items[0].image) || '';
-  const rar  = ((g.items && g.items[0] && g.items[0].rarity) || 'common').toLowerCase();
+  const lead = (g.items && g.items[0]) || {};
+  const rar  = (lead.rarity || 'common').toLowerCase();
   const total = (g.items||[]).length;
-  const name = g.name ? `${g.name} (Lote)` : `${(g.items?.[0]?.name)||'Lote'} (Lote)`;
+  const name = g.name ? (g.name+' (Lote)') : (((lead.name||'Lote'))+' (Lote)');
   const exp  = g.expires || g.expiresISO || '';
+  const pics = (g.images && g.images.length ? g.images : (g.items||[]).map(x=>x.image)).filter(Boolean).slice(0,8);
+  const first = pics[0] || lead.image || lead.img || lead.img_url || '';
 
-  // carrusel auto 2s
-  const pics = (g.images && g.images.length ? g.images : (g.items||[]).map(x=>x.image)).slice(0,8);
-  const carousel = pics.length>1 ? `
-    <div class="dots">${pics.map((_,i)=>`<span class="dot ${i===0?'active':''}"></span>`).join('')}</div>
-    <script>
-      (function(){
-        const card = document.currentScript.previousElementSibling;
-      })();
-    </script>` : '';
+  let dots = '';
+  const maxDots = Math.max(1, pics.length);
+  for (let i=0;i<maxDots;i++) dots += '<span class="dot'+(i===0?' active':'')+'"></span>';
 
-  return `
-    <article class="card" data-type="lote" data-id="${g.id}">
-      <div class="ring ${rar}"></div>
-      <div class="thumb">
-        <img class="slide" loading="lazy" src="${leadImg}" alt="${name}"
-             onerror="this.closest('.card').classList.add('empty')" />
-        <span class="price">${priceFmt(g.price)}</span>
-        <span class="badge">Lote · ${total} item${total===1?'':'s'}</span>
-        <div class="dots">${pics.map((_,i)=>`<span class="dot ${i===0?'active':''}"></span>`).join('')}</div>
-      </div>
-      <div class="meta">
-        <div class="name">${name}</div>
-        <div class="sub">
-          <span>Incluye ${total}</span>
-          <span>${exp ? `Sale: ${exp}` : ''}</span>
-        </div>
-      </div>
-      <script>
-        (function(){
-          const card = document.currentScript.parentElement;
-          const img  = card.querySelector('img.slide');
-          const dots = [...card.querySelectorAll('.dot')];
-          const pics = ${JSON.stringify([])}; // se reemplaza abajo en render
-        })();
-      </script>
-    </article>`;
+  return (
+    '<article class="card" data-type="lote" data-id="'+(g.id||'')+'" data-pics=\''+JSON.stringify(pics)+'\'>'+
+      '<div class="ring '+rar+'"></div>'+
+      '<div class="thumb">'+
+        '<img class="slide" loading="lazy" src="'+first+'" alt="'+name+'" onerror="this.closest(\\'.card\\').classList.add(\\'empty\\')" />'+
+        '<span class="price">'+priceFmt(g.price)+'</span>'+
+        '<span class="badge">Lote · '+total+' item'+(total===1?'':'s')+'</span>'+
+        '<div class="dots">'+dots+'</div>'+
+      '</div>'+
+      '<div class="meta">'+
+        '<div class="name">'+name+'</div>'+
+        '<div class="sub"><span>Incluye '+total+'</span><span>'+(exp?('Sale: '+exp):'')+'</span></div>'+
+      '</div>'+
+    '</article>'
+  );
 }
 
 // ---------- Sorters ----------
 function sortItems(a,b){
-  const sa = secOrder(a.section||''), sb = secOrder(b.section||'');
-  if (sa !== sb) return sa - sb;
-  const ta = TYPE_ORDER[normalizeType(a)] ?? 99;
-  const tb = TYPE_ORDER[normalizeType(b)] ?? 99;
-  if (ta !== tb) return ta - tb;
-  const ra = RARITY_ORDER[(a.rarity||'').toLowerCase()] ?? 9;
-  const rb = RARITY_ORDER[(b.rarity||'').toLowerCase()] ?? 9;
-  if (ra !== rb) return ra - rb;
+  const sa = secOrder(a.section||''), sb = secOrder(b.section||''); if (sa !== sb) return sa - sb;
+  const ta = TYPE_ORDER[normalizeType(a)] ?? 99, tb = TYPE_ORDER[normalizeType(b)] ?? 99; if (ta !== tb) return ta - tb;
+  const ra = RARITY_ORDER[(a.rarity||'').toLowerCase()] ?? 9, rb = RARITY_ORDER[(b.rarity||'').toLowerCase()] ?? 9; if (ra !== rb) return ra - rb;
   return cmp((a.name||'').toLowerCase(), (b.name||'').toLowerCase());
 }
 function sortGroups(a,b){
-  const pa = a.price ?? 9e9, pb = b.price ?? 9e9;
-  if (pa !== pb) return pa - pb;
+  const pa = a.price ?? 9e9, pb = b.price ?? 9e9; if (pa !== pb) return pa - pb;
   return cmp((a.name||'').toLowerCase(), (b.name||'').toLowerCase());
 }
 
 // ---------- Render ----------
+function activateCarousels(){
+  document.querySelectorAll('.card[data-type="lote"]').forEach(card=>{
+    const img = card.querySelector('img.slide');
+    const dots = [...card.querySelectorAll('.dot')];
+    let pics = [];
+    try { pics = JSON.parse(card.getAttribute('data-pics') || '[]'); } catch {}
+    if (!pics.length) return;
+    let i = 0;
+    setInterval(()=>{
+      i = (i + 1) % pics.length;
+      img.src = pics[i];
+      dots.forEach((d,k)=> d.classList.toggle('active', k === i));
+    }, 2000);
+  });
+}
+
 function render(){
   // Mostrar barra de vista solo en “Todo”
   viewBar.style.display = (FILTER === 'all') ? 'flex' : 'none';
-
-  // La barra “Solo con precio” solo en Individual
+  // La barra “Solo con precio”
   toolInd.style.display = (FILTER === 'all' && VIEW === 'individual') || (FILTER !== 'all' ? 'block' : 'none');
 
   if (FILTER !== 'all') {
-    // fuera de “Todo” SIEMPRE individual sin lotes
+    // fuera de “Todo”: siempre Individual sin lotes
     const items = DATA.items
       .filter(it => normalizeType(it) === FILTER)
       .filter(it => !ONLY_PRICED || effectiveItemPrice(it) != null)
       .sort(sortItems);
-    grid.innerHTML = items.map(cardItem).join('') || `<p class="empty">Sin resultados</p>`;
+    grid.innerHTML = items.map(cardItem).join('') || '<p class="empty">Sin resultados</p>';
     return;
   }
 
   if (VIEW === 'groups') {
     const groups = [...DATA.groups].sort(sortGroups);
-    // render con carrusel
-    grid.innerHTML = groups.map(g=>{
-      // incrusta las imágenes del grupo en el script in-card
-      const html = cardGroup(g);
-      return html.replace('JSON.stringify([])', 'JSON.stringify(' + JSON.stringify(g.images && g.images.length? g.images : (g.items||[]).map(x=>x.image)) + ')');
-    }).join('') || `<p class="empty">Sin resultados</p>`;
-
-    // activa carouseles
-    [...grid.querySelectorAll('.card[data-type="lote"]')].forEach(card=>{
-      const img = card.querySelector('img.slide');
-      const dots = [...card.querySelectorAll('.dot')];
-      const pics = JSON.parse(card.querySelector('script').previousSibling.textContent || '[]'); // no usado, fallback
-      const imgs = pics.length? pics : dots.map(()=>img.src);
-      if (!imgs.length) return;
-      let i=0;
-      setInterval(()=>{ i=(i+1)%imgs.length; img.src=imgs[i]; dots.forEach((d,k)=>d.classList.toggle('active',k===i)); }, 2000);
-    });
+    grid.innerHTML = groups.map(cardGroup).join('') || '<p class="empty">Sin resultados</p>';
+    activateCarousels();
     return;
   }
 
@@ -341,7 +309,7 @@ function render(){
   const items = DATA.items
     .filter(it => !ONLY_PRICED || effectiveItemPrice(it) != null)
     .sort(sortItems);
-  grid.innerHTML = items.map(cardItem).join('') || `<p class="empty">Sin resultados</p>`;
+  grid.innerHTML = items.map(cardItem).join('') || '<p class="empty">Sin resultados</p>';
 }
 
 // ---------- Ingest ----------
@@ -391,7 +359,7 @@ function renderShop(json){
   });
 
   if (json.updatedAt) {
-    try { dateEl.textContent = `Actualizado: ${new Date(json.updatedAt).toLocaleString()}`; }
+    try { dateEl.textContent = 'Actualizado: ' + new Date(json.updatedAt).toLocaleString(); }
     catch { dateEl.textContent = 'Actualizado'; }
   }
   render();
