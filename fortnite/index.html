@@ -4,10 +4,6 @@
   <meta charset="utf-8" />
   <title>Tienda de Fortnite — iEvan709</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="Tienda diaria de Fortnite con precios, rarezas y filtros. Actualizada automáticamente." />
-  <meta property="og:title" content="Tienda de Fortnite — iEvan709" />
-  <meta property="og:description" content="Tienda diaria de Fortnite con precios, rarezas y filtros. Actualizada automáticamente." />
-  <meta property="og:type" content="website" />
   <style>
     :root{
       --bg:#0b0f1a; --panel:#111726; --card:#141c2e;
@@ -21,44 +17,29 @@
     header{display:flex;gap:16px;align-items:center;justify-content:space-between;margin-bottom:18px}
     .title h1{font-size:22px;margin:0}
     .title small{color:var(--muted)}
-    .filters{display:flex;gap:8px;flex-wrap:wrap}
     .chip{padding:8px 12px;border-radius:999px;background:#1a2236;color:#cfe0ff;cursor:pointer;border:1px solid #243150;font-size:13px}
     .chip.active{background:#244077;color:#fff;border-color:#2b57a3}
-
     .grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap:12px; }
-
-    .card{
-      background:var(--card); border-radius:14px; overflow:hidden; border:1px solid #1b2440;
-      display:flex; flex-direction:column; min-height:240px; position:relative;
-    }
-
+    .card{ background:var(--card); border-radius:14px; overflow:hidden; border:1px solid #1b2440; display:flex; flex-direction:column; min-height:240px; position:relative; }
     .thumb{ position:relative; width:100%; padding-top:100%; background:linear-gradient(180deg,#0f1629,#0a1124); overflow:hidden; }
     .thumb img{ position:absolute; top:7%; left:7%; width:86%; height:86%; object-fit:contain; max-width:100%; max-height:100%; image-rendering:-webkit-optimize-contrast; }
-
     .price{position:absolute;left:8px;top:8px;background:#101827cc;border:1px solid #1f2c4d;color:#fff;padding:4px 7px;border-radius:8px;font-size:12px;z-index:2}
     .badge{position:absolute;right:8px;top:8px;padding:4px 7px;border-radius:8px;border:1px solid #1f2c4d;background:#101827cc;font-size:12px;z-index:2}
     .meta{padding:10px 10px 12px}
     .name{font-size:14px;font-weight:600;line-height:1.2;margin-bottom:6px;min-height:34px}
     .sub{font-size:12px;color:var(--muted);display:flex;justify-content:space-between;gap:8px}
-
     .ring{position:absolute;inset:0;pointer-events:none;border-radius:14px}
-    .ring.common     {box-shadow: inset 0 0 0 var(--ring) color-mix(in oklab, var(--rare-common) 46%, transparent)}
-    .ring.uncommon   {box-shadow: inset 0 0 0 var(--ring) color-mix(in oklab, var(--rare-uncommon) 38%, transparent)}
-    .ring.rare       {box-shadow: inset 0 0 0 var(--ring) color-mix(in oklab, var(--rare-rare) 34%, transparent)}
-    .ring.epic       {box-shadow: inset 0 0 0 var(--ring) color-mix(in oklab, var(--rare-epic) 34%, transparent)}
-    .ring.legendary  {box-shadow: inset 0 0 0 var(--ring) color-mix(in oklab, var(--rare-legendary) 32%, transparent)}
-    .ring.mythic     {box-shadow: inset 0 0 0 var(--ring) color-mix(in oklab, var(--rare-mythic) 30%, transparent)}
-
+    .ring.common{box-shadow: inset 0 0 0 var(--ring) color-mix(in oklab, var(--rare-common) 46%, transparent)}
+    .ring.uncommon{box-shadow: inset 0 0 0 var(--ring) color-mix(in oklab, var(--rare-uncommon) 38%, transparent)}
+    .ring.rare{box-shadow: inset 0 0 0 var(--ring) color-mix(in oklab, var(--rare-rare) 34%, transparent)}
+    .ring.epic{box-shadow: inset 0 0 0 var(--ring) color-mix(in oklab, var(--rare-epic) 34%, transparent)}
+    .ring.legendary{box-shadow: inset 0 0 0 var(--ring) color-mix(in oklab, var(--rare-legendary) 32%, transparent)}
+    .ring.mythic{box-shadow: inset 0 0 0 var(--ring) color-mix(in oklab, var(--rare-mythic) 30%, transparent)}
     .legend{display:flex;gap:10px;align-items:center;color:var(--muted);font-size:12px}
     .dot{width:10px;height:10px;border-radius:50%}
     .dot.common{background:var(--rare-common)} .dot.uncommon{background:var(--rare-uncommon)} .dot.rare{background:var(--rare-rare)}
     .dot.epic{background:var(--rare-epic)} .dot.legendary{background:var(--rare-legendary)} .dot.mythic{background:var(--rare-mythic)}
-    .empty{opacity:.5}
-    footer{margin:28px 0 8px;color:var(--muted);font-size:12px}
-
-    /* chips de vista */
     .viewbar{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 14px}
-    /* mini carrusel (puntos) */
     .dots{position:absolute;bottom:8px;left:0;right:0;display:flex;justify-content:center;gap:6px}
     .dots span{width:6px;height:6px;border-radius:50%;background:#cfe0ff20}
     .dots span.active{background:#cfe0ff;}
@@ -93,7 +74,6 @@
       <span class="dot mythic"></span> Mítico
     </div>
 
-    <!-- Toggle de vista (solo “Todo”) -->
     <div class="viewbar" id="viewbar">
       <span class="chip chip-view active" data-view="groups">Lotes</span>
       <span class="chip chip-view" data-view="individual">Individual</span>
@@ -107,28 +87,19 @@
   <script>
   const grid  = document.getElementById('grid');
   const dateEl = document.getElementById('date');
-  const chips = Array.from(document.querySelectorAll('.chip[data-filter]')); // filtros de tipo
-  const viewChips = Array.from(document.querySelectorAll('.chip-view'));     // Lotes / Individual
+  const chips = Array.from(document.querySelectorAll('.chip[data-filter]'));
+  const viewChips = Array.from(document.querySelectorAll('.chip-view'));
   const viewBar = document.getElementById('viewbar');
 
-  // estado
-  let FILTER = 'all';      // 'all' | 'traje' | 'gesto' | ...
-  let VIEW   = 'groups';   // 'groups' | 'individual'
+  let FILTER = 'all';        // principal
+  let VIEW   = 'groups';     // por defecto priorizamos LOTES al abrir
   const DATA = { items: [], groups: [] };
 
-  // ordenes
   const RARITY_ORDER = { mythic:0, legendary:1, epic:2, rare:3, uncommon:4, common:5 };
   const TYPE_ORDER   = { traje:0, gesto:1, pico:2, 'ala-delta':3, envoltorio:4, mochila:5, companero:6, pista:7 };
 
-  // helpers
-  function priceFmt(p){
-    if (p == null || p === "") return "¿?";
-    const s = String(p); return /^\d+$/.test(s) ? `${s} V-Bucks` : s;
-  }
-  function rarityLabel(r){
-    const map = {common:"Común",uncommon:"Poco común",rare:"Raro",epic:"Épico",legendary:"Legendario",mythic:"Mítico"};
-    return map[r] || r || "—";
-  }
+  function priceFmt(p){ const s = String(p ?? ""); return /^\d+$/.test(s) ? `${s} V-Bucks` : (s || "¿?"); }
+  function rarityLabel(r){ return ({common:"Común",uncommon:"Poco común",rare:"Raro",epic:"Épico",legendary:"Legendario",mythic:"Mítico"}[r]||r||"—"); }
   function normalizeType(obj){
     let t = (obj.type || '').toString().toLowerCase().replace('_','-').trim();
     if (!t) {
@@ -149,53 +120,52 @@
   const secOrder = s => ({'Featured':0,'Special Featured':1,'Special Daily':2,'Daily':3,'Votes':4,'Vote Winners':5})[s] ?? 9;
   const cmp = (a,b)=> a<b?-1:a>b?1:0;
 
-  // UI events
+  // UI filtro principal
   chips.forEach(ch => ch.addEventListener('click', () => {
     chips.forEach(c => c.classList.remove('active'));
     ch.classList.add('active');
     FILTER = ch.dataset.filter;
 
-    // Mostrar/ocultar barra de vistas: solo en "Todo"
     const isAll = FILTER === 'all';
     viewBar.style.display = isAll ? 'flex' : 'none';
-    // Si salimos de "Todo", forzar vista Individual
-    if (!isAll && VIEW !== 'individual') {
+    if (!isAll) { // si sales de "Todo", forza Individual
       VIEW = 'individual';
       viewChips.forEach(c => c.classList.remove('active'));
-      document.querySelector('.chip-view[data-view="individual"]').classList.add('active');
+      (document.querySelector('.chip-view[data-view="individual"]')||{}).classList?.add('active');
     }
     render();
   }));
+
+  // Toggle de vista (solo útil en “Todo”)
   viewChips.forEach(ch => ch.addEventListener('click', () => {
     viewChips.forEach(c => c.classList.remove('active'));
     ch.classList.add('active');
     VIEW = ch.dataset.view;
     render();
   }));
-  // estado inicial barra
-  viewBar.style.display = 'flex';
 
-  // -------- mini-carrusel auto 2s (para lotes) ----------
-  function buildDots(n, idx){ 
-    if (!n || n<2) return '';
-    let s='<div class="dots">';
-    for(let i=0;i<n;i++) s += `<span class="${i===idx?'active':''}"></span>`;
-    s+='</div>'; return s;
+  // Mini-carrusel
+  function startCarousel(container, images){
+    if (!container || !images || images.length < 2) return;
+    let idx = 0;
+    const img = container.querySelector('img');
+    const dots = container.parentElement.querySelectorAll('.dots span');
+    setInterval(() => {
+      idx = (idx + 1) % images.length;
+      img.src = images[idx];
+      dots.forEach((d,i)=>d.classList.toggle('active', i===idx));
+    }, 2000);
   }
 
-  // cards
   function cardItem(it){
     const rar = (it.rarity||"common").toLowerCase();
     const ty  = normalizeType(it);
-
-    // filtro por tipo
     if (FILTER !== 'all' && ty !== FILTER) return '';
     return `
       <article class="card" data-type="${ty}">
         <div class="ring ${rar}"></div>
         <div class="thumb">
-          <img loading="lazy" src="${it.image || it.img || it.img_url}" alt="${it.name}"
-               onerror="this.closest('.card').classList.add('empty')" />
+          <img loading="lazy" src="${it.image}" alt="${it.name}" onerror="this.closest('.card').classList.add('empty')" />
           <span class="price">${priceFmt(it.price)}</span>
           <span class="badge">${rarityLabel(rar)}</span>
         </div>
@@ -210,36 +180,24 @@
   }
 
   function cardGroup(g){
-    // Los lotes solo se muestran cuando FILTER === 'all'
     if (FILTER !== 'all') return '';
-    // Imagen portada = primer item o imagen del grupo
     const imgs = (g.images && g.images.length ? g.images : (g.items||[]).map(x=>x.image)).filter(Boolean);
     const lead = (g.items && g.items[0]) || {};
     const rar  = ((lead && lead.rarity) || 'common').toLowerCase();
     const total = (g.items||[]).length;
     const name = g.name ? `${g.name} (Lote)` : `${lead.name||'Lote'} (Lote)`;
-
-    // carrusel simple (auto-advance)
     const cid = `c_${g.id}`;
-    let idx = 0;
-    setInterval(() => {
-      const cont = document.getElementById(cid);
-      if (!cont || imgs.length < 2) return;
-      idx = (idx + 1) % imgs.length;
-      cont.querySelector('img').src = imgs[idx];
-      const dots = cont.parentElement.querySelectorAll('.dots span');
-      dots.forEach((d,i)=>d.classList.toggle('active', i===idx));
-    }, 2000);
+    // iniciar carrusel tras pintar
+    requestAnimationFrame(()=> startCarousel(document.getElementById(cid), imgs));
 
     return `
       <article class="card" data-type="lote">
         <div class="ring ${rar}"></div>
         <div class="thumb" id="${cid}">
-          <img loading="eager" src="${imgs[0]||lead.image||lead.img||lead.img_url||''}" alt="${name}"
-               onerror="this.closest('.card').classList.add('empty')" />
+          <img loading="eager" src="${imgs[0]||lead.image||''}" alt="${name}" onerror="this.closest('.card').classList.add('empty')" />
           <span class="price">${priceFmt(g.price)}</span>
           <span class="badge">Lote · ${total} item${total===1?'':'s'}</span>
-          ${buildDots(imgs.length, 0)}
+          ${imgs.length>1?`<div class="dots">${imgs.map((_,i)=>`<span class="${i===0?'active':''}"></span>`).join('')}</div>`:''}
         </div>
         <div class="meta">
           <div class="name">${name}</div>
@@ -251,7 +209,6 @@
       </article>`;
   }
 
-  // ordenadores
   function sortItems(a,b){
     const sa = secOrder(a.section||''), sb = secOrder(b.section||'');
     if (sa !== sb) return sa - sb;
@@ -271,67 +228,61 @@
     return cmp((a.name||'').toLowerCase(), (b.name||'').toLowerCase());
   }
 
-  // elegibilidad en vista “Individual”: precio individual real
-  function buildGroupMultiSet(){
+  // Conjunto de lotes con más de 1 item (para detectar precio de lote)
+  function groupMultiSet(){
     const s = new Set();
     (DATA.groups||[]).forEach(g => { if ((g.items||[]).length > 1) s.add(g.id); });
     return s;
   }
-  function hasRealIndividualPrice(it, groupMultiSet){
-    if (it.price == null || it.price === '') return false;
-    // si pertenece a un lote con >1 item y su precio == precio del lote, no es individual
-    if (it.groupId && groupMultiSet.has(it.groupId)) {
-      if (String(it.price) === String(it.groupPrice)) return false;
+  function hasIndividualPrice(it, multiSet){
+    if (it.price == null || it.price === '') return False;
+    if (it.groupId && multiSet.has(it.groupId)) {
+      if (String(it.price) === String(it.groupPrice)) return false; // era precio del lote
     }
     return true;
   }
 
   function render(){
-    if (VIEW === 'groups' && FILTER === 'all') {
-      const groups = [...DATA.groups].sort(sortGroups);
-      const html = groups.map(cardGroup).join('');
+    // LOTES (solo en Todo + vista Lotes)
+    if (FILTER === 'all' && VIEW === 'groups') {
+      const html = [...DATA.groups].sort(sortGroups).map(cardGroup).join('');
       grid.innerHTML = html || `<p class="empty">Sin resultados</p>`;
       return;
     }
-    // Vista Individual (o cualquier filtro distinto de “Todo”)
-    const gset = buildGroupMultiSet();
+    // INDIVIDUAL (en Todo + vista Individual) o cualquier filtro por tipo
+    const mset = groupMultiSet();
     const items = [...DATA.items]
-      .filter(it => hasRealIndividualPrice(it, gset))      // solo con precio individual real
+      .filter(it => it.image) // robustez
+      .filter(it => hasIndividualPrice(it, mset))
+      .filter(it => FILTER === 'all' || normalizeType(it) === FILTER)
       .sort(sortItems);
     const html = items.map(cardItem).join('');
     grid.innerHTML = html || `<p class="empty">Sin resultados</p>`;
   }
 
-  // ingest JSON
   function renderShop(json){
-    // ITEMS (individual)
-    const items = Array.isArray(json.items) ? json.items
-      : (json.data && Array.isArray(json.data.items) ? json.data.items : []);
+    const items = Array.isArray(json.items) ? json.items : [];
     DATA.items = items.map(x => ({
       id: x.id,
       name: x.name,
-      image: x.image || x.img_url,
-      price: x.price,                 // puede ser null si es solo-de-lote
+      image: x.image,
+      price: x.price,    // null si no hay individual
       rarity: (x.rarity||'common').toLowerCase(),
       type: x.type,
-      section: x.section || x.block || x.category || null,
-      group: x.group || x.bundle || null,
+      section: x.section || null,
+      group: x.group || null,
       groupId: x.groupId || null,
       groupPrice: x.groupPrice ?? null,
-      expires: x.expires || null,
-      expiresISO: x.expiresISO || null
+      groupCount: x.groupCount ?? null,
+      expires: x.expires || null
     }));
-    // GROUPS (lotes)
     DATA.groups = Array.isArray(json.groups) ? json.groups.map(g => ({
-      id: g.id,
-      name: g.name,
-      price: g.price,
+      id: g.id, name: g.name, price: g.price,
       expires: g.expires || null,
       images: Array.isArray(g.images) ? g.images : [],
       items: (g.items||[]).map(it => ({
-        name: it.name, image: it.image || it.img_url,
-        rarity: (it.rarity||'common').toLowerCase(),
-        type: it.type
+        name: it.name, image: it.image,
+        rarity: (it.rarity||'common').toLowerCase(), type: it.type
       }))
     })) : [];
 
@@ -339,17 +290,16 @@
       try { dateEl.textContent = `Actualizado: ${new Date(json.updatedAt).toLocaleString()}`; }
       catch { dateEl.textContent = 'Actualizado'; }
     }
+    // Asegura barra visible solo en “Todo”
+    viewBar.style.display = FILTER === 'all' ? 'flex' : 'none';
     render();
   }
 
-  // fetch
   fetch('/fortnite/shop.json?ts=' + Date.now(), { cache: 'no-store' })
     .then(r => r.json())
     .then(renderShop)
-    .catch(e => {
-      dateEl.textContent = 'No se pudo cargar la tienda.';
-      console.error('Error cargando shop.json:', e);
-    });
+    .catch(e => { dateEl.textContent = 'No se pudo cargar la tienda.'; console.error(e); });
+
   </script>
 </body>
 </html>
