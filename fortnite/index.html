@@ -55,17 +55,11 @@
     .empty{opacity:.6;padding:12px 6px}
     footer{margin:28px 0 8px;color:var(--muted);font-size:12px}
 
-    /* barra de vista */
     .viewbar{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 14px}
 
-    /* carrusel (fade) */
-    .carousel{
-      position:absolute; inset:7% 7% 7% 7%;
-      display:grid; place-items:center;
-    }
-    .carousel img{
-      position:absolute; width:86%; height:86%; object-fit:contain; opacity:0; transition:opacity .4s ease;
-    }
+    /* carrusel */
+    .carousel{ position:absolute; inset:7% 7% 7% 7%; display:grid; place-items:center; }
+    .carousel img{ position:absolute; width:86%; height:86%; object-fit:contain; opacity:0; transition:opacity .4s ease; }
     .carousel img.active{ opacity:1; }
   </style>
 </head>
@@ -98,7 +92,7 @@
       <span class="dot mythic"></span> Mítico
     </div>
 
-    <!-- Toggle de vista (solo visible en "Todo") -->
+    <!-- Solo visible en "Todo" -->
     <div class="viewbar" id="viewbar">
       <span class="chip chip-view active" data-view="groups">Lotes</span>
       <span class="chip chip-view" data-view="individual">Individual</span>
@@ -118,16 +112,16 @@
   const viewChips  = Array.from(document.querySelectorAll('.chip-view'));
 
   // Estado
-  let FILTER = 'all';        // 'all' | 'traje' | 'gesto' | etc
-  let VIEW   = 'groups';     // 'groups' | 'individual' (solo válido si FILTER==='all')
+  let FILTER = 'all';
+  let VIEW   = 'groups';
   const DATA = { items: [], groups: [] };
+  let GROUP_MAP = new Map(); // id -> {price, count}
 
   // Orden
   const RARITY_ORDER = { mythic:0, legendary:1, epic:2, rare:3, uncommon:4, common:5 };
   const TYPE_ORDER   = { traje:0, gesto:1, pico:2, 'ala-delta':3, envoltorio:4, mochila:5, companero:6, pista:7 };
   const SEC_ORDER = s => ({'Featured':0,'Special Featured':1,'Special Daily':2,'Daily':3,'Votes':4,'Vote Winners':5})[s] ?? 9;
 
-  // Carruseles activos para limpiar en cada render
   let carouselTimers = [];
 
   function priceFmt(p){
@@ -157,33 +151,28 @@
   }
   function by(a,b){ return a<b?-1:a>b?1:0; }
 
-  // Listeners de filtro
   chips.forEach(ch => ch.addEventListener('click', () => {
     chips.forEach(c => c.classList.remove('active'));
     ch.classList.add('active');
     FILTER = ch.dataset.filter;
 
-    // La barra de vista solo existe en "Todo"
     if (FILTER === 'all') {
       viewBar.style.display = 'flex';
     } else {
       viewBar.style.display = 'none';
-      VIEW = 'individual'; // fuerza individual en categorías
+      VIEW = 'individual';
       viewChips.forEach(c => c.classList.remove('active'));
     }
     render();
   }));
 
-  // Listeners de vista
   viewChips.forEach(ch => ch.addEventListener('click', () => {
-    if (FILTER !== 'all') return; // ignorar si no es "Todo"
+    if (FILTER !== 'all') return;
     viewChips.forEach(c => c.classList.remove('active'));
     ch.classList.add('active');
     VIEW = ch.dataset.view;
     render();
   }));
-
-  // --- Render helpers
 
   function formatDate(expiresISO, fallbackText){
     if (expiresISO && typeof expiresISO === 'string' && expiresISO.includes('-')) {
@@ -204,6 +193,14 @@
     const img = it.image || it.img || it.img_url;
     if (!img) return '';
 
+    // --- FIX: ocultar “precio de lote” en vista individual ---
+    let priceShown = it.price;
+    const g = GROUP_MAP.get(it.groupId);
+    const looksLikeBundlePrice = g && g.count > 1 && String(it.price) === String(g.price);
+    if (VIEW === 'individual' && looksLikeBundlePrice) {
+      priceShown = null; // No mostrar precio que es del lote completo
+    }
+
     const when = formatDate(it.expiresISO, it.expires ? String(it.expires) : '');
     return `
       <article class="card" data-type="${ty}">
@@ -211,7 +208,7 @@
         <div class="thumb">
           <img loading="lazy" src="${img}" alt="${it.name}"
                onerror="this.closest('.card').classList.add('empty')" />
-          <span class="price">${priceFmt(it.price)}</span>
+          <span class="price">${priceFmt(priceShown)}</span>
           <span class="badge">${rarityLabel(rar)}</span>
         </div>
         <div class="meta">
@@ -225,7 +222,6 @@
   }
 
   function cardGroup(g){
-    // La vista de grupos solo existe en "Todo"; si te forzan otro filtro, no se renderiza.
     if (FILTER !== 'all') return '';
     const pics = Array.isArray(g.images) ? g.images.filter(Boolean) : [];
     const leadImg = pics[0] || ((g.items && g.items[0] && (g.items[0].image || g.items[0].img_url)) || '');
@@ -235,12 +231,10 @@
     const total = (g.items||[]).length;
     const name = g.name ? `${g.name} (Lote)` : `${(g.items && g.items[0] && g.items[0].name) || 'Lote'} (Lote)`;
     const when = formatDate(g.expiresISO, g.expires ? String(g.expires) : '');
-
-    // carrusel con <img> múltiples (fade)
     const imgsHtml = pics.slice(0,8).map((src,i)=>`<img ${i===0?'class="active"':''} src="${src}" alt="${name}">`).join('');
 
     return `
-      <article class="card" data-type="lote" data-carousel="true" data-images="${encodeURIComponent(JSON.stringify(pics.slice(0,8)))}">
+      <article class="card" data-type="lote" data-carousel="true">
         <div class="ring ${rar}"></div>
         <div class="thumb">
           <div class="carousel">
@@ -260,26 +254,21 @@
   }
 
   function sortItems(a,b){
-    // Orden fuerte por sección, luego tipo, luego rareza, luego nombre
     const sa = SEC_ORDER(a.section||''), sb = SEC_ORDER(b.section||'');
     if (sa !== sb) return sa - sb;
-
     const ta = TYPE_ORDER[normalizeType(a)] ?? 99;
     const tb = TYPE_ORDER[normalizeType(b)] ?? 99;
     if (ta !== tb) return ta - tb;
-
     const ra = RARITY_ORDER[(a.rarity||'').toLowerCase()] ?? 9;
     const rb = RARITY_ORDER[(b.rarity||'').toLowerCase()] ?? 9;
     if (ra !== rb) return ra - rb;
-
     return by((a.name||'').toLowerCase(), (b.name||'').toLowerCase());
   }
   function sortGroups(a,b){
-    // Heurística simple: Featured primero, luego por precio descendente, luego nombre
     const sa = SEC_ORDER(a.section||''), sb = SEC_ORDER(b.section||'');
     if (sa !== sb) return sa - sb;
     const pa = Number(a.price ?? 0), pb = Number(b.price ?? 0);
-    if (pa !== pb) return pb - pa; // mayor precio arriba (proxy de “popularidad”)
+    if (pa !== pb) return pb - pa;
     return by((a.name||'').toLowerCase(), (b.name||'').toLowerCase());
   }
 
@@ -299,7 +288,6 @@
     for (const t of carouselTimers) clearInterval(t);
     carouselTimers = [];
   }
-
   function bootCarousels(){
     const cards = grid.querySelectorAll('article[data-carousel="true"] .carousel');
     cards.forEach(car => {
@@ -310,21 +298,16 @@
         imgs.forEach((im,i)=> im.classList.toggle('active', i===idx));
         idx = (idx+1) % imgs.length;
       };
-      // ya hay un activo, empieza a rotar a los 2s
       const timer = setInterval(tick, 2000);
       carouselTimers.push(timer);
     });
   }
 
   function render(){
-    // Limpia carruseles anteriores para evitar timers duplicados
     clearCarousels();
 
-    // Vista “Todo”
     if (FILTER === 'all') {
       if (VIEW === 'groups') {
-        // Lotes primero (por definición)
-        // Adjuntamos sección estimada al grupo usando la de su primer item (para orden)
         const groups = [...DATA.groups].map(g=>{
           const sec = (g.items && g.items[0] && g.items[0].section) || null;
           return {...g, section: sec};
@@ -334,21 +317,17 @@
         bootCarousels();
         return;
       } else {
-        // Todo + Individual (deduplicado)
         const items = uniqueById([...DATA.items]).sort(sortItems);
         grid.innerHTML = items.map(cardItem).join('') || `<p class="empty">Sin resultados</p>`;
         return;
       }
     }
 
-    // Vistas por categoría (siempre individual, sin lotes)
     const items = uniqueById([...DATA.items]).filter(it => normalizeType(it) === FILTER).sort(sortItems);
     grid.innerHTML = items.map(cardItem).join('') || `<p class="empty">Sin resultados</p>`;
   }
 
-  // Ingesta JSON
   function renderShop(json){
-    // ITEMS
     const rawItems = Array.isArray(json.items) ? json.items
       : (json.data && Array.isArray(json.data.items) ? json.data.items : []);
     DATA.items = rawItems.map(x => ({
@@ -360,11 +339,12 @@
       type: x.type,
       section: x.section || x.block || x.category || null,
       group: x.group || x.bundle || null,
+      groupId: x.groupId || null,
+      groupPrice: x.groupPrice || null,
       expires: x.expires,
       expiresISO: x.expiresISO || null,
     }));
 
-    // GROUPS (lotes)
     const rawGroups = Array.isArray(json.groups) ? json.groups : [];
     DATA.groups = rawGroups.map(g => ({
       id: g.id,
@@ -373,7 +353,6 @@
       expires: g.expires,
       expiresISO: g.expiresISO || null,
       images: Array.isArray(g.images) ? g.images.filter(Boolean).slice(0,8) : [],
-      // Guarda sección del primer ítem (si vino) para ayudar a ordenar
       items: (g.items||[]).map(it => ({
         name: it.name,
         image: it.image || it.img_url,
@@ -383,16 +362,19 @@
       }))
     }));
 
-    // Fecha
+    // --- Construir GROUP_MAP para detectar “precio de lote” ---
+    GROUP_MAP = new Map();
+    for (const g of DATA.groups) {
+      GROUP_MAP.set(g.id, { price: g.price, count: (g.items||[]).length });
+    }
+
     if (json.updatedAt) {
       try { dateEl.textContent = `Actualizado: ${new Date(json.updatedAt).toLocaleString()}`; }
       catch { dateEl.textContent = 'Actualizado'; }
     }
 
-    // Estado inicial: Todo + Lotes
     FILTER = 'all';
     VIEW = 'groups';
-    // UI inicial
     chips.forEach(c => c.classList.toggle('active', c.dataset.filter==='all'));
     viewBar.style.display = 'flex';
     viewChips.forEach(c => c.classList.toggle('active', c.dataset.view==='groups'));
@@ -400,7 +382,6 @@
     render();
   }
 
-  // fetch
   fetch('/fortnite/shop.json?ts=' + Date.now(), { cache: 'no-store' })
     .then(r => r.json())
     .then(renderShop)
