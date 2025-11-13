@@ -141,39 +141,58 @@ function rarityLabel(r){
   return map[r] || r || "—";
 }
 function normalizeType(obj){
-  // 1) Normaliza y mapea tipos “crudos” del API a nuestros canónicos
-  const RAW_MAP = {
-    // básicos
-    outfit: 'traje',
-    emote: 'gesto', emoji: 'gesto',
-    pickaxe: 'pico',
-    backpack: 'mochila', backbling: 'mochila',
-    glider: 'ala-delta',
-    wrap: 'envoltorio',
-    // compañero
-    pet: 'companero', petcarrier: 'companero', companion: 'companero',
-    // música / pistas de improvisación
-    music: 'pista', musicpack: 'pista',
-    jam: 'pista', jamtrack: 'pista', festivaltrack: 'pista', festival_track: 'pista'
-  };
+  // Helper: baja a minúsculas, quita acentos y normaliza separadores
+  const norm = (s) => (s||'')
+    .toString()
+    .toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g,'') // quita acentos (compañero -> companero)
+    .replace(/[_\s]+/g,'-')                          // _ o espacios -> -
+    .trim();
 
-  // limpia: minúsculas y sin separadores (., _, -, espacios)
-  let raw = (obj.type || '').toString().toLowerCase()
-    .replace(/\s+/g,'')
-    .replace(/[._-]/g,'');
+  // 1) tomar el tipo si viene en el objeto
+  let t = norm(obj.type);
 
-  if (RAW_MAP[raw]) return RAW_MAP[raw];
+  // 2) alias robustos (inglés/español/variantes)
+  const ALIAS = new Map([
+    // traje
+    ['outfit','traje'], ['athenacharacter','traje'],
+    // gesto
+    ['emote','gesto'], ['emoji','gesto'], ['dance','gesto'],
+    // pico
+    ['pickaxe','pico'], ['harvesting-tool','pico'], ['harvestingtool','pico'],
+    // ala-delta
+    ['glider','ala-delta'], ['umbrella','ala-delta'], ['ala-delta','ala-delta'], ['ala-deltas','ala-delta'],
+    // envoltorio
+    ['wrap','envoltorio'], ['weaponwrap','envoltorio'], ['weapon-wrap','envoltorio'],
+    // mochila (back bling)
+    ['backpack','mochila'], ['back-bling','mochila'], ['backbling','mochila'], ['athenabackpack','mochila'],
+    // compañero (mascota)
+    ['pet','companero'], ['petcarrier','companero'], ['companion','companero'], ['buddy','companero'],
+    // pista (improvisación / música / jam)
+    ['music','pista'], ['musicpack','pista'], ['jam','pista'], ['jamtrack','pista'], ['festival-track','pista'], ['festival_track','pista'], ['track','pista'],
+    // otros que preferimos plegar:
+    ['loading-screen','traje'], ['loadingscreen','traje'],
+    ['spray','gesto'], ['toy','gesto'], ['contrail','traje'], ['banner','traje'], ['avatar','traje'],
+  ]);
 
-  // 2) Heurística por nombre, por si viniera sin tipo o raro
-  const n = (obj.name||'').toLowerCase();
-  if (/(compañer|compan|buddy|pet|carrier)/.test(n)) return 'companero';
-  if (/(pista|improvis|jam|track|music|música|musica)/.test(n)) return 'pista';
-  if (/(gesto|emote|baile|dance)/.test(n)) return 'gesto';
-  if (/(pico|hacha|pickaxe)/.test(n)) return 'pico';
-  if (/(ala\s*delta|glider|planeador)/.test(n)) return 'ala-delta';
-  if (/(envoltorio|wrap|camo)/.test(n)) return 'envoltorio';
-  if (/(mochila|back\s*bling|backbling|accesorio)/.test(n)) return 'mochila';
+  // si ya viene en español “correcto”, respétalo
+  const ALLOWED = new Set(['traje','gesto','pico','ala-delta','envoltorio','mochila','companero','pista']);
+  if (ALLOWED.has(t)) return t;
 
+  // mapear por alias si coincide
+  if (ALIAS.has(t)) return ALIAS.get(t);
+
+  // 3) inferir por nombre si el tipo venía vacío o raro
+  const n = norm(obj.name || '');
+  if (/(compan|buddy|pet)/.test(n))                 return 'companero';
+  if (/(pista|jam|track|music)/.test(n))            return 'pista';
+  if (/(gesto|emote|baile|dance)/.test(n))          return 'gesto';
+  if (/(pico|hacha|pickaxe)/.test(n))               return 'pico';
+  if (/(ala-delta|ala|glider|planeador)/.test(n))   return 'ala-delta';
+  if (/(envoltorio|wrap|camo)/.test(n))             return 'envoltorio';
+  if (/(mochila|back-bling|backbling|accesorio)/.test(n)) return 'mochila';
+
+  // 4) último recurso
   return 'traje';
 }
 // Precio “efectivo” para Individual
@@ -440,6 +459,7 @@ fetch('/fortnite/shop.json?ts=' + Date.now(), { cache: 'no-store' })
 </script>
 </body>
 </html>
+
 
 
 
