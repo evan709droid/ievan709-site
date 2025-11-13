@@ -307,7 +307,9 @@ function render(){
   }
 
   if (VIEW === 'groups') {
-    const groups = [...DATA.groups].sort(sortGroups);
+    const groups = [...DATA.groups]
+      .filter(g => (g.items || []).length >= 2)
+      .sort(sortGroups);
     grid.innerHTML = groups.map(cardGroup).join('') || `<p class="empty">Sin resultados</p>`;
 
     // Activa carruseles (2 s)
@@ -399,3 +401,4 @@ fetch('/fortnite/shop.json?ts=' + Date.now(), { cache: 'no-store' })
 </script>
 </body>
 </html>
+
