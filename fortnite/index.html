@@ -141,23 +141,41 @@ function rarityLabel(r){
   return map[r] || r || "—";
 }
 function normalizeType(obj){
-  let t = (obj.type || '').toString().toLowerCase().replace('_','-').trim();
-  if (!t) {
-    const n = (obj.name||'').toLowerCase();
-    if (/(compañer|compan|buddy|pet)/.test(n)) t = 'companero';
-    else if (/(pista|improvis|jam|track|music|música|musica)/.test(n))  t = 'pista';
-    else if (/(gesto|emote|baile|dance)/.test(n))                      t = 'gesto';
-    else if (/(pico|hacha|pickaxe)/.test(n))                           t = 'pico';
-    else if (/(ala delta|ala|glider|planeador)/.test(n))               t = 'ala-delta';
-    else if (/(envoltorio|wrap|camo)/.test(n))                         t = 'envoltorio';
-    else if (/(mochila|back bling|backbling|accesorio)/.test(n))       t = 'mochila';
-    else t = 'traje';
-  }
-  if (t === 'ala_delta') t = 'ala-delta';
-  if (t === 'mascota')   t = 'companero';
-  return t;
-}
+  // 1) Normaliza y mapea tipos “crudos” del API a nuestros canónicos
+  const RAW_MAP = {
+    // básicos
+    outfit: 'traje',
+    emote: 'gesto', emoji: 'gesto',
+    pickaxe: 'pico',
+    backpack: 'mochila', backbling: 'mochila',
+    glider: 'ala-delta',
+    wrap: 'envoltorio',
+    // compañero
+    pet: 'companero', petcarrier: 'companero', companion: 'companero',
+    // música / pistas de improvisación
+    music: 'pista', musicpack: 'pista',
+    jam: 'pista', jamtrack: 'pista', festivaltrack: 'pista', festival_track: 'pista'
+  };
 
+  // limpia: minúsculas y sin separadores (., _, -, espacios)
+  let raw = (obj.type || '').toString().toLowerCase()
+    .replace(/\s+/g,'')
+    .replace(/[._-]/g,'');
+
+  if (RAW_MAP[raw]) return RAW_MAP[raw];
+
+  // 2) Heurística por nombre, por si viniera sin tipo o raro
+  const n = (obj.name||'').toLowerCase();
+  if (/(compañer|compan|buddy|pet|carrier)/.test(n)) return 'companero';
+  if (/(pista|improvis|jam|track|music|música|musica)/.test(n)) return 'pista';
+  if (/(gesto|emote|baile|dance)/.test(n)) return 'gesto';
+  if (/(pico|hacha|pickaxe)/.test(n)) return 'pico';
+  if (/(ala\s*delta|glider|planeador)/.test(n)) return 'ala-delta';
+  if (/(envoltorio|wrap|camo)/.test(n)) return 'envoltorio';
+  if (/(mochila|back\s*bling|backbling|accesorio)/.test(n)) return 'mochila';
+
+  return 'traje';
+}
 // Precio “efectivo” para Individual
 function effectiveItemPrice(it){
   const gid    = it.groupId;
@@ -401,4 +419,5 @@ fetch('/fortnite/shop.json?ts=' + Date.now(), { cache: 'no-store' })
 </script>
 </body>
 </html>
+
 
