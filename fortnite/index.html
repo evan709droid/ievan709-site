@@ -194,26 +194,44 @@ function effectiveItemPrice(it){
 
 // ---------- UI: eventos ----------
 typeChips.forEach(ch => ch.addEventListener('click', () => {
+  // UI
   typeChips.forEach(c => c.classList.remove('active'));
   ch.classList.add('active');
+
+  // Estado
   FILTER = ch.dataset.filter;
 
-  // La barra Lotes/Individual solo en “Todo”; fuera de ahí forzamos Individual
+  // ← reset del toggle "Solo con precio" para evitar que oculte todo
+  ONLY_PRICED = false;
+  onlyPricedChip.classList.remove('active');
+
   if (FILTER === 'all') {
+    // En “Todo” sí existe el toggle Lotes/Individual (arranca en Lotes)
+    VIEW = 'groups';
     viewBar.style.display = 'flex';
-  } else {
-    VIEW = 'individual';
     viewChips.forEach(c => c.classList.remove('active'));
-    document.querySelector('.chip-view[data-view="individual"]').classList.add('active');
+    document
+      .querySelector('.chip-view[data-view="groups"]')
+      .classList.add('active');
+  } else {
+    // En cualquier otra pestaña: SIEMPRE Individual y sin barra de vista
+    VIEW = 'individual';
     viewBar.style.display = 'none';
   }
+
   render();
 }));
 
 viewChips.forEach(ch => ch.addEventListener('click', () => {
   viewChips.forEach(c => c.classList.remove('active'));
   ch.classList.add('active');
+
   VIEW = ch.dataset.view;
+
+  // Si cambias de vista, no arrastres filtros que oculten cosas
+  ONLY_PRICED = false;
+  onlyPricedChip.classList.remove('active');
+
   render();
 }));
 
@@ -309,10 +327,13 @@ function sortGroups(a,b){
 function render(){
   // Lotes/Individual solo en “Todo”
   viewBar.style.display = (FILTER === 'all') ? 'flex' : 'none';
-
+  // Blindaje extra: en pestañas ≠ “Todo”, fuerza Individual
+  if (FILTER !== 'all') {
+    VIEW = 'individual';
+  }
   // “Solo con precio” visible si: (Todo + Individual) o (cualquier filtro ≠ Todo)
   toolInd.style.display = (FILTER === 'all' && VIEW === 'individual') || (FILTER !== 'all' ? 'block' : 'none');
-  onlyPricedChip.classList.toggle('active', ONLY_PRICED);
+  
 
   if (FILTER !== 'all') {
     // Fuera de “Todo”: siempre Individual y sin lotes/solo-lote
@@ -419,5 +440,6 @@ fetch('/fortnite/shop.json?ts=' + Date.now(), { cache: 'no-store' })
 </script>
 </body>
 </html>
+
 
 
