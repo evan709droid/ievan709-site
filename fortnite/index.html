@@ -115,14 +115,9 @@ const typeChips = [...document.querySelectorAll('.chip[data-filter]')];
 const viewChips = [...document.querySelectorAll('.chip-view')];
 const viewBar   = document.getElementById('viewbar');
 
-// Soportar ambos ids para tu chip: only-new (preferido) o only-priced (legacy)
-//const newChip = document.getElementById('only-new') || document.getElementById('only-priced');
-//const toolInd = document.getElementById('tool-individual');
-
 // ---------- Estado ----------
 let FILTER = 'all';        // 'all' | 'traje' | 'gesto' | ...
-let VIEW   = 'groups';     // 'groups' | 'individual'
-//let ONLY_NEW = false;      // "Nuevos"
+let VIEW   = 'groups';     // 'groups' | 'individual' | 'new'
 
 // Datos en memoria
 const DATA = { items: [], groups: [] };
@@ -162,25 +157,17 @@ function normalizeType(obj){
   return t;
 }
 
-// De momento, hasta conectar el endpoint de "nuevos", lo dejamos neutro.
-// Mañana aquí usaremos json de /v2/cosmetics/new o flags (added, unseenFor, etc.)
-function isNew(it){
-  return !!it.isNew; // hoy todos false => no rompe nada
-}
+// Placeholder: mañana lo conectamos al endpoint /v2/cosmetics/new o a campos "added/unseenFor"
+function isNew(it){ return !!it.isNew; }
 
-// Precio efectivo para Individual
+// Precio efectivo (para decidir si se muestra en individual)
 function effectiveItemPrice(it){
   const gid    = it.groupId;
   const gsize  = GROUP_SIZE.get(gid) || 0;
   const gprice = GROUP_PRICE.get(gid);
 
-  // preferir precio individual si existe y es distinto al del lote
   if (it.price != null && it.price !== '' && String(it.price) !== String(gprice)) return it.price;
-
-  // si el lote contiene 1 ítem, aceptar precio del lote (casos “skin + algo inseparable”)
   if (gsize === 1 && (it.price == null || it.price === '')) return gprice ?? it.groupPrice ?? null;
-
-  // si no hay precio individual válido y el grupo tiene >1 ítem, es solo en lote
   return null;
 }
 
@@ -190,18 +177,16 @@ typeChips.forEach(ch => ch.addEventListener('click', () => {
   ch.classList.add('active');
   FILTER = ch.dataset.filter;
 
-  // La barra Lotes/Individual solo en “Todo”; fuera de ahí forzamos Individual
   if (FILTER === 'all') {
+    // Mantenemos la vista previa seleccionada en la barra
     VIEW = document.querySelector('.chip-view.active')?.dataset.view || 'groups';
     viewBar.style.display = 'flex';
   } else {
+    // Fuera de “Todo”: forzamos Individual y ocultamos la barra
     VIEW = 'individual';
     viewChips.forEach(c => c.classList.remove('active'));
     document.querySelector('.chip-view[data-view="individual"]')?.classList.add('active');
     viewBar.style.display = 'none';
-    // 🔽 NUEVO: al salir de "Todo", apagar "Nuevos"
-    ONLY_NEW = false;
-    newChip?.classList.remove('active');
   }
   render();
 }));
@@ -211,23 +196,8 @@ viewChips.forEach(ch => ch.addEventListener('click', () => {
   viewChips.forEach(c => c.classList.remove('active'));
   ch.classList.add('active');
   VIEW = ch.dataset.view;
-
-  // 🔽 NUEVO: si pasamos a "groups" (Lotes), desactivar "Nuevos"
-  if (VIEW === 'groups') {
-    ONLY_NEW = false;
-    newChip?.classList.remove('active');
-  }
-  
   render();
 }));
-
-//if (newChip){
-//  newChip.addEventListener('click', () => {
-//    ONLY_NEW = !ONLY_NEW;
-//    newChip.classList.toggle('active', ONLY_NEW);
-//    render();
-//  });
-//}
 
 // ---------- Cards ----------
 function cardItem(it){
@@ -235,8 +205,10 @@ function cardItem(it){
   const ty  = normalizeType(it);
   if (FILTER !== 'all' && ty !== FILTER) return '';
 
-  // Precio efectivo (si no hay, mostramos “Solo en lote” en vez de ocultar)
   const p = effectiveItemPrice(it);
+  const priceBadge = (p == null)
+    ? `<span class="tag">Solo en lote</span>`
+    : `<span class="price">${priceFmt(p)}</span>`;
 
   const exp = it.expires || it.expiresISO || '';
   return `
@@ -245,9 +217,7 @@ function cardItem(it){
     <div class="thumb">
       <img loading="lazy" src="${it.image || it.img_url}" alt="${it.name}"
            onerror="this.closest('article').classList.add('empty')" />
-      <span class="price">${p == null
-  ? `<span class="tag">Solo en lote</span>`
-  : `<span class="price">${priceFmt(p)}</span>`}
+      ${priceBadge}
       <span class="badge">${rarityLabel(rar)}</span>
     </div>
     <div class="meta">
@@ -309,59 +279,56 @@ function sortGroups(a,b){
 
 // ---------- Render ----------
 function render(){
-  // Mostrar barra Lotes/Individual solo en “Todo”
+  // Barra de vistas solo en “Todo”
   viewBar.style.display = (FILTER === 'all') ? 'flex' : 'none';
-  // Ocultar toolbar secundaria siempre (por ahora)
-  if (typeof toolInd !== 'undefined' && toolInd) toolInd.style.display = 'none';
-  
+
   if (FILTER !== 'all') {
-    // Fuera de “Todo”: SIEMPRE Individual y SIN lotes
+    // Categorías: SIEMPRE Individual y SOLO ítems con precio (nada de bundles)
     const items = DATA.items
       .filter(it => normalizeType(it) === FILTER)
+      .filter(it => effectiveItemPrice(it) != null)
       .sort(sortItems);
     grid.innerHTML = items.map(cardItem).join('') || `<p class="empty">Sin resultados</p>`;
     return;
   }
 
+  // “Todo” + Lotes
   if (VIEW === 'groups') {
-  // Solo lotes “reales”: más de 1 ítem dentro
-  const groups = [...DATA.groups]
-    .filter(g => (g.items || []).length > 1)
-    .sort(sortGroups);
+    const groups = [...DATA.groups]
+      .filter(g => (g.items || []).length > 1)
+      .sort(sortGroups);
 
-  grid.innerHTML = groups.map(cardGroup).join('') || `<p class="empty">Sin resultados</p>`;
+    grid.innerHTML = groups.map(cardGroup).join('') || `<p class="empty">Sin resultados</p>`;
 
-  // Carruseles (2 s)
-  [...grid.querySelectorAll('.card[data-type="lote"]')].forEach(card => {
-    const pics = JSON.parse((card.dataset.pics || '[]').replace(/&[#]39;/g,"'"));
-    if (!pics.length) return;
-    const img  = card.querySelector('img.slide');
-    const dots = [...card.querySelectorAll('.dot')];
-    let i = 0;
-    setInterval(() => {
-      i = (i + 1) % pics.length;
-      img.src = pics[i];
-      dots.forEach((d,k)=>d.classList.toggle('active',k===i));
-    }, 2000);
-  });
-  return;
-}
+    // Carruseles (2 s)
+    [...grid.querySelectorAll('.card[data-type="lote"]')].forEach(card => {
+      const pics = JSON.parse((card.dataset.pics || '[]').replace(/&[#]39;/g,"'"));
+      if (!pics.length) return;
+      const img  = card.querySelector('img.slide');
+      const dots = [...card.querySelectorAll('.dot')];
+      let i = 0;
+      setInterval(() => {
+        i = (i + 1) % pics.length;
+        img.src = pics[i];
+        dots.forEach((d,k)=>d.classList.toggle('active',k===i));
+      }, 2000);
+    });
+    return;
+  }
 
   // “Todo” + Nuevos
   if (VIEW === 'new') {
-  // Mostramos ítems marcados como nuevos y con precio efectivo
-  const items = DATA.items
-    .filter(it => effectiveItemPrice(it) != null)
-    .filter(it => isNew(it) === true)
-    .sort(sortItems);
-
-  grid.innerHTML = items.map(cardItem).join('') || `<p class="empty">Sin resultados</p>`;
-  return;
+    const items = DATA.items
+      .filter(it => effectiveItemPrice(it) != null)
+      .filter(isNew)
+      .sort(sortItems);
+    grid.innerHTML = items.map(cardItem).join('') || `<p class="empty">Sin resultados</p>`;
+    return;
   }
+
   // “Todo” + Individual
   const items = DATA.items
     .filter(it => effectiveItemPrice(it) != null)
-    .filter(it => !ONLY_NEW || isNew(it))
     .sort(sortItems);
   grid.innerHTML = items.map(cardItem).join('') || `<p class="empty">Sin resultados</p>`;
 }
@@ -375,8 +342,8 @@ function renderShop(json){
     id: x.id,
     name: x.name,
     image: x.image || x.img_url,
-    price: x.price,                // puede ser null si solo en lote
-    groupPrice: x.groupPrice,      // precio del lote (si viene)
+    price: x.price,
+    groupPrice: x.groupPrice,
     groupId: x.groupId || null,
     rarity: (x.rarity||'common').toLowerCase(),
     type: x.type,
@@ -384,7 +351,7 @@ function renderShop(json){
     group: x.group || x.bundle || null,
     expires: x.expires || null,
     expiresISO: x.expiresISO || null,
-    isNew: x.isNew === true || false  // placeholder por si ya viene marcado
+    isNew: x.isNew === true || false
   }));
 
   // GROUPS (Lotes)
@@ -431,6 +398,7 @@ fetch('/fortnite/shop.json?ts=' + Date.now(), { cache: 'no-store' })
 </script>
 </body>
 </html>
+
 
 
 
