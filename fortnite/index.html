@@ -42,6 +42,7 @@
 
     .price{position:absolute;left:8px;top:8px;background:#101827cc;border:1px solid #1f2c4d;color:#fff;padding:4px 7px;border-radius:8px;font-size:12px;z-index:2}
     .badge{position:absolute;right:8px;top:8px;padding:4px 7px;border-radius:8px;border:1px solid #1f2c4d;background:#101827cc;font-size:12px;z-index:2}
+    .tag{position:absolute;left:8px;top:8px;background:#38224f;border:1px solid #5b3c86;color:#eedbff;padding:4px 7px;border-radius:8px;font-size:12px;z-index:2}
     .meta{padding:10px 10px 12px}
     .name{font-size:14px;font-weight:600;line-height:1.2;margin-bottom:6px;min-height:34px}
     .sub{font-size:12px;color:var(--muted);display:flex;justify-content:space-between;gap:8px}
@@ -75,6 +76,7 @@
         <span class="chip" data-filter="envoltorio">Envoltorio</span>
         <span class="chip" data-filter="mochila">Mochila</span>
         <span class="chip" data-filter="companero">Compañero</span>
+        <span class="chip" data-filter="calzado">Calzado</span>
         <span class="chip" data-filter="pista">Pistas</span>
       </div>
     </header>
@@ -93,11 +95,6 @@
       <span class="chip chip-view active" data-view="groups">Lotes</span>
       <span class="chip chip-view" data-view="individual">Individual</span>
       <span class="chip chip-view" data-view="new">Nuevos</span>
-    </div>
-
-    <!-- Filtros secundarios (solo para Individual) -->
-    <div class="toolbar" id="tool-individual" style="display:none">
-      <span class="chip" id="only-priced">Nuevos</span>
     </div>
 
     <section class="grid" id="grid"></section>
@@ -126,7 +123,7 @@ const GROUP_PRICE = new Map(); // groupId -> precio de lote
 
 // ---------- Orden ----------
 const RARITY_ORDER = { mythic:0, legendary:1, epic:2, rare:3, uncommon:4, common:5 };
-const TYPE_ORDER   = { traje:0, gesto:1, pico:2, 'ala-delta':3, envoltorio:4, mochila:5, companero:6, pista:7 };
+const TYPE_ORDER   = { traje:0, gesto:1, pico:2, 'ala-delta':3, envoltorio:4, mochila:5, companero:6, calzado:7, pista:8 };
 const secOrder = s => ({'Featured':0,'Special Featured':1,'Special Daily':2,'Daily':3,'Votes':4,'Vote Winners':5})[s] ?? 9;
 const cmp = (a,b)=> a<b?-1:a>b?1:0;
 
@@ -139,25 +136,37 @@ function rarityLabel(r){
   const map = {common:"Común",uncommon:"Poco común",rare:"Raro",epic:"Épico",legendary:"Legendario",mythic:"Mítico"};
   return map[r] || r || "—";
 }
+
+// Clasificador robusto por type y por nombre
 function normalizeType(obj){
-  let t = (obj.type || '').toString().toLowerCase().replace('_','-').trim();
-  if (!t) {
+  const raw = (obj.type || '').toString().toLowerCase().replace('_','-').trim();
+  let t = raw;
+
+  // Por TYPE directo
+  if (/^(pet|buddy|petbuddy)$/.test(raw)) t = 'companero';
+  else if (/(^|[-])(music|track|instrument)(-|$)/.test(raw)) t = 'pista';
+  else if (/(^|[-])(shoe|sneaker|jordan|nike|adidas|ultraboost)(-|$)/.test(raw)) t = 'calzado';
+
+  // Si aún no se determinó, usar heurística por NOMBRE
+  if (!t || t === 'outfit' || t === 'item' || t === 'misc') {
     const n = (obj.name||'').toLowerCase();
-    if (/(compañer|compan|buddy|pet)/.test(n)) t = 'companero';
-    else if (/(pista|improvis|jam|track|music|música|musica)/.test(n))  t = 'pista';
-    else if (/(gesto|emote|baile|dance)/.test(n))                      t = 'gesto';
-    else if (/(pico|hacha|pickaxe)/.test(n))                           t = 'pico';
-    else if (/(ala delta|ala|glider|planeador)/.test(n))               t = 'ala-delta';
-    else if (/(envoltorio|wrap|camo)/.test(n))                         t = 'envoltorio';
-    else if (/(mochila|back bling|backbling|accesorio)/.test(n))       t = 'mochila';
-    else t = 'traje';
+    if (/(compañer|compane|compan|buddy|pet|mascot)/.test(n))           t = 'companero';
+    else if (/(pista|improvis|jam|track|music|música|musica|instrument)/.test(n)) t = 'pista';
+    else if (/(zapat|tenis|sneaker|shoe|jordan|nike|adidas|ultra\s*boost|ultraboost)/.test(n)) t = 'calzado';
+    else if (/(gesto|emote|baile|dance)/.test(n))                        t = 'gesto';
+    else if (/(pico|hacha|pickaxe)/.test(n))                             t = 'pico';
+    else if (/(ala delta|ala|glider|planeador)/.test(n))                 t = 'ala-delta';
+    else if (/(envoltorio|wrap|camo)/.test(n))                           t = 'envoltorio';
+    else if (/(mochila|back bling|backbling|accesorio)/.test(n))         t = 'mochila';
+    else                                                                  t = 'traje';
   }
+
   if (t === 'ala_delta') t = 'ala-delta';
   if (t === 'mascota')   t = 'companero';
   return t;
 }
 
-// Placeholder: mañana lo conectamos al endpoint /v2/cosmetics/new o a campos "added/unseenFor"
+// Placeholder para “Nuevos” (mañana conectamos a /v2/cosmetics/new o a campos added/unseenFor)
 function isNew(it){ return !!it.isNew; }
 
 // Precio efectivo (para decidir si se muestra en individual)
@@ -178,11 +187,9 @@ typeChips.forEach(ch => ch.addEventListener('click', () => {
   FILTER = ch.dataset.filter;
 
   if (FILTER === 'all') {
-    // Mantenemos la vista previa seleccionada en la barra
     VIEW = document.querySelector('.chip-view.active')?.dataset.view || 'groups';
     viewBar.style.display = 'flex';
   } else {
-    // Fuera de “Todo”: forzamos Individual y ocultamos la barra
     VIEW = 'individual';
     viewChips.forEach(c => c.classList.remove('active'));
     document.querySelector('.chip-view[data-view="individual"]')?.classList.add('active');
@@ -192,7 +199,7 @@ typeChips.forEach(ch => ch.addEventListener('click', () => {
 }));
 
 viewChips.forEach(ch => ch.addEventListener('click', () => {
-  if (FILTER !== 'all') return; // seguridad extra
+  if (FILTER !== 'all') return;
   viewChips.forEach(c => c.classList.remove('active'));
   ch.classList.add('active');
   VIEW = ch.dataset.view;
@@ -283,7 +290,7 @@ function render(){
   viewBar.style.display = (FILTER === 'all') ? 'flex' : 'none';
 
   if (FILTER !== 'all') {
-    // Categorías: SIEMPRE Individual y SOLO ítems con precio (nada de bundles)
+    // Categorías: SIEMPRE Individual y SOLO ítems con precio
     const items = DATA.items
       .filter(it => normalizeType(it) === FILTER)
       .filter(it => effectiveItemPrice(it) != null)
@@ -398,12 +405,3 @@ fetch('/fortnite/shop.json?ts=' + Date.now(), { cache: 'no-store' })
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
