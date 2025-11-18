@@ -96,7 +96,7 @@
 
     <!-- Filtros secundarios (solo para Individual) -->
     <div class="toolbar" id="tool-individual" style="display:none">
-      <span class="chip active" id="only-priced">Solo con precio</span>
+      <span class="chip" id="only-priced">Nuevos</span>
     </div>
 
     <section class="grid" id="grid"></section>
@@ -114,12 +114,12 @@ const typeChips = [...document.querySelectorAll('.chip[data-filter]')];
 const viewChips = [...document.querySelectorAll('.chip-view')];
 const viewBar   = document.getElementById('viewbar');
 const toolInd   = document.getElementById('tool-individual');
-const onlyPricedChip = document.getElementById('only-priced');
+const newChip = document.getElementById('only-priced');
 
 // ---------- Estado ----------
 let FILTER = 'all';        // 'all' | 'traje' | 'gesto' | ...
 let VIEW   = 'groups';     // 'groups' | 'individual'
-let ONLY_PRICED = true;    // ✅ por defecto activo para evitar “solo en lote” en Individual
+let ONLY_NEW = false;    // Heurística para decidir si un ítem es "nuevo"
 
 const DATA = { items: [], groups: [] };
 const GROUP_SIZE  = new Map(); // groupId -> cantidad de ítems
@@ -132,6 +132,32 @@ const secOrder = s => ({'Featured':0,'Special Featured':1,'Special Daily':2,'Dai
 const cmp = (a,b)=> a<b?-1:a>b?1:0;
 
 // ---------- Helpers ----------
+function isNew(it){
+  // Casos típicos que puede devolver la API/render:
+  // - it.isNew (boolean)
+  // - it.added / it.addedAt / it.addedSince / it.releaseDate (unix o ISO)
+  // Si no hay datos, devolvemos false.
+  if (it.isNew === true) return true;
+
+  const cand =
+    it.added ?? it.addedAt ?? it.addedSince ?? it.releaseDate ?? null;
+
+  if (!cand) return false;
+
+  // Normaliza timestamp (acepta unix en segundos/milisegundos o ISO)
+  let t = null;
+  if (typeof cand === 'number') {
+    t = (cand > 1e12) ? cand : cand * 1000; // ms o s
+  } else if (typeof cand === 'string') {
+    const d = Date.parse(cand);
+    if (!Number.isNaN(d)) t = d;
+  }
+  if (!t) return false;
+
+  // Considera "nuevo" si se añadió en los últimos 14 días
+  const MS_14D = 14 * 24 * 60 * 60 * 1000;
+  return (Date.now() - t) <= MS_14D;
+}  
 function priceFmt(p){
   if (p == null || p === "") return "¿?";
   const s = String(p); return /^\d+$/.test(s) ? `${s} V-Bucks` : s;
@@ -254,9 +280,12 @@ viewChips.forEach(ch => ch.addEventListener('click', () => {
   render();
 }));
 
-onlyPricedChip.addEventListener('click', () => {
-  ONLY_PRICED = !ONLY_PRICED;
-  onlyPricedChip.classList.toggle('active', ONLY_PRICED);
+newChip.addEventListener('click', () => {
+  // Este chip SOLO tiene efecto cuando el filtro es "all"
+  if (FILTER !== 'all') return;
+
+  ONLY_NEW = !ONLY_NEW;
+  newChip.classList.toggle('active', ONLY_NEW);
   render();
 });
 
@@ -350,17 +379,17 @@ function render(){
   if (FILTER !== 'all') {
     VIEW = 'individual';
   }
-  // “Solo con precio” visible si: (Todo + Individual) o (cualquier filtro ≠ Todo)
-  toolInd.style.display = (FILTER === 'all' && VIEW === 'individual') || (FILTER !== 'all' ? 'block' : 'none');
+  // La barrita “Nuevos” solo aparece en “Todo”
+  toolInd.style.display = (FILTER === 'all') ? 'block' : 'none';
   
 
   if (FILTER !== 'all') {
     // Fuera de “Todo”: siempre Individual y sin lotes/solo-lote
     const items = DATA.items
-      .filter(it => normalizeType(it) === FILTER)
-      .filter(it => !ONLY_PRICED ? true : (effectiveItemPrice(it) != null))
-      .sort(sortItems);
-    grid.innerHTML = items.map(cardItem).join('') || `<p class="empty">Sin resultados</p>`;
+  .filter(it => !ONLY_NEW || isNew(it))   // <-- aplica SOLO si el chip está activo
+  .sort(sortItems);
+
+   grid.innerHTML = items.map(cardItem).join('') || `<p class="empty">Sin resultados</p>`;
     return;
   }
 
@@ -459,6 +488,7 @@ fetch('/fortnite/shop.json?ts=' + Date.now(), { cache: 'no-store' })
 </script>
 </body>
 </html>
+
 
 
 
