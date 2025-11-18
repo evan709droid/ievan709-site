@@ -113,14 +113,17 @@ const dateEl = document.getElementById('date');
 const typeChips = [...document.querySelectorAll('.chip[data-filter]')];
 const viewChips = [...document.querySelectorAll('.chip-view')];
 const viewBar   = document.getElementById('viewbar');
-const toolInd   = document.getElementById('tool-individual');
-const newChip = document.getElementById('only-priced');
+
+// Soportar ambos ids para tu chip: only-new (preferido) o only-priced (legacy)
+const newChip = document.getElementById('only-new') || document.getElementById('only-priced');
+const toolInd = document.getElementById('tool-individual');
 
 // ---------- Estado ----------
 let FILTER = 'all';        // 'all' | 'traje' | 'gesto' | ...
 let VIEW   = 'groups';     // 'groups' | 'individual'
-let ONLY_NEW = false;    // Heurística para decidir si un ítem es "nuevo"
+let ONLY_NEW = false;      // "Nuevos"
 
+// Datos en memoria
 const DATA = { items: [], groups: [] };
 const GROUP_SIZE  = new Map(); // groupId -> cantidad de ítems
 const GROUP_PRICE = new Map(); // groupId -> precio de lote
@@ -132,32 +135,6 @@ const secOrder = s => ({'Featured':0,'Special Featured':1,'Special Daily':2,'Dai
 const cmp = (a,b)=> a<b?-1:a>b?1:0;
 
 // ---------- Helpers ----------
-function isNew(it){
-  // Casos típicos que puede devolver la API/render:
-  // - it.isNew (boolean)
-  // - it.added / it.addedAt / it.addedSince / it.releaseDate (unix o ISO)
-  // Si no hay datos, devolvemos false.
-  if (it.isNew === true) return true;
-
-  const cand =
-    it.added ?? it.addedAt ?? it.addedSince ?? it.releaseDate ?? null;
-
-  if (!cand) return false;
-
-  // Normaliza timestamp (acepta unix en segundos/milisegundos o ISO)
-  let t = null;
-  if (typeof cand === 'number') {
-    t = (cand > 1e12) ? cand : cand * 1000; // ms o s
-  } else if (typeof cand === 'string') {
-    const d = Date.parse(cand);
-    if (!Number.isNaN(d)) t = d;
-  }
-  if (!t) return false;
-
-  // Considera "nuevo" si se añadió en los últimos 14 días
-  const MS_14D = 14 * 24 * 60 * 60 * 1000;
-  return (Date.now() - t) <= MS_14D;
-}  
 function priceFmt(p){
   if (p == null || p === "") return "¿?";
   const s = String(p); return /^\d+$/.test(s) ? `${s} V-Bucks` : s;
@@ -167,61 +144,30 @@ function rarityLabel(r){
   return map[r] || r || "—";
 }
 function normalizeType(obj){
-  // Helper: baja a minúsculas, quita acentos y normaliza separadores
-  const norm = (s) => (s||'')
-    .toString()
-    .toLowerCase()
-    .normalize('NFD').replace(/[\u0300-\u036f]/g,'') // quita acentos (compañero -> companero)
-    .replace(/[_\s]+/g,'-')                          // _ o espacios -> -
-    .trim();
-
-  // 1) tomar el tipo si viene en el objeto
-  let t = norm(obj.type);
-
-  // 2) alias robustos (inglés/español/variantes)
-  const ALIAS = new Map([
-    // traje
-    ['outfit','traje'], ['athenacharacter','traje'],
-    // gesto
-    ['emote','gesto'], ['emoji','gesto'], ['dance','gesto'],
-    // pico
-    ['pickaxe','pico'], ['harvesting-tool','pico'], ['harvestingtool','pico'],
-    // ala-delta
-    ['glider','ala-delta'], ['umbrella','ala-delta'], ['ala-delta','ala-delta'], ['ala-deltas','ala-delta'],
-    // envoltorio
-    ['wrap','envoltorio'], ['weaponwrap','envoltorio'], ['weapon-wrap','envoltorio'],
-    // mochila (back bling)
-    ['backpack','mochila'], ['back-bling','mochila'], ['backbling','mochila'], ['athenabackpack','mochila'],
-    // compañero (mascota)
-    ['pet','companero'], ['petcarrier','companero'], ['companion','companero'], ['buddy','companero'],
-    // pista (improvisación / música / jam)
-    ['music','pista'], ['musicpack','pista'], ['jam','pista'], ['jamtrack','pista'], ['festival-track','pista'], ['festival_track','pista'], ['track','pista'],
-    // otros que preferimos plegar:
-    ['loading-screen','traje'], ['loadingscreen','traje'],
-    ['spray','gesto'], ['toy','gesto'], ['contrail','traje'], ['banner','traje'], ['avatar','traje'],
-  ]);
-
-  // si ya viene en español “correcto”, respétalo
-  const ALLOWED = new Set(['traje','gesto','pico','ala-delta','envoltorio','mochila','companero','pista']);
-  if (ALLOWED.has(t)) return t;
-
-  // mapear por alias si coincide
-  if (ALIAS.has(t)) return ALIAS.get(t);
-
-  // 3) inferir por nombre si el tipo venía vacío o raro
-  const n = norm(obj.name || '');
-  if (/(compan|buddy|pet)/.test(n))                 return 'companero';
-  if (/(pista|jam|track|music)/.test(n))            return 'pista';
-  if (/(gesto|emote|baile|dance)/.test(n))          return 'gesto';
-  if (/(pico|hacha|pickaxe)/.test(n))               return 'pico';
-  if (/(ala-delta|ala|glider|planeador)/.test(n))   return 'ala-delta';
-  if (/(envoltorio|wrap|camo)/.test(n))             return 'envoltorio';
-  if (/(mochila|back-bling|backbling|accesorio)/.test(n)) return 'mochila';
-
-  // 4) último recurso
-  return 'traje';
+  let t = (obj.type || '').toString().toLowerCase().replace('_','-').trim();
+  if (!t) {
+    const n = (obj.name||'').toLowerCase();
+    if (/(compañer|compan|buddy|pet)/.test(n)) t = 'companero';
+    else if (/(pista|improvis|jam|track|music|música|musica)/.test(n))  t = 'pista';
+    else if (/(gesto|emote|baile|dance)/.test(n))                      t = 'gesto';
+    else if (/(pico|hacha|pickaxe)/.test(n))                           t = 'pico';
+    else if (/(ala delta|ala|glider|planeador)/.test(n))               t = 'ala-delta';
+    else if (/(envoltorio|wrap|camo)/.test(n))                         t = 'envoltorio';
+    else if (/(mochila|back bling|backbling|accesorio)/.test(n))       t = 'mochila';
+    else t = 'traje';
+  }
+  if (t === 'ala_delta') t = 'ala-delta';
+  if (t === 'mascota')   t = 'companero';
+  return t;
 }
-// Precio “efectivo” para Individual
+
+// De momento, hasta conectar el endpoint de "nuevos", lo dejamos neutro.
+// Mañana aquí usaremos json de /v2/cosmetics/new o flags (added, unseenFor, etc.)
+function isNew(it){
+  return !!it.isNew; // hoy todos false => no rompe nada
+}
+
+// Precio efectivo para Individual
 function effectiveItemPrice(it){
   const gid    = it.groupId;
   const gsize  = GROUP_SIZE.get(gid) || 0;
@@ -230,84 +176,76 @@ function effectiveItemPrice(it){
   // preferir precio individual si existe y es distinto al del lote
   if (it.price != null && it.price !== '' && String(it.price) !== String(gprice)) return it.price;
 
-  // si el lote contiene 1 ítem, aceptar precio del lote
+  // si el lote contiene 1 ítem, aceptar precio del lote (casos “skin + algo inseparable”)
   if (gsize === 1 && (it.price == null || it.price === '')) return gprice ?? it.groupPrice ?? null;
 
-  // si no hay precio individual válido y el grupo tiene más de 1 ítem, es solo en lote
+  // si no hay precio individual válido y el grupo tiene >1 ítem, es solo en lote
   return null;
 }
 
 // ---------- UI: eventos ----------
 typeChips.forEach(ch => ch.addEventListener('click', () => {
-  // UI
   typeChips.forEach(c => c.classList.remove('active'));
   ch.classList.add('active');
-
-  // Estado
   FILTER = ch.dataset.filter;
 
-  // ← reset del toggle "Solo con precio" para evitar que oculte todo
-  ONLY_PRICED = false;
-  onlyPricedChip.classList.remove('active');
-
+  // La barra Lotes/Individual solo en “Todo”; fuera de ahí forzamos Individual
   if (FILTER === 'all') {
-    // En “Todo” sí existe el toggle Lotes/Individual (arranca en Lotes)
-    VIEW = 'groups';
+    VIEW = document.querySelector('.chip-view.active')?.dataset.view || 'groups';
     viewBar.style.display = 'flex';
-    viewChips.forEach(c => c.classList.remove('active'));
-    document
-      .querySelector('.chip-view[data-view="groups"]')
-      .classList.add('active');
   } else {
-    // En cualquier otra pestaña: SIEMPRE Individual y sin barra de vista
     VIEW = 'individual';
+    viewChips.forEach(c => c.classList.remove('active'));
+    document.querySelector('.chip-view[data-view="individual"]')?.classList.add('active');
     viewBar.style.display = 'none';
+    // 🔽 NUEVO: al salir de "Todo", apagar "Nuevos"
+    ONLY_NEW = false;
+    newChip?.classList.remove('active');
   }
-
   render();
 }));
 
 viewChips.forEach(ch => ch.addEventListener('click', () => {
+  if (FILTER !== 'all') return; // seguridad extra
   viewChips.forEach(c => c.classList.remove('active'));
   ch.classList.add('active');
-
   VIEW = ch.dataset.view;
 
-  // Si cambias de vista, no arrastres filtros que oculten cosas
-  ONLY_PRICED = false;
-  onlyPricedChip.classList.remove('active');
-
+  // 🔽 NUEVO: si pasamos a "groups" (Lotes), desactivar "Nuevos"
+  if (VIEW === 'groups') {
+    ONLY_NEW = false;
+    newChip?.classList.remove('active');
+  }
+  
   render();
 }));
 
-newChip.addEventListener('click', () => {
-  // Este chip SOLO tiene efecto cuando el filtro es "all"
-  if (FILTER !== 'all') return;
+if (newChip){
+  newChip.addEventListener('click', () => {
+    ONLY_NEW = !ONLY_NEW;
+    newChip.classList.toggle('active', ONLY_NEW);
+    render();
+  });
+}
 
-  ONLY_NEW = !ONLY_NEW;
-  newChip.classList.toggle('active', ONLY_NEW);
-  render();
-});
-
-// ---------- Card builders ----------
+// ---------- Cards ----------
 function cardItem(it){
   const rar = (it.rarity||"common").toLowerCase();
   const ty  = normalizeType(it);
   if (FILTER !== 'all' && ty !== FILTER) return '';
 
-  const p   = effectiveItemPrice(it);
-  const exp = it.expires || it.expiresISO || '';
-
-  // En Individual (o en filtros ≠ “Todo”), ocultar ítems sin precio individual
+  // En Individual, ocultar ítems sin precio efectivo
+  const p = effectiveItemPrice(it);
   if ((VIEW === 'individual' || FILTER !== 'all') && p == null) return '';
 
+  const exp = it.expires || it.expiresISO || '';
   return `
   <article class="card" data-type="${ty}">
     <div class="ring ${rar}"></div>
     <div class="thumb">
       <img loading="lazy" src="${it.image || it.img_url}" alt="${it.name}"
            onerror="this.closest('article').classList.add('empty')" />
-      ${p != null ? `<span class="price">${priceFmt(p)}</span>` : ``}
+      <span class="price">${priceFmt(p)}</span>
       <span class="badge">${rarityLabel(rar)}</span>
     </div>
     <div class="meta">
@@ -322,16 +260,12 @@ function cardItem(it){
 
 function cardGroup(g){
   if (FILTER !== 'all') return '';
-
   const total = (g.items||[]).length;
   const name  = g.name ? `${g.name} (Lote)` : `${(g.items?.[0]?.name)||'Lote'} (Lote)`;
   const rar   = ((g.items && g.items[0] && g.items[0].rarity) || 'common').toLowerCase();
   const exp   = g.expires || g.expiresISO || '';
   const pics  = (g.images && g.images.length ? g.images : (g.items||[]).map(x=>x.image)).filter(Boolean).slice(0,8);
   const lead  = pics[0] || '';
-
-  // si no hay imagen válida, no renderizamos para evitar “casilla vacía”
-  if (!lead) return '';
 
   return `
   <article class="card" data-type="lote" data-id="${g.id}" data-pics='${JSON.stringify(pics).replace(/'/g,"&#39;")}'>
@@ -353,7 +287,7 @@ function cardGroup(g){
   </article>`;
 }
 
-// ---------- Ordenadores ----------
+// ---------- Sort ----------
 function sortItems(a,b){
   const sa = secOrder(a.section||''), sb = secOrder(b.section||'');
   if (sa !== sb) return sa - sb;
@@ -373,37 +307,28 @@ function sortGroups(a,b){
 
 // ---------- Render ----------
 function render(){
-  // Lotes/Individual solo en “Todo”
+  // Mostrar barra Lotes/Individual solo en “Todo”
   viewBar.style.display = (FILTER === 'all') ? 'flex' : 'none';
-  // Blindaje extra: en pestañas ≠ “Todo”, fuerza Individual
-  if (FILTER !== 'all') {
-    VIEW = 'individual';
-  }
-  // La barrita “Nuevos” solo aparece en “Todo”
-  toolInd.style.display = (FILTER === 'all') ? 'block' : 'none';
-  
+  // Toolbar (Nuevos) visible únicamente si: (Todo + Individual)
+  toolInd.style.display = (FILTER === 'all' && VIEW === 'individual') ? 'block' : 'none';
 
   if (FILTER !== 'all') {
-    // Fuera de “Todo”: siempre Individual y sin lotes/solo-lote
+    // Fuera de “Todo”: SIEMPRE Individual y SIN lotes
     const items = DATA.items
-  .filter(it => !ONLY_NEW || isNew(it))   // <-- aplica SOLO si el chip está activo
-  .sort(sortItems);
-
-   grid.innerHTML = items.map(cardItem).join('') || `<p class="empty">Sin resultados</p>`;
+      .filter(it => normalizeType(it) === FILTER)
+      .filter(it => effectiveItemPrice(it) != null)
+      .sort(sortItems);
+    grid.innerHTML = items.map(cardItem).join('') || `<p class="empty">Sin resultados</p>`;
     return;
   }
 
   if (VIEW === 'groups') {
-    const groups = [...DATA.groups]
-      .filter(g => (g.items || []).length >= 2)
-      .sort(sortGroups);
+    const groups = [...DATA.groups].sort(sortGroups);
     grid.innerHTML = groups.map(cardGroup).join('') || `<p class="empty">Sin resultados</p>`;
 
-    // Activa carruseles (2 s)
+    // Carruseles 2s
     [...grid.querySelectorAll('.card[data-type="lote"]')].forEach(card => {
-      const picsRaw = (card.dataset.pics || '[]').replace(/&[#]39;/g,"'");
-      let pics = [];
-      try { pics = JSON.parse(picsRaw); } catch {}
+      const pics = JSON.parse((card.dataset.pics || '[]').replace(/&[#]39;/g,"'"));
       if (!pics.length) return;
       const img  = card.querySelector('img.slide');
       const dots = [...card.querySelectorAll('.dot')];
@@ -417,9 +342,10 @@ function render(){
     return;
   }
 
-  // “Todo” + Individual (sin lotes/solo-lote por defecto)
+  // “Todo” + Individual
   const items = DATA.items
-    .filter(it => !ONLY_PRICED ? true : (effectiveItemPrice(it) != null))
+    .filter(it => effectiveItemPrice(it) != null)
+    .filter(it => !ONLY_NEW || isNew(it))
     .sort(sortItems);
   grid.innerHTML = items.map(cardItem).join('') || `<p class="empty">Sin resultados</p>`;
 }
@@ -434,7 +360,7 @@ function renderShop(json){
     name: x.name,
     image: x.image || x.img_url,
     price: x.price,                // puede ser null si solo en lote
-    groupPrice: x.groupPrice,      // precio del lote
+    groupPrice: x.groupPrice,      // precio del lote (si viene)
     groupId: x.groupId || null,
     rarity: (x.rarity||'common').toLowerCase(),
     type: x.type,
@@ -442,6 +368,7 @@ function renderShop(json){
     group: x.group || x.bundle || null,
     expires: x.expires || null,
     expiresISO: x.expiresISO || null,
+    isNew: x.isNew === true || false  // placeholder por si ya viene marcado
   }));
 
   // GROUPS (Lotes)
@@ -488,6 +415,7 @@ fetch('/fortnite/shop.json?ts=' + Date.now(), { cache: 'no-store' })
 </script>
 </body>
 </html>
+
 
 
 
