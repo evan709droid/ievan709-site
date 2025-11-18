@@ -92,6 +92,7 @@
     <div class="viewbar" id="viewbar">
       <span class="chip chip-view active" data-view="groups">Lotes</span>
       <span class="chip chip-view" data-view="individual">Individual</span>
+      <span class="chip chip-view" data-view="new">Nuevos</span>
     </div>
 
     <!-- Filtros secundarios (solo para Individual) -->
@@ -115,13 +116,13 @@ const viewChips = [...document.querySelectorAll('.chip-view')];
 const viewBar   = document.getElementById('viewbar');
 
 // Soportar ambos ids para tu chip: only-new (preferido) o only-priced (legacy)
-const newChip = document.getElementById('only-new') || document.getElementById('only-priced');
-const toolInd = document.getElementById('tool-individual');
+//const newChip = document.getElementById('only-new') || document.getElementById('only-priced');
+//const toolInd = document.getElementById('tool-individual');
 
 // ---------- Estado ----------
 let FILTER = 'all';        // 'all' | 'traje' | 'gesto' | ...
 let VIEW   = 'groups';     // 'groups' | 'individual'
-let ONLY_NEW = false;      // "Nuevos"
+//let ONLY_NEW = false;      // "Nuevos"
 
 // Datos en memoria
 const DATA = { items: [], groups: [] };
@@ -220,13 +221,13 @@ viewChips.forEach(ch => ch.addEventListener('click', () => {
   render();
 }));
 
-if (newChip){
-  newChip.addEventListener('click', () => {
-    ONLY_NEW = !ONLY_NEW;
-    newChip.classList.toggle('active', ONLY_NEW);
-    render();
-  });
-}
+//if (newChip){
+//  newChip.addEventListener('click', () => {
+//    ONLY_NEW = !ONLY_NEW;
+//    newChip.classList.toggle('active', ONLY_NEW);
+//    render();
+//  });
+//}
 
 // ---------- Cards ----------
 function cardItem(it){
@@ -309,9 +310,21 @@ function sortGroups(a,b){
 function render(){
   // Mostrar barra Lotes/Individual solo en “Todo”
   viewBar.style.display = (FILTER === 'all') ? 'flex' : 'none';
-  // Toolbar (Nuevos) visible únicamente si: (Todo + Individual)
-  toolInd.style.display = (FILTER === 'all' && VIEW === 'individual') ? 'block' : 'none';
+  // Ocultar toolbar secundaria siempre (por ahora)
+  if (typeof toolInd !== 'undefined' && toolInd) toolInd.style.display = 'none';
 
+  // “Todo” + Nuevos
+  if (VIEW === 'new') {
+  // Mostramos ítems marcados como nuevos y con precio efectivo
+  const items = DATA.items
+    .filter(it => effectiveItemPrice(it) != null)
+    .filter(it => isNew(it) === true)
+    .sort(sortItems);
+
+  grid.innerHTML = items.map(cardItem).join('') || `<p class="empty">Sin resultados</p>`;
+  return;
+  }
+  
   if (FILTER !== 'all') {
     // Fuera de “Todo”: SIEMPRE Individual y SIN lotes
     const items = DATA.items
@@ -323,24 +336,28 @@ function render(){
   }
 
   if (VIEW === 'groups') {
-    const groups = [...DATA.groups].sort(sortGroups);
-    grid.innerHTML = groups.map(cardGroup).join('') || `<p class="empty">Sin resultados</p>`;
+  // Solo lotes “reales”: más de 1 ítem dentro
+  const groups = [...DATA.groups]
+    .filter(g => (g.items || []).length > 1)
+    .sort(sortGroups);
 
-    // Carruseles 2s
-    [...grid.querySelectorAll('.card[data-type="lote"]')].forEach(card => {
-      const pics = JSON.parse((card.dataset.pics || '[]').replace(/&[#]39;/g,"'"));
-      if (!pics.length) return;
-      const img  = card.querySelector('img.slide');
-      const dots = [...card.querySelectorAll('.dot')];
-      let i = 0;
-      setInterval(() => {
-        i = (i + 1) % pics.length;
-        img.src = pics[i];
-        dots.forEach((d,k)=>d.classList.toggle('active',k===i));
-      }, 2000);
-    });
-    return;
-  }
+  grid.innerHTML = groups.map(cardGroup).join('') || `<p class="empty">Sin resultados</p>`;
+
+  // Carruseles (2 s)
+  [...grid.querySelectorAll('.card[data-type="lote"]')].forEach(card => {
+    const pics = JSON.parse((card.dataset.pics || '[]').replace(/&[#]39;/g,"'"));
+    if (!pics.length) return;
+    const img  = card.querySelector('img.slide');
+    const dots = [...card.querySelectorAll('.dot')];
+    let i = 0;
+    setInterval(() => {
+      i = (i + 1) % pics.length;
+      img.src = pics[i];
+      dots.forEach((d,k)=>d.classList.toggle('active',k===i));
+    }, 2000);
+  });
+  return;
+}
 
   // “Todo” + Individual
   const items = DATA.items
@@ -415,6 +432,7 @@ fetch('/fortnite/shop.json?ts=' + Date.now(), { cache: 'no-store' })
 </script>
 </body>
 </html>
+
 
 
 
