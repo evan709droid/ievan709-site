@@ -235,9 +235,8 @@ function cardItem(it){
   const ty  = normalizeType(it);
   if (FILTER !== 'all' && ty !== FILTER) return '';
 
-  // En Individual, ocultar ítems sin precio efectivo
+  // Precio efectivo (si no hay, mostramos “Solo en lote” en vez de ocultar)
   const p = effectiveItemPrice(it);
-  if ((VIEW === 'individual' || FILTER !== 'all') && p == null) return '';
 
   const exp = it.expires || it.expiresISO || '';
   return `
@@ -246,7 +245,9 @@ function cardItem(it){
     <div class="thumb">
       <img loading="lazy" src="${it.image || it.img_url}" alt="${it.name}"
            onerror="this.closest('article').classList.add('empty')" />
-      <span class="price">${priceFmt(p)}</span>
+      <span class="price">${p == null
+  ? `<span class="tag">Solo en lote</span>`
+  : `<span class="price">${priceFmt(p)}</span>`}
       <span class="badge">${rarityLabel(rar)}</span>
     </div>
     <div class="meta">
@@ -312,24 +313,11 @@ function render(){
   viewBar.style.display = (FILTER === 'all') ? 'flex' : 'none';
   // Ocultar toolbar secundaria siempre (por ahora)
   if (typeof toolInd !== 'undefined' && toolInd) toolInd.style.display = 'none';
-
-  // “Todo” + Nuevos
-  if (VIEW === 'new') {
-  // Mostramos ítems marcados como nuevos y con precio efectivo
-  const items = DATA.items
-    .filter(it => effectiveItemPrice(it) != null)
-    .filter(it => isNew(it) === true)
-    .sort(sortItems);
-
-  grid.innerHTML = items.map(cardItem).join('') || `<p class="empty">Sin resultados</p>`;
-  return;
-  }
   
   if (FILTER !== 'all') {
     // Fuera de “Todo”: SIEMPRE Individual y SIN lotes
     const items = DATA.items
       .filter(it => normalizeType(it) === FILTER)
-      .filter(it => effectiveItemPrice(it) != null)
       .sort(sortItems);
     grid.innerHTML = items.map(cardItem).join('') || `<p class="empty">Sin resultados</p>`;
     return;
@@ -359,6 +347,17 @@ function render(){
   return;
 }
 
+  // “Todo” + Nuevos
+  if (VIEW === 'new') {
+  // Mostramos ítems marcados como nuevos y con precio efectivo
+  const items = DATA.items
+    .filter(it => effectiveItemPrice(it) != null)
+    .filter(it => isNew(it) === true)
+    .sort(sortItems);
+
+  grid.innerHTML = items.map(cardItem).join('') || `<p class="empty">Sin resultados</p>`;
+  return;
+  }
   // “Todo” + Individual
   const items = DATA.items
     .filter(it => effectiveItemPrice(it) != null)
@@ -432,6 +431,7 @@ fetch('/fortnite/shop.json?ts=' + Date.now(), { cache: 'no-store' })
 </script>
 </body>
 </html>
+
 
 
 
