@@ -139,26 +139,34 @@ function rarityLabel(r){
 
 // Clasificador robusto por type y por nombre
 function normalizeType(obj){
-  const raw = (obj.type || '').toString().toLowerCase().replace('_','-').trim();
+  // Tomar el “tipo” de varias fuentes (según lo que traiga tu JSON)
+  const raw = (
+    obj.type ||
+    obj.backendType ||
+    obj.displayType ||
+    obj.category ||
+    ''
+  ).toString().toLowerCase().replace('_','-').trim();
+
   let t = raw;
 
-  // Por TYPE directo
-  if (/^(pet|buddy|petbuddy)$/.test(raw)) t = 'companero';
-  else if (/(^|[-])(music|track|instrument)(-|$)/.test(raw)) t = 'pista';
-  else if (/(^|[-])(shoe|sneaker|jordan|nike|adidas|ultraboost)(-|$)/.test(raw)) t = 'calzado';
+  // Detección directa por tipo “backend/display”
+  if (/companion|cosmeticcompanion/.test(raw)) t = 'companero';
+  else if (/music|track|instrument|cosmeticmusic|cosmeticinstrument/.test(raw)) t = 'pista';
+  else if (/shoes?|sneaker|cosmeticshoes|jordan|nike|adidas|ultraboost/.test(raw)) t = 'calzado';
 
-  // Si aún no se determinó, usar heurística por NOMBRE
+  // Si no bastó, heurística por NOMBRE
   if (!t || t === 'outfit' || t === 'item' || t === 'misc') {
     const n = (obj.name||'').toLowerCase();
-    if (/(compañer|compane|compan|buddy|pet|mascot)/.test(n))           t = 'companero';
+    if (/(compañer|compan|buddy|pet|mascot)/.test(n))                        t = 'companero';
     else if (/(pista|improvis|jam|track|music|música|musica|instrument)/.test(n)) t = 'pista';
     else if (/(zapat|tenis|sneaker|shoe|jordan|nike|adidas|ultra\s*boost|ultraboost)/.test(n)) t = 'calzado';
-    else if (/(gesto|emote|baile|dance)/.test(n))                        t = 'gesto';
-    else if (/(pico|hacha|pickaxe)/.test(n))                             t = 'pico';
-    else if (/(ala delta|ala|glider|planeador)/.test(n))                 t = 'ala-delta';
-    else if (/(envoltorio|wrap|camo)/.test(n))                           t = 'envoltorio';
-    else if (/(mochila|back bling|backbling|accesorio)/.test(n))         t = 'mochila';
-    else                                                                  t = 'traje';
+    else if (/(gesto|emote|baile|dance)/.test(n))                             t = 'gesto';
+    else if (/(pico|hacha|pickaxe)/.test(n))                                  t = 'pico';
+    else if (/(ala delta|ala|glider|planeador)/.test(n))                      t = 'ala-delta';
+    else if (/(envoltorio|wrap|camo)/.test(n))                                t = 'envoltorio';
+    else if (/(mochila|back bling|backbling|accesorio)/.test(n))              t = 'mochila';
+    else                                                                       t = 'traje';
   }
 
   if (t === 'ala_delta') t = 'ala-delta';
@@ -291,9 +299,10 @@ function render(){
 
   if (FILTER !== 'all') {
     // Categorías: SIEMPRE Individual y SOLO ítems con precio
+    const requirePrice = (FILTER !== 'companero'); // excepción: en “Compañero” aceptamos solo-en-lote
     const items = DATA.items
       .filter(it => normalizeType(it) === FILTER)
-      .filter(it => effectiveItemPrice(it) != null)
+      .filter(it => !requirePrice || effectiveItemPrice(it) != null)
       .sort(sortItems);
     grid.innerHTML = items.map(cardItem).join('') || `<p class="empty">Sin resultados</p>`;
     return;
@@ -353,7 +362,10 @@ function renderShop(json){
     groupPrice: x.groupPrice,
     groupId: x.groupId || null,
     rarity: (x.rarity||'common').toLowerCase(),
-    type: x.type,
+    type: x.type || x.backendType || x.displayType || x.category,
+      backendType: x.backendType,     // opcional, por si quieres inspeccionar
+      displayType: x.displayType,     // opcional
+      category: x.category,
     section: x.section || x.block || x.category || null,
     group: x.group || x.bundle || null,
     expires: x.expires || null,
@@ -405,3 +417,4 @@ fetch('/fortnite/shop.json?ts=' + Date.now(), { cache: 'no-store' })
 </script>
 </body>
 </html>
+
