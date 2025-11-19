@@ -139,34 +139,43 @@ function rarityLabel(r){
 
 // Clasificador robusto por type y por nombre
 function normalizeType(obj){
-  // Tomar el “tipo” de varias fuentes (según lo que traiga tu JSON)
-  const raw = (
-    obj.type ||
-    obj.backendType ||
-    obj.displayType ||
-    obj.category ||
-    ''
-  ).toString().toLowerCase().replace('_','-').trim();
+  // Toma tipo de varias fuentes
+  const raw =
+    (obj.type || obj.backendType || obj.displayType || obj.category || '')
+      .toString().toLowerCase().replace('_','-').trim();
+
+  // Crea una cadena “todo en uno” para heurísticas
+  const haystack = (
+    raw + ' ' +
+    (obj.id || '') + ' ' +
+    (obj.backendType || '') + ' ' +
+    (obj.displayType || '') + ' ' +
+    (obj.category || '') + ' ' +
+    (obj.group || obj.bundle || '') + ' ' +
+    (obj.image || obj.img_url || '')
+  ).toLowerCase();
 
   let t = raw;
 
-  // Detección directa por tipo “backend/display”
-  if (/companion|cosmeticcompanion/.test(raw)) t = 'companero';
-  else if (/music|track|instrument|cosmeticmusic|cosmeticinstrument/.test(raw)) t = 'pista';
-  else if (/shoes?|sneaker|cosmeticshoes|jordan|nike|adidas|ultraboost/.test(raw)) t = 'calzado';
+  // Reglas fuertes por companion
+  if (/companion|cosmeticcompanion|buddy|pet/.test(haystack)) t = 'companero';
+  // Pistas / música / instrumentos
+  else if (/music|track|instrument|cosmeticmusic|cosmeticinstrument/.test(haystack)) t = 'pista';
+  // Calzado (por si luego habilitamos la pestaña)
+  else if (/shoe|shoes|sneaker|ultraboost|jordan|nike|adidas|crocs/.test(haystack)) t = 'calzado';
 
-  // Si no bastó, heurística por NOMBRE
+  // Si aún no hubo match, heurística por nombre visible
   if (!t || t === 'outfit' || t === 'item' || t === 'misc') {
-    const n = (obj.name||'').toLowerCase();
-    if (/(compañer|compan|buddy|pet|mascot)/.test(n))                        t = 'companero';
+    const n = (obj.name || '').toLowerCase();
+    if (/compañer|compan|buddy|pet|mascot/.test(n)) t = 'companero';
     else if (/(pista|improvis|jam|track|music|música|musica|instrument)/.test(n)) t = 'pista';
-    else if (/(zapat|tenis|sneaker|shoe|jordan|nike|adidas|ultra\s*boost|ultraboost)/.test(n)) t = 'calzado';
-    else if (/(gesto|emote|baile|dance)/.test(n))                             t = 'gesto';
-    else if (/(pico|hacha|pickaxe)/.test(n))                                  t = 'pico';
-    else if (/(ala delta|ala|glider|planeador)/.test(n))                      t = 'ala-delta';
-    else if (/(envoltorio|wrap|camo)/.test(n))                                t = 'envoltorio';
-    else if (/(mochila|back bling|backbling|accesorio)/.test(n))              t = 'mochila';
-    else                                                                       t = 'traje';
+    else if (/(zapat|tenis|sneaker|shoe|jordan|nike|adidas|ultra\s*boost|ultraboost|crocs)/.test(n)) t = 'calzado';
+    else if (/(gesto|emote|baile|dance)/.test(n)) t = 'gesto';
+    else if (/(pico|hacha|pickaxe)/.test(n)) t = 'pico';
+    else if (/(ala delta|ala|glider|planeador)/.test(n)) t = 'ala-delta';
+    else if (/(envoltorio|wrap|camo)/.test(n)) t = 'envoltorio';
+    else if (/(mochila|back bling|backbling|accesorio)/.test(n)) t = 'mochila';
+    else t = 'traje';
   }
 
   if (t === 'ala_delta') t = 'ala-delta';
@@ -417,4 +426,5 @@ fetch('/fortnite/shop.json?ts=' + Date.now(), { cache: 'no-store' })
 </script>
 </body>
 </html>
+
 
