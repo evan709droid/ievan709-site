@@ -173,43 +173,51 @@ function rarityLabel(r){
 
 // Clasificador robusto por type y por nombre
 function normalizeType(obj){
-  // Fuente de tipo más rica posible
   const raw = (obj.type || obj.backendType || obj.displayType || obj.category || '')
-    .toString().toLowerCase().replace(/_/g,'-').trim();
+    .toString().toLowerCase().replace('_','-').trim();
 
-  const name   = (obj.name || '').toLowerCase();
-  const group  = (obj.group || obj.bundle || '').toLowerCase();
-  const extra  = [obj.backendType, obj.displayType, obj.category, obj.id].join(' ').toLowerCase();
+  const haystack = (
+    raw + ' ' +
+    (obj.id || '') + ' ' +
+    (obj.backendType || '') + ' ' +
+    (obj.displayType || '') + ' ' +
+    (obj.category || '') + ' ' +
+    (obj.group || obj.bundle || '') + ' ' +
+    (obj.name || '') + ' ' +
+    (obj.image || obj.img_url || '')
+  ).toLowerCase();
 
-  const hay = [raw, name, group, extra].join(' ');
+  let t = raw;
 
-  // 1) Reglas duras (tienen prioridad)
-  // Mochila (Back Bling) debe ganar sobre cualquier "companion" ambiguo (caso Claptrap)
-  if (/\b(backpack|back-?bling|backbling)\b/.test(hay)) return 'mochila';
+  // 1) Música/pistas primero (para que “Buddy Holly” NO se vuelva compañero)
+  const isMusicLike = /music|track|instrument|cosmeticmusic|cosmeticinstrument|jamtrack|jam|improvis/.test(haystack);
+  if (isMusicLike) t = 'pista';
 
-  // Pistas / música
-  if (/\b(music|track|instrument|cosmeticmusic|cosmeticinstrument|jamtrack|jam|improvis)\b/.test(hay)) return 'pista';
+  // 2) Calzado (más señales)
+  const isShoeLike = /shoe|shoes|sneaker|footwear|cosmeticshoes|athenamiscshoes|ultraboost|jordan|nike|adidas|crocs/.test(haystack);
+  if (!isMusicLike && isShoeLike) t = 'calzado';
 
-  // Compañeros (mascotas)
-  if (/\b(companion|cosmeticcompanion|buddy|pet|mascot)\b/.test(hay)) return 'companero';
+  // 3) Compañero SOLO si no es música ni calzado
+  const isCompanionLike = /companion|cosmeticcompanion|buddy\b|pet\b/.test(haystack);
+  if (!isMusicLike && !isShoeLike && isCompanionLike) t = 'companero';
 
-  // Calzado (tenis/zapatos)
-  if (/\b(shoe|shoes|cosmeticshoe|sneaker|ultra\s*boost|ultraboost|jordan|nike|adidas|crocs)\b/.test(hay)
-      || /(zapat|tenis)/.test(name)) return 'calzado';
+  // 4) Fallback por nombre legible si seguimos ambiguos
+  if (!t || t === 'outfit' || t === 'item' || t === 'misc') {
+    const n = (obj.name || '').toLowerCase();
+    if (!isMusicLike && /compañer|compan|buddy\b|pet\b|mascot/.test(n)) t = 'companero';
+    else if (isMusicLike) t = 'pista';
+    else if (/(zapat|tenis|sneaker|footwear|shoe|jordan|nike|adidas|ultra\s*boost|ultraboost|crocs)/.test(n)) t = 'calzado';
+    else if (/(gesto|emote|baile|dance)/.test(n)) t = 'gesto';
+    else if (/(pico|hacha|pickaxe)/.test(n)) t = 'pico';
+    else if (/(ala delta|ala|glider|planeador)/.test(n)) t = 'ala-delta';
+    else if (/(envoltorio|wrap|camo)/.test(n)) t = 'envoltorio';
+    else if (/(mochila|back bling|backbling|accesorio)/.test(n)) t = 'mochila';
+    else t = 'traje';
+  }
 
-  // 2) Reglas por nombre visible
-  if (/(gesto|emote|baile|dance)/.test(name))                 return 'gesto';
-  if (/(pico|hacha|pickaxe)/.test(name))                      return 'pico';
-  if (/(ala delta|ala|glider|planeador)/.test(name))          return 'ala-delta';
-  if (/(envoltorio|wrap|camo)/.test(name))                    return 'envoltorio';
-  if (/(mochila|back bling|backbling|accesorio)/.test(name))  return 'mochila';
-
-  // 3) Normalizaciones menores
-  if (raw === 'ala_delta') return 'ala-delta';
-  if (raw === 'mascota')   return 'companero';
-
-  // 4) Fallback
-  return raw || 'traje';
+  if (t === 'ala_delta') t = 'ala-delta';
+  if (t === 'mascota')   t = 'companero';
+  return t;
 }
 
 function isNew(it){ return !!it.isNew; }
@@ -262,17 +270,9 @@ function cardItem(it){
   if (FILTER !== 'all' && ty !== FILTER) return '';
 
   const p = effectiveItemPrice(it);
-
-  // —— Precio/etiqueta: para 'pista' no mostramos "Solo en lote"
-  let priceBadge = '';
-  if (ty === 'pista') {
-    // si algún día tienes precio real, cámbialo aquí a: priceFmt(p)
-    priceBadge = ''; // sin etiqueta para no confundir
-  } else {
-    priceBadge = (p == null)
-      ? '<span class="tag">Solo en lote</span>'
-      : '<span class="price">' + priceFmt(p) + '</span>';
-  }
+  const priceBadge = (ty === 'pista')
+    ? `<span class="price">¿?</span>`               // pistas: sin precio real, mostramos “¿?”
+    : (p == null ? `<span class="tag">Solo en lote</span>` : `<span class="price">${priceFmt(p)}</span>`);
 
   const exp = it.expires || it.expiresISO || '';
   return `
@@ -458,6 +458,7 @@ fetch('/fortnite/shop.json?ts=' + Date.now(), { cache: 'no-store' })
 </script>
 </body>
 </html>
+
 
 
 
