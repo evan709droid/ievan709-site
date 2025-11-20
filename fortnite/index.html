@@ -273,38 +273,42 @@ viewChips.forEach(ch => ch.addEventListener('click', async () => {
 
 // ---------- Cards ----------
 function cardItem(it){
-  const rar = (it.rarity||"common").toLowerCase();
+  const rar = (it.rarity || "common").toLowerCase();
   const ty  = normalizeType(it);
   if (FILTER !== 'all' && ty !== FILTER) return '';
 
   const p = effectiveItemPrice(it);
-  let priceBadge = '';
+  // Para pistas no mostramos "Solo en lote"
+  let priceBadge;
   if (ty === 'pista') {
-  priceBadge = `<span class="price">—</span>`; // en vez de la etiqueta "Individual"
-} else {
+    priceBadge = '<span class="tag">Individual</span>';
+  } else {
     priceBadge = (p == null)
-      ? `<span class="tag">Solo en lote</span>`
-      : `<span class="price">${priceFmt(p)}</span>`;
+      ? '<span class="tag">Solo en lote</span>'
+      : '<span class="price">' + priceFmt(p) + '</span>';
   }
 
   const exp = it.expires || it.expiresISO || '';
-  return `
-  <article class="card" data-type="${ty}">
-    <div class="ring ${rar}"></div>
-    <div class="thumb">
-      <img loading="lazy" src="${it.image || it.img_url}" alt="${it.name}"
-           onerror="this.closest('article').classList.add('empty')" />
-      ${priceBadge}
-      <span class="badge">${rarityLabel(rar)}</span>
-    </div>
-    <div class="meta">
-      <div class="name">${it.name}</div>
-      <div class="sub">
-        <span>${ty}${it.group ? \` · ${it.group}\` : ''}</span>
-        <span>${exp ? \`Sale: ${exp}\` : ''}</span>
-      </div>
-    </div>
-  </article>`;
+  const subGroup = it.group ? (' · ' + it.group) : '';
+
+  return (
+    '<article class="card" data-type="' + ty + '">' +
+      '<div class="ring ' + rar + '"></div>' +
+      '<div class="thumb">' +
+        '<img loading="lazy" src="' + (it.image || it.img_url) + '" alt="' + it.name + '"' +
+        ' onerror="this.closest(\'article\').classList.add(\'empty\')" />' +
+        priceBadge +
+        '<span class="badge">' + rarityLabel(rar) + '</span>' +
+      '</div>' +
+      '<div class="meta">' +
+        '<div class="name">' + it.name + '</div>' +
+        '<div class="sub">' +
+          '<span>' + ty + subGroup + '</span>' +
+          '<span>' + (exp ? ('Sale: ' + exp) : '') + '</span>' +
+        '</div>' +
+      '</div>' +
+    '</article>'
+  );
 }
 
 function cardGroup(g){
@@ -471,6 +475,7 @@ fetch('/fortnite/shop.json?ts=' + Date.now(), { cache: 'no-store' })
 </script>
 </body>
 </html>
+
 
 
 
