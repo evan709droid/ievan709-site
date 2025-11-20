@@ -176,51 +176,44 @@ function normalizeType(obj){
   const raw = (obj.type || obj.backendType || obj.displayType || obj.category || '')
                 .toString().toLowerCase().replace('_','-').trim();
 
-  const bt  = (obj.backendType || '').toString().toLowerCase();
-  const dt  = (obj.displayType || '').toString().toLowerCase();
-  const name= (obj.name || '').toString().toLowerCase();
-
-  // Cadena agregada para heurísticas suaves
-  const hay = [
-    raw, bt, dt,
-    obj.category || '',
-    obj.group || obj.bundle || '',
-    obj.id || '',
-    obj.image || obj.img_url || ''
-  ].join(' ').toLowerCase();
+  const haystack = (
+    raw + ' ' +
+    (obj.id || '') + ' ' +
+    (obj.backendType || '') + ' ' +
+    (obj.displayType || '') + ' ' +
+    (obj.category || '') + ' ' +
+    (obj.group || obj.bundle || '') + ' ' +
+    (obj.image || obj.img_url || '')
+  ).toLowerCase();
 
   let t = raw;
 
-  // --- PRIORIDADES FUERTES (por tipo real) ---
-  // Mochila / Back Bling
-  if (bt.includes('backpack') || dt.includes('back bling') || /back\s*bling|backpack/.test(hay)) {
+  // 1) Mochilas (fuerte) — si es backpack y NO dice companion/pet, clasificar como mochila
+  if (/(backpack|back\s*bling|backbling|athenabackpack)/.test(haystack)
+      && !/(companion|cosmeticcompanion|buddy|pet)/.test(haystack)) {
     t = 'mochila';
-  }
-  // Pista / música / instrumentos (festival)
-  else if (bt.includes('music') || bt.includes('instrument') ||
-           dt.includes('music') || dt.includes('instrument') ||
-           /jam|track|festival|instrument|cosmeticmusic|cosmeticinstrument/.test(hay)) {
+
+  // 2) Compañero (fuerte)
+  } else if (/(companion|cosmeticcompanion|buddy|pet)/.test(haystack)) {
+    t = 'companero';
+
+  // 3) Pistas / música / instrumentos
+  } else if (/music|track|instrument|cosmeticmusic|cosmeticinstrument/.test(haystack)) {
     t = 'pista';
   }
-  // Compañero (sólo si el tipo explícito lo dice)
-  else if (bt.includes('companion') || dt.includes('pet') || /\bcosmeticcompanion\b/.test(hay)) {
-    t = 'companero';
-  }
-  // Calzado
-  else if (/shoe|shoes|sneaker|ultraboost|jordan|nike|adidas|crocs/.test(hay) ||
-           /(zapat|tenis|sneaker)/.test(name)) {
-    t = 'calzado';
-  }
 
-  // --- Heurísticas por nombre si aún no cuadra ---
+  // … (el resto de tus heurísticas tal como las tienes)
   if (!t || t === 'outfit' || t === 'item' || t === 'misc') {
-    if (/(gesto|emote|baile|dance)/.test(name))                    t = 'gesto';
-    else if (/(pico|hacha|pickaxe)/.test(name))                    t = 'pico';
-    else if (/(ala delta|ala|glider|planeador)/.test(name))        t = 'ala-delta';
-    else if (/(envoltorio|wrap|camo)/.test(name))                  t = 'envoltorio';
-    else if (/(mochila|back bling|backbling|accesorio)/.test(name))t = 'mochila';
-    else if (/(compañer|compan|buddy|pet|mascot)/.test(name))      t = 'companero';
-    else                                                           t = 'traje';
+    const n = (obj.name || '').toLowerCase();
+    if (/compañer|compan|buddy|pet|mascot/.test(n)) t = 'companero';
+    else if (/music|track|instrument|cosmeticmusic|cosmeticinstrument|jamtrack|jam|improvis/.test(haystack)) t = 'pista';
+    else if (/(zapat|tenis|sneaker|shoe|jordan|nike|adidas|ultra\s*boost|ultraboost|crocs)/.test(n)) t = 'calzado';
+    else if (/(gesto|emote|baile|dance)/.test(n)) t = 'gesto';
+    else if (/(pico|hacha|pickaxe)/.test(n)) t = 'pico';
+    else if (/(ala delta|ala|glider|planeador)/.test(n)) t = 'ala-delta';
+    else if (/(envoltorio|wrap|camo)/.test(n)) t = 'envoltorio';
+    else if (/(mochila|back bling|backbling|accesorio)/.test(n)) t = 'mochila';
+    else t = 'traje';
   }
 
   if (t === 'ala_delta') t = 'ala-delta';
@@ -273,15 +266,17 @@ viewChips.forEach(ch => ch.addEventListener('click', async () => {
 
 // ---------- Cards ----------
 function cardItem(it){
-  const rar = (it.rarity || "common").toLowerCase();
+  const rar = (it.rarity||"common").toLowerCase();
   const ty  = normalizeType(it);
   if (FILTER !== 'all' && ty !== FILTER) return '';
 
   const p = effectiveItemPrice(it);
-  // Para pistas no mostramos "Solo en lote"
-  let priceBadge;
+
+  // —— Precio/etiqueta: para 'pista' no mostramos "Solo en lote"
+  let priceBadge = '';
   if (ty === 'pista') {
-    priceBadge = '<span class="tag">Individual</span>';
+    // si algún día tienes precio real, cámbialo aquí a: priceFmt(p)
+    priceBadge = ''; // sin etiqueta para no confundir
   } else {
     priceBadge = (p == null)
       ? '<span class="tag">Solo en lote</span>'
@@ -289,26 +284,23 @@ function cardItem(it){
   }
 
   const exp = it.expires || it.expiresISO || '';
-  const subGroup = it.group ? (' · ' + it.group) : '';
-
-  return (
-    '<article class="card" data-type="' + ty + '">' +
-      '<div class="ring ' + rar + '"></div>' +
-      '<div class="thumb">' +
-        '<img loading="lazy" src="' + (it.image || it.img_url) + '" alt="' + it.name + '"' +
-        ' onerror="this.closest(\'article\').classList.add(\'empty\')" />' +
-        priceBadge +
-        '<span class="badge">' + rarityLabel(rar) + '</span>' +
-      '</div>' +
-      '<div class="meta">' +
-        '<div class="name">' + it.name + '</div>' +
-        '<div class="sub">' +
-          '<span>' + ty + subGroup + '</span>' +
-          '<span>' + (exp ? ('Sale: ' + exp) : '') + '</span>' +
-        '</div>' +
-      '</div>' +
-    '</article>'
-  );
+  return `
+  <article class="card" data-type="${ty}">
+    <div class="ring ${rar}"></div>
+    <div class="thumb">
+      <img loading="lazy" src="${it.image || it.img_url}" alt="${it.name}"
+           onerror="this.closest('article').classList.add('empty')" />
+      ${priceBadge}
+      <span class="badge">${rarityLabel(rar)}</span>
+    </div>
+    <div class="meta">
+      <div class="name">${it.name}</div>
+      <div class="sub">
+        <span>${ty}${it.group ? ` · ${it.group}`:''}</span>
+        <span>${exp ? `Sale: ${exp}` : ''}</span>
+      </div>
+    </div>
+  </article>`;
 }
 
 function cardGroup(g){
@@ -475,6 +467,7 @@ fetch('/fortnite/shop.json?ts=' + Date.now(), { cache: 'no-store' })
 </script>
 </body>
 </html>
+
 
 
 
