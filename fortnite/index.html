@@ -116,7 +116,7 @@ const viewBar   = document.getElementById('viewbar');
 let FILTER = 'all';        // 'all' | 'traje' | 'gesto' | ...
 let VIEW   = 'groups';     // 'groups' | 'individual' | 'new'
 let TRACKS_STATUS = 'idle'; // 'idle' | 'loading' | 'ready'
-  
+
 // Datos en memoria
 const DATA = { items: [], groups: [] };
 const GROUP_SIZE  = new Map(); // groupId -> cantidad de ítems
@@ -129,7 +129,6 @@ const secOrder = s => ({'Featured':0,'Special Featured':1,'Special Daily':2,'Dai
 const cmp = (a,b)=> a<b?-1:a>b?1:0;
 
 // ---------- Helpers ----------
-// ---------- función para cargar pistas una sola vez ----------
 async function loadTracksOnce(){
   if (TRACKS_STATUS !== 'idle') return;
   TRACKS_STATUS = 'loading';
@@ -142,10 +141,10 @@ async function loadTracksOnce(){
       id: t.id || t.trackId || ('track_' + Math.random().toString(36).slice(2)),
       name: `${t.title || 'Pista'} — ${t.artist || ''}`.trim(),
       image: t.albumArt || t.images?.icon || t.images?.small || t.images?.featured || '',
-      price: null,               // no viene de tienda
+      price: null,
       groupPrice: null,
       groupId: null,
-      rarity: 'rare',            // neutro/bonito
+      rarity: 'rare',
       type: 'pista',
       section: 'Tracks',
       group: null,
@@ -153,14 +152,13 @@ async function loadTracksOnce(){
       expiresISO: null,
     }));
 
-    // Evita duplicados si recargan pestaña:
     const ids = new Set(DATA.items.map(x=>x.id));
     mapped.forEach(m => { if(!ids.has(m.id)) DATA.items.push(m); });
 
     TRACKS_STATUS = 'ready';
   }catch(e){
     console.error('Error cargando tracks:', e);
-    TRACKS_STATUS = 'idle'; // permite reintento
+    TRACKS_STATUS = 'idle';
   }
 }
 
@@ -175,12 +173,10 @@ function rarityLabel(r){
 
 // Clasificador robusto por type y por nombre
 function normalizeType(obj){
-  // Toma tipo de varias fuentes
   const raw =
     (obj.type || obj.backendType || obj.displayType || obj.category || '')
       .toString().toLowerCase().replace('_','-').trim();
 
-  // Crea una cadena “todo en uno” para heurísticas
   const haystack = (
     raw + ' ' +
     (obj.id || '') + ' ' +
@@ -193,14 +189,10 @@ function normalizeType(obj){
 
   let t = raw;
 
-  // Reglas fuertes por companion
   if (/companion|cosmeticcompanion|buddy|pet/.test(haystack)) t = 'companero';
-  // Pistas / música / instrumentos
   else if (/music|track|instrument|cosmeticmusic|cosmeticinstrument/.test(haystack)) t = 'pista';
-  // Calzado (por si luego habilitamos la pestaña)
   else if (/shoe|shoes|sneaker|ultraboost|jordan|nike|adidas|crocs/.test(haystack)) t = 'calzado';
 
-  // Si aún no hubo match, heurística por nombre visible
   if (!t || t === 'outfit' || t === 'item' || t === 'misc') {
     const n = (obj.name || '').toLowerCase();
     if (/compañer|compan|buddy|pet|mascot/.test(n)) t = 'companero';
@@ -219,10 +211,8 @@ function normalizeType(obj){
   return t;
 }
 
-// Placeholder para “Nuevos” (mañana conectamos a /v2/cosmetics/new o a campos added/unseenFor)
 function isNew(it){ return !!it.isNew; }
 
-// Precio efectivo (para decidir si se muestra en individual)
 function effectiveItemPrice(it){
   const gid    = it.groupId;
   const gsize  = GROUP_SIZE.get(gid) || 0;
@@ -234,13 +224,11 @@ function effectiveItemPrice(it){
 }
 
 // ---------- UI: eventos ----------
-// Tipo (Todo, Traje, Gesto, Pico, Ala delta, Envoltorio, Mochila, Compañero, Pistas)
 typeChips.forEach(ch => ch.addEventListener('click', async () => {
   typeChips.forEach(c => c.classList.remove('active'));
   ch.classList.add('active');
   FILTER = ch.dataset.filter;
 
-  // La barra Lotes/Individual solo en “Todo”; fuera de ahí forzamos Individual
   if (FILTER === 'all') {
     VIEW = document.querySelector('.chip-view.active')?.dataset.view || 'groups';
     viewBar.style.display = 'flex';
@@ -251,7 +239,6 @@ typeChips.forEach(ch => ch.addEventListener('click', async () => {
     viewBar.style.display = 'none';
   }
 
-  // 👉 Si el usuario eligió "Pistas", cargamos una sola vez
   if (FILTER === 'pista' && TRACKS_STATUS === 'idle') {
     await loadTracksOnce();
   }
@@ -259,28 +246,11 @@ typeChips.forEach(ch => ch.addEventListener('click', async () => {
   render();
 }));
 
-  if (FILTER === 'all') {
-    VIEW = document.querySelector('.chip-view.active')?.dataset.view || 'groups';
-    viewBar.style.display = 'flex';
-  } else {
-    VIEW = 'individual';
-    viewChips.forEach(c => c.classList.remove('active'));
-    document.querySelector('.chip-view[data-view="individual"]')?.classList.add('active');
-    viewBar.style.display = 'none';
-  }
-  render();
-}));
-
-// Cambiador de vista (Lotes / Individual / Nuevos) — solo en “Todo”
 viewChips.forEach(ch => ch.addEventListener('click', async () => {
-  if (FILTER !== 'all') return; // seguridad extra
+  if (FILTER !== 'all') return;
   viewChips.forEach(c => c.classList.remove('active'));
   ch.classList.add('active');
   VIEW = ch.dataset.view;
-
-  // Si algún día muestras pistas desde aquí (no necesario ahora), también sería:
-  // if (VIEW === 'pistas' && TRACKS_STATUS === 'idle') await loadTracksOnce();
-
   render();
 }));
 
@@ -368,17 +338,15 @@ function render(){
   viewBar.style.display = (FILTER === 'all') ? 'flex' : 'none';
 
   if (FILTER !== 'all') {
-   // en render(), rama FILTER !== 'all'
-const requirePrice = (FILTER !== 'companero' && FILTER !== 'pista'); // ⬅️ añade 'pista'
-const items = DATA.items
-  .filter(it => normalizeType(it) === FILTER)
-  .filter(it => !requirePrice || effectiveItemPrice(it) != null)
-  .sort(sortItems);
+    const requirePrice = (FILTER !== 'companero' && FILTER !== 'pista');
+    const items = DATA.items
+      .filter(it => normalizeType(it) === FILTER)
+      .filter(it => !requirePrice || effectiveItemPrice(it) != null)
+      .sort(sortItems);
     grid.innerHTML = items.map(cardItem).join('') || `<p class="empty">Sin resultados</p>`;
     return;
   }
 
-  // “Todo” + Lotes
   if (VIEW === 'groups') {
     const groups = [...DATA.groups]
       .filter(g => (g.items || []).length > 1)
@@ -386,7 +354,6 @@ const items = DATA.items
 
     grid.innerHTML = groups.map(cardGroup).join('') || `<p class="empty">Sin resultados</p>`;
 
-    // Carruseles (2 s)
     [...grid.querySelectorAll('.card[data-type="lote"]')].forEach(card => {
       const pics = JSON.parse((card.dataset.pics || '[]').replace(/&[#]39;/g,"'"));
       if (!pics.length) return;
@@ -402,7 +369,6 @@ const items = DATA.items
     return;
   }
 
-  // “Todo” + Nuevos
   if (VIEW === 'new') {
     const items = DATA.items
       .filter(it => effectiveItemPrice(it) != null)
@@ -412,7 +378,6 @@ const items = DATA.items
     return;
   }
 
-  // “Todo” + Individual
   const items = DATA.items
     .filter(it => effectiveItemPrice(it) != null)
     .sort(sortItems);
@@ -421,7 +386,6 @@ const items = DATA.items
 
 // ---------- Ingesta ----------
 function renderShop(json){
-  // ITEMS (Individual)
   const items = Array.isArray(json.items) ? json.items
     : (json.data && Array.isArray(json.data.items) ? json.data.items : []);
   DATA.items = items.map(x => ({
@@ -433,9 +397,9 @@ function renderShop(json){
     groupId: x.groupId || null,
     rarity: (x.rarity||'common').toLowerCase(),
     type: x.type || x.backendType || x.displayType || x.category,
-      backendType: x.backendType,     // opcional, por si quieres inspeccionar
-      displayType: x.displayType,     // opcional
-      category: x.category,
+    backendType: x.backendType,
+    displayType: x.displayType,
+    category: x.category,
     section: x.section || x.block || x.category || null,
     group: x.group || x.bundle || null,
     expires: x.expires || null,
@@ -443,7 +407,6 @@ function renderShop(json){
     isNew: x.isNew === true || false
   }));
 
-  // GROUPS (Lotes)
   DATA.groups = Array.isArray(json.groups) ? json.groups.map(g => ({
     id: g.id,
     name: g.name,
@@ -456,7 +419,6 @@ function renderShop(json){
     }))
   })) : [];
 
-  // Mapas auxiliares
   GROUP_SIZE.clear(); GROUP_PRICE.clear();
   DATA.items.forEach(it => {
     if (it.groupId) {
@@ -487,6 +449,7 @@ fetch('/fortnite/shop.json?ts=' + Date.now(), { cache: 'no-store' })
 </script>
 </body>
 </html>
+
 
 
 
