@@ -234,17 +234,28 @@ function effectiveItemPrice(it){
 }
 
 // ---------- UI: eventos ----------
-typeChips.forEach(ch => ch.addEventListener('click', () => {
+// Tipo (Todo, Traje, Gesto, Pico, Ala delta, Envoltorio, Mochila, Compañero, Pistas)
+typeChips.forEach(ch => ch.addEventListener('click', async () => {
   typeChips.forEach(c => c.classList.remove('active'));
   ch.classList.add('active');
   FILTER = ch.dataset.filter;
 
-  if (FILTER === 'pista') {   // ⬅️ dispara la carga
+  // La barra Lotes/Individual solo en “Todo”; fuera de ahí forzamos Individual
+  if (FILTER === 'all') {
+    VIEW = document.querySelector('.chip-view.active')?.dataset.view || 'groups';
+    viewBar.style.display = 'flex';
+  } else {
+    VIEW = 'individual';
+    viewChips.forEach(c => c.classList.remove('active'));
+    document.querySelector('.chip-view[data-view="individual"]')?.classList.add('active');
+    viewBar.style.display = 'none';
+  }
+
+  // 👉 Si el usuario eligió "Pistas", cargamos una sola vez
+  if (FILTER === 'pista' && TRACKS_STATUS === 'idle') {
     await loadTracksOnce();
   }
 
-  // resto igual…
-  if (FILTER === 'all') { /* … */ } else { /* … */ }
   render();
 }));
 
@@ -260,11 +271,16 @@ typeChips.forEach(ch => ch.addEventListener('click', () => {
   render();
 }));
 
-viewChips.forEach(ch => ch.addEventListener('click', () => {
-  if (FILTER !== 'all') return;
+// Cambiador de vista (Lotes / Individual / Nuevos) — solo en “Todo”
+viewChips.forEach(ch => ch.addEventListener('click', async () => {
+  if (FILTER !== 'all') return; // seguridad extra
   viewChips.forEach(c => c.classList.remove('active'));
   ch.classList.add('active');
   VIEW = ch.dataset.view;
+
+  // Si algún día muestras pistas desde aquí (no necesario ahora), también sería:
+  // if (VIEW === 'pistas' && TRACKS_STATUS === 'idle') await loadTracksOnce();
+
   render();
 }));
 
@@ -471,6 +487,7 @@ fetch('/fortnite/shop.json?ts=' + Date.now(), { cache: 'no-store' })
 </script>
 </body>
 </html>
+
 
 
 
