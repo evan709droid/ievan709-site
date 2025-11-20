@@ -115,7 +115,8 @@ const viewBar   = document.getElementById('viewbar');
 // ---------- Estado ----------
 let FILTER = 'all';        // 'all' | 'traje' | 'gesto' | ...
 let VIEW   = 'groups';     // 'groups' | 'individual' | 'new'
-
+let TRACKS_STATUS = 'idle'; // 'idle' | 'loading' | 'ready'
+  
 // Datos en memoria
 const DATA = { items: [], groups: [] };
 const GROUP_SIZE  = new Map(); // groupId -> cantidad de ítems
@@ -128,6 +129,41 @@ const secOrder = s => ({'Featured':0,'Special Featured':1,'Special Daily':2,'Dai
 const cmp = (a,b)=> a<b?-1:a>b?1:0;
 
 // ---------- Helpers ----------
+// ---------- función para cargar pistas una sola vez ----------
+async function loadTracksOnce(){
+  if (TRACKS_STATUS !== 'idle') return;
+  TRACKS_STATUS = 'loading';
+  try{
+    const r = await fetch('https://fortnite-api.com/v2/cosmetics/tracks?language=es', {cache:'no-store'});
+    const j = await r.json();
+    const arr = Array.isArray(j?.data) ? j.data : [];
+
+    const mapped = arr.map(t => ({
+      id: t.id || t.trackId || ('track_' + Math.random().toString(36).slice(2)),
+      name: `${t.title || 'Pista'} — ${t.artist || ''}`.trim(),
+      image: t.albumArt || t.images?.icon || t.images?.small || t.images?.featured || '',
+      price: null,               // no viene de tienda
+      groupPrice: null,
+      groupId: null,
+      rarity: 'rare',            // neutro/bonito
+      type: 'pista',
+      section: 'Tracks',
+      group: null,
+      expires: null,
+      expiresISO: null,
+    }));
+
+    // Evita duplicados si recargan pestaña:
+    const ids = new Set(DATA.items.map(x=>x.id));
+    mapped.forEach(m => { if(!ids.has(m.id)) DATA.items.push(m); });
+
+    TRACKS_STATUS = 'ready';
+  }catch(e){
+    console.error('Error cargando tracks:', e);
+    TRACKS_STATUS = 'idle'; // permite reintento
+  }
+}
+
 function priceFmt(p){
   if (p == null || p === "") return "¿?";
   const s = String(p); return /^\d+$/.test(s) ? `${s} V-Bucks` : s;
@@ -168,7 +204,7 @@ function normalizeType(obj){
   if (!t || t === 'outfit' || t === 'item' || t === 'misc') {
     const n = (obj.name || '').toLowerCase();
     if (/compañer|compan|buddy|pet|mascot/.test(n)) t = 'companero';
-    else if (/(pista|improvis|jam|track|music|música|musica|instrument)/.test(n)) t = 'pista';
+    else if (/music|track|instrument|cosmeticmusic|cosmeticinstrument|jamtrack|jam|improvis/.test(haystack)) t = 'pista';
     else if (/(zapat|tenis|sneaker|shoe|jordan|nike|adidas|ultra\s*boost|ultraboost|crocs)/.test(n)) t = 'calzado';
     else if (/(gesto|emote|baile|dance)/.test(n)) t = 'gesto';
     else if (/(pico|hacha|pickaxe)/.test(n)) t = 'pico';
@@ -202,6 +238,15 @@ typeChips.forEach(ch => ch.addEventListener('click', () => {
   typeChips.forEach(c => c.classList.remove('active'));
   ch.classList.add('active');
   FILTER = ch.dataset.filter;
+
+  if (FILTER === 'pista') {   // ⬅️ dispara la carga
+    await loadTracksOnce();
+  }
+
+  // resto igual…
+  if (FILTER === 'all') { /* … */ } else { /* … */ }
+  render();
+}));
 
   if (FILTER === 'all') {
     VIEW = document.querySelector('.chip-view.active')?.dataset.view || 'groups';
@@ -307,12 +352,12 @@ function render(){
   viewBar.style.display = (FILTER === 'all') ? 'flex' : 'none';
 
   if (FILTER !== 'all') {
-    // Categorías: SIEMPRE Individual y SOLO ítems con precio
-    const requirePrice = (FILTER !== 'companero'); // excepción: en “Compañero” aceptamos solo-en-lote
-    const items = DATA.items
-      .filter(it => normalizeType(it) === FILTER)
-      .filter(it => !requirePrice || effectiveItemPrice(it) != null)
-      .sort(sortItems);
+   // en render(), rama FILTER !== 'all'
+const requirePrice = (FILTER !== 'companero' && FILTER !== 'pista'); // ⬅️ añade 'pista'
+const items = DATA.items
+  .filter(it => normalizeType(it) === FILTER)
+  .filter(it => !requirePrice || effectiveItemPrice(it) != null)
+  .sort(sortItems);
     grid.innerHTML = items.map(cardItem).join('') || `<p class="empty">Sin resultados</p>`;
     return;
   }
@@ -426,5 +471,6 @@ fetch('/fortnite/shop.json?ts=' + Date.now(), { cache: 'no-store' })
 </script>
 </body>
 </html>
+
 
 
