@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>Noticias de Fortnite — iEvan709</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="icon" href="data:,">
+<style>
+:root{
+  --bg:#0b0f1a; --panel:#111726; --card:#141c2e;
+  --txt:#e8ecf1; --muted:#9fb0c7; --chip:#1a2236; --accent:#2b57a3;
+}
+*{box-sizing:border-box} body{margin:0;background:linear-gradient(180deg,#0b0f1a,#0d1324 40%,#0b0f1a);color:var(--txt);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Noto Sans',sans-serif}
+.wrap{max-width:1100px;margin:auto;padding:20px}
+h1{margin:0 0 8px;font-size:24px}
+.small{color:var(--muted);margin-bottom:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.card{background:var(--card);border:1px solid #1b2440;border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.thumb{position:relative;width:100%;padding-top:56%}
+.thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.meta{padding:12px}
+.title{font-weight:700;margin-bottom:6px}
+.body{font-size:14px;color:#cfe0ff}
+.tag{display:inline-block;margin-top:8px;font-size:12px;color:#9fb0c7}
+.headerbar{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 16px}
+.chip{padding:8px 12px;border-radius:999px;background:var(--chip);color:#cfe0ff;border:1px solid #243150;cursor:pointer;font-size:13px}
+.chip.active{background:#244077;color:#fff;border-color:var(--accent)}
+footer{margin:28px 0 8px;color:var(--muted);font-size:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Noticias de Fortnite</h1>
+  <div class="small" id="date">Cargando…</div>
+
+  <div class="headerbar">
+    <span class="chip active" data-src="br">Battle Royale</span>
+    <span class="chip" data-src="stw">Salvar el mundo</span>
+  </div>
+
+  <section class="grid" id="grid"></section>
+  <footer>Fuente: Fortnite-API · Render por iEvan709</footer>
+</div>
+
+<script>
+'use strict';
+const grid = document.getElementById('grid');
+const chips = [...document.querySelectorAll('.chip')];
+const dateEl = document.getElementById('date');
+let SOURCE = 'br';
+let CACHE = null;
+
+chips.forEach(ch => ch.addEventListener('click', () => {
+  chips.forEach(c => c.classList.remove('active'));
+  ch.classList.add('active');
+  SOURCE = ch.dataset.src;
+  render();
+}));
+
+function pickMotds(data, src){
+  // intenta varios layouts típicos
+  if (!data) return [];
+  if (src === 'br')  return data.br?.motds || data.motds || [];
+  if (src === 'stw') return data.stw?.motds || data.motds || [];
+  return data.motds || [];
+}
+
+function card(n){
+  const img = n.image || n.img || n.banner || n.tile || '';
+  const body = n.body || n.tabTitle || n.message || '';
+  const title = n.title || n.heading || 'Actualización';
+  const tag = n.platform || n.topic || n.id || '';
+  return `
+  <article class="card">
+    <div class="thumb">${img ? `<img loading="lazy" src="${img}" alt="${title}">` : ''}</div>
+    <div class="meta">
+      <div class="title">${title}</div>
+      <div class="body">${body}</div>
+      ${tag ? `<div class="tag">${tag}</div>` : ''}
+    </div>
+  </article>`;
+}
+
+function render(){
+  const motds = pickMotds(CACHE?.data, SOURCE);
+  grid.innerHTML = motds.map(card).join('') || `<p class="small">Sin noticias.</p>`;
+}
+
+fetch('https://fortnite-api.com/v2/news?language=es',{cache:'no-store'})
+  .then(r=>r.json())
+  .then(j=>{
+    CACHE = j;
+    try{
+      const ts = j.data?.date || j.lastModified || j.status || Date.now();
+      dateEl.textContent = 'Actualizado: ' + new Date(ts).toLocaleString();
+    }catch{ dateEl.textContent = 'Actualizado'; }
+    render();
+  })
+  .catch(e=>{
+    dateEl.textContent = 'No se pudieron cargar las noticias.';
+    grid.innerHTML = `<p class="small">Error: ${e}</p>`;
+  });
+</script>
+</body>
+</html>
