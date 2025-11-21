@@ -21,18 +21,34 @@ h2{font-size:18px;margin:12px 0}
 .title{font-weight:700;margin-bottom:6px}
 .body{font-size:14px;color:#cfe0ff}
 footer{margin:28px 0 8px;color:var(--muted);font-size:12px}
+  .topnav{position:sticky;top:0;z-index:50;background:rgba(10,14,25,.8);backdrop-filter:blur(6px);border-bottom:1px solid #1b2440}
+.topnav .wrap{max-width:1100px;margin:auto;display:flex;align-items:center;justify-content:space-between;padding:10px 16px}
+.topnav a{color:#cfe0ff;text-decoration:none;padding:8px 10px;border-radius:10px}
+.topnav a:hover{background:#1a2236}
+.topnav .brand{font-weight:700;color:#fff}
+.topnav .links a.active{background:#244077;color:#fff;border:1px solid #2b57a3}
+
+.site-footer{border-top:1px solid #1b2440;margin-top:32px}
+.site-footer .wrap{max-width:1100px;margin:auto;padding:16px;color:#9fb0c7}
 </style>
 </head>
 <body>
-  <nav class="site-nav">
-  <div class="wrap nav-inner">
+  <div class="subnav wrap" style="margin-top:8px">
+  <a href="/fortnite/" class="chip">Tienda BR</a>
+  <a href="/fortnite/news.html" class="chip">Noticias</a>
+  <a href="/fortnite/stw.html" class="chip">STW</a>
+</div>
+  <nav class="topnav">
+  <div class="wrap">
     <a class="brand" href="/">ievan709.online</a>
-    <div class="nav-links">
-      <a href="/"                data-nav="home">Inicio</a>
-      <a href="/fortnite/tienda.html"   data-nav="tienda">Tienda</a>
-      <a href="/fortnite/stw.html"      data-nav="stw">Salvar al Mundo</a>
-      <a href="/fortnite/noticias.html" data-nav="news">Noticias</a>
+    <div class="links">
+      <a href="/fortnite/"           data-nav="tienda">Tienda BR</a>
+      <a href="/fortnite/news.html"  data-nav="news">Noticias</a>
+      <a href="/fortnite/stw.html"   data-nav="stw">Salvar al Mundo</a>
+      <a href="/privacy.html"        data-nav="priv">Privacidad</a>
     </div>
+  </div>
+</nav>
   </div>
 </nav>
 <div class="wrap">
@@ -89,13 +105,26 @@ fetch('https://fortnite-api.com/v2/news/stw?language=es',{cache:'no-store'})
 </script>
   <footer class="site-footer">
   <div class="wrap">
-    <div class="foot-links">
-      <a href="/fortnite/tienda.html">Tienda</a> ·
-      <a href="/fortnite/stw.html">Salvar al Mundo</a> ·
-      <a href="/fortnite/noticias.html">Noticias</a>
-    </div>
-    <small>© 2025 ievan709 · Hecho con Fortnite-API · Política de privacidad</small>
+    <small>© 2025 ievan709 · Fuente: Fortnite-API · Sitio sin anuncios</small>
   </div>
 </footer>
+  <script>
+  (function(){
+    const p = location.pathname;
+    const map = [
+      {sel:'[data-nav="tienda"]', test: /^\/fortnite\/(index\.html)?$/},
+      {sel:'[data-nav="news"]',   test: /^\/fortnite\/news\.html$/},
+      {sel:'[data-nav="stw"]',    test: /^\/fortnite\/stw\.html$/},
+      {sel:'[data-nav="priv"]',   test: /^\/privacy\.html$/},
+    ];
+    for (const {sel,test} of map){
+      if (test.test(p)) { const el=document.querySelector(sel); el&&el.classList.add('active'); }
+    }
+    // Home activo si no estamos en /fortnite/*
+    if (!/^\/fortnite\//.test(p) && p !== '/privacy.html'){
+      const home = document.querySelector('.brand'); home && home.classList.add('active');
+    }
+  })();
+</script>
 </body>
 </html>
