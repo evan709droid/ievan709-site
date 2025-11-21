@@ -29,6 +29,17 @@ footer{margin:28px 0 8px;color:var(--muted);font-size:12px}
 </style>
 </head>
 <body>
+  <nav class="site-nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="/">ievan709.online</a>
+    <div class="nav-links">
+      <a href="/"                data-nav="home">Inicio</a>
+      <a href="/fortnite/tienda.html"   data-nav="tienda">Tienda</a>
+      <a href="/fortnite/stw.html"      data-nav="stw">Salvar al Mundo</a>
+      <a href="/fortnite/noticias.html" data-nav="news">Noticias</a>
+    </div>
+  </div>
+</nav>
 <div class="wrap">
   <h1>Noticias de Fortnite</h1>
   <div class="small" id="date">Cargando…</div>
@@ -101,5 +112,15 @@ fetch('https://fortnite-api.com/v2/news?language=es',{cache:'no-store'})
     grid.innerHTML = `<p class="small">Error: ${e}</p>`;
   });
 </script>
+  <footer class="site-footer">
+  <div class="wrap">
+    <div class="foot-links">
+      <a href="/fortnite/tienda.html">Tienda</a> ·
+      <a href="/fortnite/stw.html">Salvar al Mundo</a> ·
+      <a href="/fortnite/noticias.html">Noticias</a>
+    </div>
+    <small>© 2025 ievan709 · Hecho con Fortnite-API · Política de privacidad</small>
+  </div>
+</footer>
 </body>
 </html>
