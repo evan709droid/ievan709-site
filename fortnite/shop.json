@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2025-12-11T02:05:35.030676+00:00",
-  "sourceDate": "2025-12-11 00:00:00+00:00",
-  "count": 294,
+  "updatedAt": "2025-12-12T02:05:14.859576+00:00",
+  "sourceDate": "2025-12-12 00:00:00+00:00",
+  "count": 332,
   "ok": true,
   "items": [
     {
@@ -17,6 +17,22 @@
       "group": null,
       "groupId": "v2:/db1b790df819aa4ba25e4e152a84b47973de4e1afb734afca737b23f98b299f1",
       "groupPrice": 800,
+      "groupCount": 1,
+      "series": null
+    },
+    {
+      "id": "Shoes_ClinicRaiseBarge",
+      "name": "Crocs Classic Marbled Clog \"Tinted Glass\"",
+      "image": "https://fortnite-api.com/images/cosmetics/br/shoes_clinicraisebarge/icon.png",
+      "rarity": "common",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "traje",
+      "section": null,
+      "group": null,
+      "groupId": "v2:/9cec3b32928df5331533e860f1925a9fcc91413052719d78af1cdca5a84336d2",
+      "groupPrice": 1000,
       "groupCount": 1,
       "series": null
     },
@@ -69,50 +85,34 @@
       "series": null
     },
     {
-      "id": "Character_ImpulseSpring_D",
-      "name": "Protectora de la portería",
-      "image": "https://fortnite-api.com/images/cosmetics/br/character_impulsespring_d/icon.png",
-      "rarity": "epic",
-      "price": null,
-      "expires": null,
-      "expiresISO": null,
-      "type": "traje",
-      "section": null,
-      "group": null,
-      "groupId": "v2:/c63256dbb8ea617a8162e3526aab822c8e84b8d7f15a0ad0fecffdf99c79c7ee",
-      "groupPrice": 1500,
-      "groupCount": 1,
-      "series": null
-    },
-    {
-      "id": "Character_SunShine",
-      "name": "Rayo solar",
-      "image": "https://fortnite-api.com/images/cosmetics/br/character_sunshine/icon.png",
+      "id": "Pickaxe_OvenDrastic",
+      "name": "Nunchakus del rayo",
+      "image": "https://fortnite-api.com/images/cosmetics/br/pickaxe_ovendrastic/icon.png",
       "rarity": "rare",
       "price": null,
       "expires": null,
       "expiresISO": null,
-      "type": "traje",
+      "type": "pico",
       "section": null,
-      "group": "Lote Hermoso día",
-      "groupId": "v2:/5e86ba92efea7a45541305882c6a43f14b353b1b2a163428ad4107f84f62bb15",
-      "groupPrice": 1500,
+      "group": "Nunchakus del rayo",
+      "groupId": "v2:/71862276a40d879203f6154d9d103959fd79b1d0eb0e316e5565ff85409fb037",
+      "groupPrice": 800,
       "groupCount": 2,
       "series": null
     },
     {
-      "id": "Backpack_SunShine",
-      "name": "Aperitivo luminario",
-      "image": "https://fortnite-api.com/images/cosmetics/br/backpack_sunshine/icon.png",
+      "id": "Backpack_OvenDrastic",
+      "name": "Nunchakus del rayo",
+      "image": "https://fortnite-api.com/images/cosmetics/br/backpack_ovendrastic/icon.png",
       "rarity": "rare",
       "price": null,
       "expires": null,
       "expiresISO": null,
       "type": "mochila",
       "section": null,
-      "group": "Lote Hermoso día",
-      "groupId": "v2:/5e86ba92efea7a45541305882c6a43f14b353b1b2a163428ad4107f84f62bb15",
-      "groupPrice": 1500,
+      "group": "Nunchakus del rayo",
+      "groupId": "v2:/71862276a40d879203f6154d9d103959fd79b1d0eb0e316e5565ff85409fb037",
+      "groupPrice": 800,
       "groupCount": 2,
       "series": null
     },
@@ -229,22 +229,6 @@
       "series": null
     },
     {
-      "id": "Pickaxe_ID_682_BistroAstronautFemale_A3MD2",
-      "name": "Guadaña viajera espacial",
-      "image": "https://fortnite-api.com/images/cosmetics/br/pickaxe_id_682_bistroastronautfemale_a3md2/icon.png",
-      "rarity": "icon_series",
-      "price": null,
-      "expires": null,
-      "expiresISO": null,
-      "type": "pico",
-      "section": null,
-      "group": null,
-      "groupId": "v2:/2dca0b0a7fc977f7bd13e261afb6fdff7078f4b4ec7ecef60dc7e48b5c8b6cc6",
-      "groupPrice": 800,
-      "groupCount": 1,
-      "series": "Serie de ídolos"
-    },
-    {
       "id": "Pickaxe_ID_629_MechanicalEngineerSummerFemale",
       "name": "Aquallave",
       "image": "https://fortnite-api.com/images/cosmetics/br/pickaxe_id_629_mechanicalengineersummerfemale/icon.png",
@@ -307,22 +291,6 @@
       "groupPrice": 1200,
       "groupCount": 1,
       "series": null
-    },
-    {
-      "id": "EID_FrontYard",
-      "name": "Paso pandillero",
-      "image": "https://fortnite-api.com/images/cosmetics/br/eid_frontyard/icon.png",
-      "rarity": "icon_series",
-      "price": null,
-      "expires": null,
-      "expiresISO": null,
-      "type": "gesto",
-      "section": null,
-      "group": null,
-      "groupId": "v2:/66995041a0112a6fce99f99e8867756a6ca3dcf9f8b61cc6507b2a537798c1dc",
-      "groupPrice": 500,
-      "groupCount": 1,
-      "series": "Serie de ídolos"
     },
     {
       "id": "Character_ChimeCurlCorn",
@@ -405,20 +373,20 @@
       "series": "Serie de ídolos"
     },
     {
-      "id": "Shoes_VolumeWellArgyle",
-      "name": "adidas Forum JS Wings 4.0 \"White\"",
-      "image": "https://fortnite-api.com/images/cosmetics/br/shoes_volumewellargyle/icon.png",
-      "rarity": "common",
+      "id": "Backpack_SummitReedGrit_Mic",
+      "name": "Voz antagonista",
+      "image": "https://fortnite-api.com/images/cosmetics/br/backpack_summitreedgrit_mic/icon.png",
+      "rarity": "icon_series",
       "price": null,
       "expires": null,
       "expiresISO": null,
-      "type": "traje",
+      "type": "mochila",
       "section": null,
       "group": null,
-      "groupId": "v2:/348938c55f47c36d54c5feafad8675a9e9de9042e80083acd25936ec82bc17a3",
-      "groupPrice": 1000,
+      "groupId": "v2:/7d6544c1829f51145afd4439c1231efacfb6cfae8271e50dcc39fc62cd181651",
+      "groupPrice": 800,
       "groupCount": 1,
-      "series": null
+      "series": "Serie de ídolos"
     },
     {
       "id": "Character_EmeraldGlassPink",
@@ -469,22 +437,6 @@
       "series": null
     },
     {
-      "id": "EID_NeverGonna",
-      "name": "Never Gonna",
-      "image": "https://fortnite-api.com/images/cosmetics/br/eid_nevergonna/icon.png",
-      "rarity": "icon_series",
-      "price": null,
-      "expires": null,
-      "expiresISO": null,
-      "type": "gesto",
-      "section": null,
-      "group": null,
-      "groupId": "v2:/78c8cc9a4369adbbe0764d8b56ad58ad64e6d0bb71c4552d546b7d283155e873",
-      "groupPrice": 500,
-      "groupCount": 1,
-      "series": "Serie de ídolos"
-    },
-    {
       "id": "Character_FuzzyDarkness",
       "name": "Guff espectral",
       "image": "https://fortnite-api.com/images/cosmetics/br/character_fuzzydarkness/icon.png",
@@ -533,6 +485,22 @@
       "series": null
     },
     {
+      "id": "EID_EasternBloc",
+      "name": "Sentadilla con patada",
+      "image": "https://fortnite-api.com/images/cosmetics/br/eid_easternbloc/icon.png",
+      "rarity": "epic",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "gesto",
+      "section": null,
+      "group": null,
+      "groupId": "v2:/e2c0bd95006f4dd705fa70cf5e784ffe18ad3b588495deac45d05fe8625307e1",
+      "groupPrice": 800,
+      "groupCount": 1,
+      "series": null
+    },
+    {
       "id": "EID_FearCatch",
       "name": "Miniplaneador espectral",
       "image": "https://fortnite-api.com/images/cosmetics/br/eid_fearcatch/icon.png",
@@ -545,6 +513,54 @@
       "group": null,
       "groupId": "v2:/426ed01b198c6d6bf6a008bbd28a925b7da70e4c07460a46fbf4ff5b45cc745a",
       "groupPrice": 500,
+      "groupCount": 1,
+      "series": null
+    },
+    {
+      "id": "Character_SummitReedGrit",
+      "name": "Playboi Carti",
+      "image": "https://fortnite-api.com/images/cosmetics/br/character_summitreedgrit/icon.png",
+      "rarity": "icon_series",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "traje",
+      "section": null,
+      "group": "Playboi Carti",
+      "groupId": "v2:/95926ed551edc2928c0de7f2167dc7079dc391ff2bfe3beff24ac46a1583fef1",
+      "groupPrice": 1500,
+      "groupCount": 2,
+      "series": "Serie de ídolos"
+    },
+    {
+      "id": "Backpack_SummitReedGrit",
+      "name": "Rueda de Carti",
+      "image": "https://fortnite-api.com/images/cosmetics/br/backpack_summitreedgrit/icon.png",
+      "rarity": "icon_series",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "mochila",
+      "section": null,
+      "group": "Playboi Carti",
+      "groupId": "v2:/95926ed551edc2928c0de7f2167dc7079dc391ff2bfe3beff24ac46a1583fef1",
+      "groupPrice": 1500,
+      "groupCount": 2,
+      "series": "Serie de ídolos"
+    },
+    {
+      "id": "EID_TicketPoke",
+      "name": "Patada gélida",
+      "image": "https://fortnite-api.com/images/cosmetics/br/eid_ticketpoke/icon.png",
+      "rarity": "common",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "gesto",
+      "section": null,
+      "group": null,
+      "groupId": "v2:/c6533589f75432c42999bb05389fe6fedaec756c87014020b109967b6eef3d60",
+      "groupPrice": 300,
       "groupCount": 1,
       "series": null
     },
@@ -565,6 +581,22 @@
       "series": null
     },
     {
+      "id": "Shoes_TinselGlam",
+      "name": "Tacones brillantes",
+      "image": "https://fortnite-api.com/images/cosmetics/br/shoes_tinselglam/icon.png",
+      "rarity": "common",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "traje",
+      "section": null,
+      "group": null,
+      "groupId": "v2:/eaa27ff467a57c5984787964c19eaa607b45a8a8dedd9862d45734cb4d7dd1e6",
+      "groupPrice": 600,
+      "groupCount": 1,
+      "series": null
+    },
+    {
       "id": "EID_IvyStub",
       "name": "Psicoquinesis",
       "image": "https://fortnite-api.com/images/cosmetics/br/eid_ivystub/icon.png",
@@ -578,6 +610,38 @@
       "groupId": "v2:/b23d2569f49b86b73a360a2a46a78b97677922bcc739d8bd9d7a6847b7e6b019",
       "groupPrice": 300,
       "groupCount": 1,
+      "series": null
+    },
+    {
+      "id": "Pickaxe_TicketPoke",
+      "name": "Shurikens de hielo",
+      "image": "https://fortnite-api.com/images/cosmetics/br/pickaxe_ticketpoke/icon.png",
+      "rarity": "rare",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "pico",
+      "section": null,
+      "group": "Shurikens de hielo",
+      "groupId": "v2:/d7bd4a741c44025894a1800232229d36aa9430289c16aff6ad6f4b20ed313b95",
+      "groupPrice": 800,
+      "groupCount": 2,
+      "series": null
+    },
+    {
+      "id": "Backpack_TicketPoke",
+      "name": "Shurikens de hielo",
+      "image": "https://fortnite-api.com/images/cosmetics/br/backpack_ticketpoke/icon.png",
+      "rarity": "rare",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "mochila",
+      "section": null,
+      "group": "Shurikens de hielo",
+      "groupId": "v2:/d7bd4a741c44025894a1800232229d36aa9430289c16aff6ad6f4b20ed313b95",
+      "groupPrice": 800,
+      "groupCount": 2,
       "series": null
     },
     {
@@ -613,20 +677,20 @@
       "series": null
     },
     {
-      "id": "Character_JoltMosaic",
-      "name": "Gogo Yubari",
-      "image": "https://fortnite-api.com/images/cosmetics/br/character_joltmosaic/icon.png",
-      "rarity": "epic",
+      "id": "EID_Medicinal",
+      "name": "No hay cura",
+      "image": "https://fortnite-api.com/images/cosmetics/br/eid_medicinal/icon.png",
+      "rarity": "icon_series",
       "price": null,
       "expires": null,
       "expiresISO": null,
-      "type": "traje",
+      "type": "gesto",
       "section": null,
       "group": null,
-      "groupId": "v2:/a2a4ba21c0d315deefe1bdfd2e7e5d425b7c3e036b15d0e7c4fdb18c77f25d30",
-      "groupPrice": 1200,
+      "groupId": "v2:/f724f07f1a891b9ae7cb19101ff8dfe71b9c8c5e6cedb887cde33af65d101eeb",
+      "groupPrice": 500,
       "groupCount": 1,
-      "series": null
+      "series": "Serie de ídolos"
     },
     {
       "id": "Character_GlamClaws",
@@ -661,6 +725,22 @@
       "series": null
     },
     {
+      "id": "Character_JoltMosaic",
+      "name": "Gogo Yubari",
+      "image": "https://fortnite-api.com/images/cosmetics/br/character_joltmosaic/icon.png",
+      "rarity": "epic",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "traje",
+      "section": null,
+      "group": null,
+      "groupId": "v2:/a2a4ba21c0d315deefe1bdfd2e7e5d425b7c3e036b15d0e7c4fdb18c77f25d30",
+      "groupPrice": 1200,
+      "groupCount": 1,
+      "series": null
+    },
+    {
       "id": "Backpack_IvyStub",
       "name": "Minitornado del Terror",
       "image": "https://fortnite-api.com/images/cosmetics/br/backpack_ivystub/icon.png",
@@ -675,6 +755,38 @@
       "groupPrice": 300,
       "groupCount": 1,
       "series": null
+    },
+    {
+      "id": "Backpack_HexagonVoxel_Bass",
+      "name": "Vóxel oscuro",
+      "image": "https://fortnite-api.com/images/cosmetics/br/backpack_hexagonvoxel_bass/icon.png",
+      "rarity": "rare",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "mochila",
+      "section": null,
+      "group": null,
+      "groupId": "v2:/6303e41b527dceda9531e1565a7793b8aeaab759fe7f2a0df8c73a01ad4f43ea",
+      "groupPrice": 800,
+      "groupCount": 1,
+      "series": null
+    },
+    {
+      "id": "Backpack_SummitReedGrit",
+      "name": "Rueda de Carti",
+      "image": "https://fortnite-api.com/images/cosmetics/br/backpack_summitreedgrit/icon.png",
+      "rarity": "icon_series",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "mochila",
+      "section": null,
+      "group": null,
+      "groupId": "v2:/f40627d5977a3a5daa77ed5eca1088ed6586d9b7f1d94a00e4576143cac8660a",
+      "groupPrice": 300,
+      "groupCount": 1,
+      "series": "Serie de ídolos"
     },
     {
       "id": "Backpack_JoltMosaic",
@@ -709,67 +821,51 @@
       "series": null
     },
     {
-      "id": "CID_A_227_Athena_Commando_F_BistroAstronaut_JJLK5",
-      "name": "Ariana Grande viajera espacial",
-      "image": "https://fortnite-api.com/images/cosmetics/br/cid_a_227_athena_commando_f_bistroastronaut_jjlk5/icon.png",
-      "rarity": "icon_series",
+      "id": "CID_785_Athena_Commando_F_Python",
+      "name": "Culebra carmesí",
+      "image": "https://fortnite-api.com/images/cosmetics/br/cid_785_athena_commando_f_python/icon.png",
+      "rarity": "rare",
       "price": null,
       "expires": null,
       "expiresISO": null,
       "type": "traje",
       "section": null,
-      "group": "Lote Ariana Grande viajera espacial",
-      "groupId": "v2:/9da23b7396071683bc38a86ef529e3940175a8713e24c1c86d3ee407f8a8375d",
-      "groupPrice": 2500,
-      "groupCount": 4,
-      "series": "Serie de ídolos"
+      "group": null,
+      "groupId": "v2:/6a0981f87502c5800a9b78b10df56a7996ceaa616adf3b8430698849762bdd2d",
+      "groupPrice": 1200,
+      "groupCount": 2,
+      "series": null
     },
     {
-      "id": "BID_877_BistroAstronaut_LWL45",
-      "name": "I.R.I.S.",
-      "image": "https://fortnite-api.com/images/cosmetics/br/bid_877_bistroastronaut_lwl45/icon.png",
+      "id": "BID_540_Python",
+      "name": "Colmillo doble",
+      "image": "https://fortnite-api.com/images/cosmetics/br/bid_540_python/icon.png",
+      "rarity": "rare",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "mochila",
+      "section": null,
+      "group": null,
+      "groupId": "v2:/6a0981f87502c5800a9b78b10df56a7996ceaa616adf3b8430698849762bdd2d",
+      "groupPrice": 1200,
+      "groupCount": 2,
+      "series": null
+    },
+    {
+      "id": "Backpack_SummitReedMolt_Guitar",
+      "name": "ROCKSTAR de Carti",
+      "image": "https://fortnite-api.com/images/cosmetics/br/backpack_summitreedmolt_guitar/icon.png",
       "rarity": "icon_series",
       "price": null,
       "expires": null,
       "expiresISO": null,
       "type": "mochila",
       "section": null,
-      "group": "Lote Ariana Grande viajera espacial",
-      "groupId": "v2:/9da23b7396071683bc38a86ef529e3940175a8713e24c1c86d3ee407f8a8375d",
-      "groupPrice": 2500,
-      "groupCount": 4,
-      "series": "Serie de ídolos"
-    },
-    {
-      "id": "Pickaxe_ID_682_BistroAstronautFemale_A3MD2",
-      "name": "Guadaña viajera espacial",
-      "image": "https://fortnite-api.com/images/cosmetics/br/pickaxe_id_682_bistroastronautfemale_a3md2/icon.png",
-      "rarity": "icon_series",
-      "price": null,
-      "expires": null,
-      "expiresISO": null,
-      "type": "pico",
-      "section": null,
-      "group": "Lote Ariana Grande viajera espacial",
-      "groupId": "v2:/9da23b7396071683bc38a86ef529e3940175a8713e24c1c86d3ee407f8a8375d",
-      "groupPrice": 2500,
-      "groupCount": 4,
-      "series": "Serie de ídolos"
-    },
-    {
-      "id": "Glider_ID_319_BistroAstronautFemale_A4839",
-      "name": "Fantasía I.R.I.S.",
-      "image": "https://fortnite-api.com/images/cosmetics/br/glider_id_319_bistroastronautfemale_a4839/icon.png",
-      "rarity": "icon_series",
-      "price": null,
-      "expires": null,
-      "expiresISO": null,
-      "type": "ala_delta",
-      "section": null,
-      "group": "Lote Ariana Grande viajera espacial",
-      "groupId": "v2:/9da23b7396071683bc38a86ef529e3940175a8713e24c1c86d3ee407f8a8375d",
-      "groupPrice": 2500,
-      "groupCount": 4,
+      "group": null,
+      "groupId": "v2:/f0544a63083b410cf93e9a3bbadd7a24a1f71667f4c37cca7186700f91fe636b",
+      "groupPrice": 800,
+      "groupCount": 1,
       "series": "Serie de ídolos"
     },
     {
@@ -805,9 +901,9 @@
       "series": null
     },
     {
-      "id": "CID_383_Athena_Commando_F_Cacti",
-      "name": "Patrullero espinoso",
-      "image": "https://fortnite-api.com/images/cosmetics/br/cid_383_athena_commando_f_cacti/icon.png",
+      "id": "Shoes_VolumeWellChecker",
+      "name": "adidas Harden Vol 9 \"Red\"",
+      "image": "https://fortnite-api.com/images/cosmetics/br/shoes_volumewellchecker/icon.png",
       "rarity": "common",
       "price": null,
       "expires": null,
@@ -815,26 +911,58 @@
       "type": "traje",
       "section": null,
       "group": null,
-      "groupId": "v2:/2754055fe1ece51afd9edc6716d7cf72a7a4e37d25dca72af34a8cfdf01f598e",
-      "groupPrice": 800,
+      "groupId": "v2:/523a070acc40095556fce1c2f0f162f18cf6bca1033d6d845f75d9300e5d8d5a",
+      "groupPrice": 1000,
       "groupCount": 1,
       "series": null
     },
     {
-      "id": "Pickaxe_ID_448_SportsFashionFemale1H",
-      "name": "Palitos giratorios",
-      "image": "https://fortnite-api.com/images/cosmetics/br/pickaxe_id_448_sportsfashionfemale1h/icon.png",
+      "id": "CID_480_Athena_Commando_F_Bubblegum",
+      "name": "Bombardera burbuja",
+      "image": "https://fortnite-api.com/images/cosmetics/br/cid_480_athena_commando_f_bubblegum/icon.png",
       "rarity": "rare",
       "price": null,
       "expires": null,
       "expiresISO": null,
-      "type": "pico",
+      "type": "traje",
       "section": null,
       "group": null,
-      "groupId": "v2:/57bb8c4b7bf3de012096b5896cd03dafd4a102eacff28b6f57355713b33cb35c",
-      "groupPrice": 800,
-      "groupCount": 1,
+      "groupId": "v2:/45c8205daabb0471ad28d884841efc802e2dbeefdf0e178a1bfa50f4ec1314aa",
+      "groupPrice": 1200,
+      "groupCount": 2,
       "series": null
+    },
+    {
+      "id": "BID_313_Bubblegum",
+      "name": "Bomba burbuja",
+      "image": "https://fortnite-api.com/images/cosmetics/br/bid_313_bubblegum/icon.png",
+      "rarity": "rare",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "mochila",
+      "section": null,
+      "group": null,
+      "groupId": "v2:/45c8205daabb0471ad28d884841efc802e2dbeefdf0e178a1bfa50f4ec1314aa",
+      "groupPrice": 1200,
+      "groupCount": 2,
+      "series": null
+    },
+    {
+      "id": "EID_JulyBooks",
+      "name": "Out West",
+      "image": "https://fortnite-api.com/images/cosmetics/br/eid_julybooks/icon.png",
+      "rarity": "icon_series",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "gesto",
+      "section": null,
+      "group": null,
+      "groupId": "v2:/cfb8b5d38421bd51e651e99f64ba8270d77389b68c5dc6e9d57a8d86c9a59335",
+      "groupPrice": 500,
+      "groupCount": 1,
+      "series": "Serie de ídolos"
     },
     {
       "id": "Character_EmeraldGlassGreen",
@@ -1125,22 +1253,6 @@
       "series": null
     },
     {
-      "id": "EID_TimesTicking",
-      "name": "Atemporal",
-      "image": "https://fortnite-api.com/images/cosmetics/br/eid_timesticking/icon.png",
-      "rarity": "icon_series",
-      "price": null,
-      "expires": null,
-      "expiresISO": null,
-      "type": "gesto",
-      "section": null,
-      "group": null,
-      "groupId": "v2:/b1c05345a3c45dfa364b547679ce075d7df96c4bda3d41b78317c26bcfde107a",
-      "groupPrice": 500,
-      "groupCount": 1,
-      "series": "Serie de ídolos"
-    },
-    {
       "id": "Glider_LycheeNickel",
       "name": "Espectro esmeralda",
       "image": "https://fortnite-api.com/images/cosmetics/br/glider_lycheenickel/icon.png",
@@ -1221,9 +1333,41 @@
       "series": null
     },
     {
-      "id": "CID_720_Athena_Commando_F_StreetFashionEmerald",
-      "name": "Azar",
-      "image": "https://fortnite-api.com/images/cosmetics/br/cid_720_athena_commando_f_streetfashionemerald/icon.png",
+      "id": "Glider_ID_266_Neon",
+      "name": "Alas resplandecientes",
+      "image": "https://fortnite-api.com/images/cosmetics/br/glider_id_266_neon/icon.png",
+      "rarity": "epic",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "ala_delta",
+      "section": null,
+      "group": null,
+      "groupId": "v2:/9222e71d5cf6b9dd8b173c010220b34ce72272d8f6979ed47eab8e8170a6e0cf",
+      "groupPrice": 1200,
+      "groupCount": 1,
+      "series": null
+    },
+    {
+      "id": "EID_BigStepper",
+      "name": "Big Dawgs",
+      "image": "https://fortnite-api.com/images/cosmetics/br/eid_bigstepper/icon.png",
+      "rarity": "icon_series",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "gesto",
+      "section": null,
+      "group": null,
+      "groupId": "v2:/f0e9d61f59849ab07eb2673ef38e4dd676ff926f1898e08c07f065c893c5e17f",
+      "groupPrice": 500,
+      "groupCount": 1,
+      "series": "Serie de ídolos"
+    },
+    {
+      "id": "CID_A_058_Athena_Commando_F_WickedDuck",
+      "name": "Megg",
+      "image": "https://fortnite-api.com/images/cosmetics/br/cid_a_058_athena_commando_f_wickedduck/icon.png",
       "rarity": "rare",
       "price": null,
       "expires": null,
@@ -1231,15 +1375,15 @@
       "type": "traje",
       "section": null,
       "group": null,
-      "groupId": "v2:/ec6d0954a97521d347ac65d2ff5f3115a4f54a6fc476d9524540baa16d9225b6",
+      "groupId": "v2:/abd006c3389815f8abc598dbc88518bb79e3f33221b0186902d509f77732c583",
       "groupPrice": 1200,
       "groupCount": 2,
       "series": null
     },
     {
-      "id": "BID_494_StreetFashionEmerald",
-      "name": "Borde boscoso",
-      "image": "https://fortnite-api.com/images/cosmetics/br/bid_494_streetfashionemerald/icon.png",
+      "id": "BID_735_WickedDuckFemale",
+      "name": "Cascarón cuaquero",
+      "image": "https://fortnite-api.com/images/cosmetics/br/bid_735_wickedduckfemale/icon.png",
       "rarity": "rare",
       "price": null,
       "expires": null,
@@ -1247,25 +1391,9 @@
       "type": "mochila",
       "section": null,
       "group": null,
-      "groupId": "v2:/ec6d0954a97521d347ac65d2ff5f3115a4f54a6fc476d9524540baa16d9225b6",
+      "groupId": "v2:/abd006c3389815f8abc598dbc88518bb79e3f33221b0186902d509f77732c583",
       "groupPrice": 1200,
       "groupCount": 2,
-      "series": null
-    },
-    {
-      "id": "Wrap_197_ToxinBubbles",
-      "name": "Burbujeante",
-      "image": "https://fortnite-api.com/images/cosmetics/br/wrap_197_toxinbubbles/icon.png",
-      "rarity": "rare",
-      "price": null,
-      "expires": null,
-      "expiresISO": null,
-      "type": "envoltorio",
-      "section": null,
-      "group": null,
-      "groupId": "v2:/78741f7d84ad91d936abc9ea743f8ca746583b3d05498c34d97572c72d42fb4d",
-      "groupPrice": 500,
-      "groupCount": 1,
       "series": null
     },
     {
@@ -1317,36 +1445,20 @@
       "series": null
     },
     {
-      "id": "Character_SunShine",
-      "name": "Rayo solar",
-      "image": "https://fortnite-api.com/images/cosmetics/br/character_sunshine/icon.png",
-      "rarity": "rare",
-      "price": null,
-      "expires": null,
-      "expiresISO": null,
-      "type": "traje",
-      "section": null,
-      "group": null,
-      "groupId": "v2:/4572322b5c0a52433834f3f86bef191e66759f419e8e0493cceb8397d8aa5034",
-      "groupPrice": 1200,
-      "groupCount": 2,
-      "series": null
-    },
-    {
-      "id": "Backpack_SunShine",
-      "name": "Aperitivo luminario",
-      "image": "https://fortnite-api.com/images/cosmetics/br/backpack_sunshine/icon.png",
-      "rarity": "rare",
+      "id": "Backpack_SummitReedMolt",
+      "name": "Alas Vamp de Carti",
+      "image": "https://fortnite-api.com/images/cosmetics/br/backpack_summitreedmolt/icon.png",
+      "rarity": "icon_series",
       "price": null,
       "expires": null,
       "expiresISO": null,
       "type": "mochila",
       "section": null,
       "group": null,
-      "groupId": "v2:/4572322b5c0a52433834f3f86bef191e66759f419e8e0493cceb8397d8aa5034",
-      "groupPrice": 1200,
-      "groupCount": 2,
-      "series": null
+      "groupId": "v2:/5fa7a10a7b5f9fd0487e497a1544a9c4e2667e08c953846a9cef431a3bb511c1",
+      "groupPrice": 300,
+      "groupCount": 1,
+      "series": "Serie de ídolos"
     },
     {
       "id": "Character_ArcanaAgate",
@@ -1605,6 +1717,22 @@
       "series": null
     },
     {
+      "id": "EID_Enchant",
+      "name": "Compromiso",
+      "image": "https://fortnite-api.com/images/cosmetics/br/eid_enchant/icon.png",
+      "rarity": "icon_series",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "gesto",
+      "section": null,
+      "group": null,
+      "groupId": "v2:/2b63be18bb4d2faf1ce1edcc02c65980601d32b488f1e45f6075bfb08fb5d1e3",
+      "groupPrice": 500,
+      "groupCount": 1,
+      "series": "Serie de ídolos"
+    },
+    {
       "id": "CID_A_057_Athena_Commando_F_TheGoldenSkeleton",
       "name": "Orelia",
       "image": "https://fortnite-api.com/images/cosmetics/br/cid_a_057_athena_commando_f_thegoldenskeleton/icon.png",
@@ -1697,6 +1825,38 @@
       "group": null,
       "groupId": "v2:/6626302295cb4b3e56aadc12c1ff9aac91cfe8302c2c95898102221d0c6a7152",
       "groupPrice": 1200,
+      "groupCount": 2,
+      "series": null
+    },
+    {
+      "id": "Pickaxe_ScallopLava",
+      "name": "Guadaña de los terremotos",
+      "image": "https://fortnite-api.com/images/cosmetics/br/pickaxe_scalloplava/icon.png",
+      "rarity": "rare",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "pico",
+      "section": null,
+      "group": "Guadaña de los terremotos",
+      "groupId": "v2:/cacdf090d4305c8469804e9efc68b471ea2100c42b71c3bd3ae0497455f3ea75",
+      "groupPrice": 800,
+      "groupCount": 2,
+      "series": null
+    },
+    {
+      "id": "Backpack_ScallopLava",
+      "name": "Guadaña de los terremotos",
+      "image": "https://fortnite-api.com/images/cosmetics/br/backpack_scalloplava/icon.png",
+      "rarity": "rare",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "mochila",
+      "section": null,
+      "group": "Guadaña de los terremotos",
+      "groupId": "v2:/cacdf090d4305c8469804e9efc68b471ea2100c42b71c3bd3ae0497455f3ea75",
+      "groupPrice": 800,
       "groupCount": 2,
       "series": null
     },
@@ -1909,34 +2069,210 @@
       "series": "Serie de ídolos"
     },
     {
-      "id": "EID_LlamaFloat",
-      "name": "Floticornio",
-      "image": "https://fortnite-api.com/images/cosmetics/br/eid_llamafloat/icon.png",
-      "rarity": "icon_series",
+      "id": "Character_OvenDrastic",
+      "name": "Jay maestro del rayo",
+      "image": "https://fortnite-api.com/images/cosmetics/br/character_ovendrastic/icon.png",
+      "rarity": "epic",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "traje",
+      "section": null,
+      "group": "Lote LEGO NINJAGO®",
+      "groupId": "v2:/6ff9c0f144c37e35efb1d22e6bc68db3bb049695556537936764683214df800a",
+      "groupPrice": 2800,
+      "groupCount": 12,
+      "series": null
+    },
+    {
+      "id": "Character_ScallopLava",
+      "name": "Cole maestro de la tierra",
+      "image": "https://fortnite-api.com/images/cosmetics/br/character_scalloplava/icon.png",
+      "rarity": "epic",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "traje",
+      "section": null,
+      "group": "Lote LEGO NINJAGO®",
+      "groupId": "v2:/6ff9c0f144c37e35efb1d22e6bc68db3bb049695556537936764683214df800a",
+      "groupPrice": 2800,
+      "groupCount": 12,
+      "series": null
+    },
+    {
+      "id": "Character_TicketPoke",
+      "name": "Zane maestro del hielo",
+      "image": "https://fortnite-api.com/images/cosmetics/br/character_ticketpoke/icon.png",
+      "rarity": "epic",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "traje",
+      "section": null,
+      "group": "Lote LEGO NINJAGO®",
+      "groupId": "v2:/6ff9c0f144c37e35efb1d22e6bc68db3bb049695556537936764683214df800a",
+      "groupPrice": 2800,
+      "groupCount": 12,
+      "series": null
+    },
+    {
+      "id": "EID_OvenDrastic",
+      "name": "Golpe de ladrillo",
+      "image": "https://fortnite-api.com/images/cosmetics/br/eid_ovendrastic/icon.png",
+      "rarity": "common",
       "price": null,
       "expires": null,
       "expiresISO": null,
       "type": "gesto",
       "section": null,
-      "group": null,
-      "groupId": "v2:/0ee4719e1adbb99f063f46b764d15cf18246cda8cfc29139aab2de63b1c18335",
-      "groupPrice": 500,
-      "groupCount": 1,
-      "series": "Serie de ídolos"
+      "group": "Lote LEGO NINJAGO®",
+      "groupId": "v2:/6ff9c0f144c37e35efb1d22e6bc68db3bb049695556537936764683214df800a",
+      "groupPrice": 2800,
+      "groupCount": 12,
+      "series": null
     },
     {
-      "id": "CID_884_Athena_Commando_F_ChOneRamirez",
-      "name": "Ramirez vintage",
-      "image": "https://fortnite-api.com/images/cosmetics/br/cid_884_athena_commando_f_choneramirez/icon.png",
+      "id": "EID_ScallopLava",
+      "name": "Alzarrocas",
+      "image": "https://fortnite-api.com/images/cosmetics/br/eid_scalloplava/icon.png",
       "rarity": "common",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "gesto",
+      "section": null,
+      "group": "Lote LEGO NINJAGO®",
+      "groupId": "v2:/6ff9c0f144c37e35efb1d22e6bc68db3bb049695556537936764683214df800a",
+      "groupPrice": 2800,
+      "groupCount": 12,
+      "series": null
+    },
+    {
+      "id": "EID_TicketPoke",
+      "name": "Patada gélida",
+      "image": "https://fortnite-api.com/images/cosmetics/br/eid_ticketpoke/icon.png",
+      "rarity": "common",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "gesto",
+      "section": null,
+      "group": "Lote LEGO NINJAGO®",
+      "groupId": "v2:/6ff9c0f144c37e35efb1d22e6bc68db3bb049695556537936764683214df800a",
+      "groupPrice": 2800,
+      "groupCount": 12,
+      "series": null
+    },
+    {
+      "id": "Pickaxe_OvenDrastic",
+      "name": "Nunchakus del rayo",
+      "image": "https://fortnite-api.com/images/cosmetics/br/pickaxe_ovendrastic/icon.png",
+      "rarity": "rare",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "pico",
+      "section": null,
+      "group": "Lote LEGO NINJAGO®",
+      "groupId": "v2:/6ff9c0f144c37e35efb1d22e6bc68db3bb049695556537936764683214df800a",
+      "groupPrice": 2800,
+      "groupCount": 12,
+      "series": null
+    },
+    {
+      "id": "Backpack_OvenDrastic",
+      "name": "Nunchakus del rayo",
+      "image": "https://fortnite-api.com/images/cosmetics/br/backpack_ovendrastic/icon.png",
+      "rarity": "rare",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "mochila",
+      "section": null,
+      "group": "Lote LEGO NINJAGO®",
+      "groupId": "v2:/6ff9c0f144c37e35efb1d22e6bc68db3bb049695556537936764683214df800a",
+      "groupPrice": 2800,
+      "groupCount": 12,
+      "series": null
+    },
+    {
+      "id": "Pickaxe_ScallopLava",
+      "name": "Guadaña de los terremotos",
+      "image": "https://fortnite-api.com/images/cosmetics/br/pickaxe_scalloplava/icon.png",
+      "rarity": "rare",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "pico",
+      "section": null,
+      "group": "Lote LEGO NINJAGO®",
+      "groupId": "v2:/6ff9c0f144c37e35efb1d22e6bc68db3bb049695556537936764683214df800a",
+      "groupPrice": 2800,
+      "groupCount": 12,
+      "series": null
+    },
+    {
+      "id": "Backpack_ScallopLava",
+      "name": "Guadaña de los terremotos",
+      "image": "https://fortnite-api.com/images/cosmetics/br/backpack_scalloplava/icon.png",
+      "rarity": "rare",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "mochila",
+      "section": null,
+      "group": "Lote LEGO NINJAGO®",
+      "groupId": "v2:/6ff9c0f144c37e35efb1d22e6bc68db3bb049695556537936764683214df800a",
+      "groupPrice": 2800,
+      "groupCount": 12,
+      "series": null
+    },
+    {
+      "id": "Pickaxe_TicketPoke",
+      "name": "Shurikens de hielo",
+      "image": "https://fortnite-api.com/images/cosmetics/br/pickaxe_ticketpoke/icon.png",
+      "rarity": "rare",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "pico",
+      "section": null,
+      "group": "Lote LEGO NINJAGO®",
+      "groupId": "v2:/6ff9c0f144c37e35efb1d22e6bc68db3bb049695556537936764683214df800a",
+      "groupPrice": 2800,
+      "groupCount": 12,
+      "series": null
+    },
+    {
+      "id": "Backpack_TicketPoke",
+      "name": "Shurikens de hielo",
+      "image": "https://fortnite-api.com/images/cosmetics/br/backpack_ticketpoke/icon.png",
+      "rarity": "rare",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "mochila",
+      "section": null,
+      "group": "Lote LEGO NINJAGO®",
+      "groupId": "v2:/6ff9c0f144c37e35efb1d22e6bc68db3bb049695556537936764683214df800a",
+      "groupPrice": 2800,
+      "groupCount": 12,
+      "series": null
+    },
+    {
+      "id": "Character_ScallopLava",
+      "name": "Cole maestro de la tierra",
+      "image": "https://fortnite-api.com/images/cosmetics/br/character_scalloplava/icon.png",
+      "rarity": "epic",
       "price": null,
       "expires": null,
       "expiresISO": null,
       "type": "traje",
       "section": null,
       "group": null,
-      "groupId": "v2:/f063197b9148edba3c46b1f03b09f7520fcae944c3ae18e5dda30fc1a1452eaa",
-      "groupPrice": 800,
+      "groupId": "v2:/d21a12b79db95d9467beb3d9d820dcb54987c7a1c55aeb7e99434f4dcc3c9db9",
+      "groupPrice": 1200,
       "groupCount": 1,
       "series": null
     },
@@ -2117,6 +2453,22 @@
       "series": null
     },
     {
+      "id": "EID_OvenDrastic",
+      "name": "Golpe de ladrillo",
+      "image": "https://fortnite-api.com/images/cosmetics/br/eid_ovendrastic/icon.png",
+      "rarity": "common",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "gesto",
+      "section": null,
+      "group": null,
+      "groupId": "v2:/9fb520724d0bf9205b281ac17775c4a192e9b342a0828b0d139ea4f42ab61e0f",
+      "groupPrice": 300,
+      "groupCount": 1,
+      "series": null
+    },
+    {
       "id": "Backpack_LycheeNickel_Guitar",
       "name": "Cuerdas de Misterios S. A.",
       "image": "https://fortnite-api.com/images/cosmetics/br/backpack_lycheenickel_guitar/icon.png",
@@ -2145,22 +2497,6 @@
       "group": null,
       "groupId": "v2:/1cc8557c71db741befba0e25b16e88ffe32dae8059dfac7f9fb54d560804d351",
       "groupPrice": 700,
-      "groupCount": 1,
-      "series": null
-    },
-    {
-      "id": "Shoes_VolumeWellStripe",
-      "name": "adidas Harden Vol 9 \"Cyber Metallic\"",
-      "image": "https://fortnite-api.com/images/cosmetics/br/shoes_volumewellstripe/icon.png",
-      "rarity": "common",
-      "price": null,
-      "expires": null,
-      "expiresISO": null,
-      "type": "traje",
-      "section": null,
-      "group": null,
-      "groupId": "v2:/69dc60ba410da83746b74e6f5f49223e51a4e3154f9cbe783227d633b5d75c79",
-      "groupPrice": 1000,
       "groupCount": 1,
       "series": null
     },
@@ -2197,22 +2533,6 @@
       "series": null
     },
     {
-      "id": "BID_878_BistroSpooky_VPF4T",
-      "name": "Smallz espeluznante",
-      "image": "https://fortnite-api.com/images/cosmetics/br/bid_878_bistrospooky_vpf4t/icon.png",
-      "rarity": "icon_series",
-      "price": null,
-      "expires": null,
-      "expiresISO": null,
-      "type": "mochila",
-      "section": null,
-      "group": null,
-      "groupId": "v2:/4e705ee1fd61275832f1207f5c719faddba4bbcffa8bf4e994f230fb3f7115c5",
-      "groupPrice": 400,
-      "groupCount": 1,
-      "series": "Serie de ídolos"
-    },
-    {
       "id": "Character_SteamPower",
       "name": "Shoto Todoroki",
       "image": "https://fortnite-api.com/images/cosmetics/br/character_steampower/icon.png",
@@ -2242,6 +2562,22 @@
       "groupId": "v2:/4149476e23435f6a8fbb40099dc945bc940e2c918f09a647180b2b7f7d8fcac5",
       "groupPrice": 1500,
       "groupCount": 2,
+      "series": null
+    },
+    {
+      "id": "EID_BeepBop",
+      "name": "Doot Doot (6 7)",
+      "image": "https://fortnite-api.com/images/cosmetics/br/eid_beepbop/icon.png",
+      "rarity": "common",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "gesto",
+      "section": null,
+      "group": null,
+      "groupId": "v2:/9d3525ee692dde854aa9f658fdee02ba099022d0a65fdfb7970bb42fb06c7eb1",
+      "groupPrice": 500,
+      "groupCount": 1,
       "series": null
     },
     {
@@ -2304,6 +2640,70 @@
       "section": null,
       "group": null,
       "groupId": "v2:/778e328d552290f4425e923b50c21c3489545019097e39c6e59b6d2e1aa1434f",
+      "groupPrice": 800,
+      "groupCount": 1,
+      "series": null
+    },
+    {
+      "id": "Shoes_ClinicRaiseFloat",
+      "name": "Crocs Classic Rubber Ducky Clog",
+      "image": "https://fortnite-api.com/images/cosmetics/br/shoes_clinicraisefloat/icon.png",
+      "rarity": "common",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "traje",
+      "section": null,
+      "group": null,
+      "groupId": "v2:/075818b65f180af79dd0eeda07c4879aa226bf965c30b1a9fbb1d1249e597089",
+      "groupPrice": 1000,
+      "groupCount": 1,
+      "series": null
+    },
+    {
+      "id": "Shoes_SunsetTreads",
+      "name": "Pantuflas pasajeras",
+      "image": "https://fortnite-api.com/images/cosmetics/br/shoes_sunsettreads/icon.png",
+      "rarity": "common",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "traje",
+      "section": null,
+      "group": null,
+      "groupId": "v2:/0b15408450c89282a16f98c63f70e0caebb0e2057528ad5785535e1c812a489d",
+      "groupPrice": 600,
+      "groupCount": 1,
+      "series": null
+    },
+    {
+      "id": "EID_Blaster",
+      "name": "El cruzadito",
+      "image": "https://fortnite-api.com/images/cosmetics/br/eid_blaster/icon.png",
+      "rarity": "icon_series",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "gesto",
+      "section": null,
+      "group": null,
+      "groupId": "v2:/48d712e4bf00f437da8aaa598aaf75858de1d4da9987abc08df3ca84aecd9a6f",
+      "groupPrice": 500,
+      "groupCount": 1,
+      "series": "Serie de ídolos"
+    },
+    {
+      "id": "CID_801_Athena_Commando_F_GolfSummer",
+      "name": "Patrullero par",
+      "image": "https://fortnite-api.com/images/cosmetics/br/cid_801_athena_commando_f_golfsummer/icon.png",
+      "rarity": "common",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "traje",
+      "section": null,
+      "group": null,
+      "groupId": "v2:/e9b456250b22b61b457bc1959156a85b117cc95b3381624b0acb47b02de12ead",
       "groupPrice": 800,
       "groupCount": 1,
       "series": null
@@ -2437,86 +2837,6 @@
       "series": null
     },
     {
-      "id": "CID_A_158_Athena_Commando_F_Buffet_YC20H",
-      "name": "Ariana Grande",
-      "image": "https://fortnite-api.com/images/cosmetics/br/cid_a_158_athena_commando_f_buffet_yc20h/icon.png",
-      "rarity": "icon_series",
-      "price": null,
-      "expires": null,
-      "expiresISO": null,
-      "type": "traje",
-      "section": null,
-      "group": "Lote Ariana Grande",
-      "groupId": "v2:/bf4c78f52cf547f6c044b0b12512a48566c1da7197545df53fa194e9d40d6b35",
-      "groupPrice": 2800,
-      "groupCount": 5,
-      "series": "Serie de ídolos"
-    },
-    {
-      "id": "BID_818_Buffet_XRF7H",
-      "name": "Piggy Smallz",
-      "image": "https://fortnite-api.com/images/cosmetics/br/bid_818_buffet_xrf7h/icon.png",
-      "rarity": "icon_series",
-      "price": null,
-      "expires": null,
-      "expiresISO": null,
-      "type": "mochila",
-      "section": null,
-      "group": "Lote Ariana Grande",
-      "groupId": "v2:/bf4c78f52cf547f6c044b0b12512a48566c1da7197545df53fa194e9d40d6b35",
-      "groupPrice": 2800,
-      "groupCount": 5,
-      "series": "Serie de ídolos"
-    },
-    {
-      "id": "Pickaxe_ID_644_BuffetFemale_TOH8A",
-      "name": "Mazo de 7 quilates",
-      "image": "https://fortnite-api.com/images/cosmetics/br/pickaxe_id_644_buffetfemale_toh8a/icon.png",
-      "rarity": "icon_series",
-      "price": null,
-      "expires": null,
-      "expiresISO": null,
-      "type": "pico",
-      "section": null,
-      "group": "Lote Ariana Grande",
-      "groupId": "v2:/bf4c78f52cf547f6c044b0b12512a48566c1da7197545df53fa194e9d40d6b35",
-      "groupPrice": 2800,
-      "groupCount": 5,
-      "series": "Serie de ídolos"
-    },
-    {
-      "id": "Glider_ID_304_BuffetFemale_AOF61",
-      "name": "Estelas endulzadas",
-      "image": "https://fortnite-api.com/images/cosmetics/br/glider_id_304_buffetfemale_aof61/icon.png",
-      "rarity": "icon_series",
-      "price": null,
-      "expires": null,
-      "expiresISO": null,
-      "type": "ala_delta",
-      "section": null,
-      "group": "Lote Ariana Grande",
-      "groupId": "v2:/bf4c78f52cf547f6c044b0b12512a48566c1da7197545df53fa194e9d40d6b35",
-      "groupPrice": 2800,
-      "groupCount": 5,
-      "series": "Serie de ídolos"
-    },
-    {
-      "id": "EID_LlamaFloat",
-      "name": "Floticornio",
-      "image": "https://fortnite-api.com/images/cosmetics/br/eid_llamafloat/icon.png",
-      "rarity": "icon_series",
-      "price": null,
-      "expires": null,
-      "expiresISO": null,
-      "type": "gesto",
-      "section": null,
-      "group": "Lote Ariana Grande",
-      "groupId": "v2:/bf4c78f52cf547f6c044b0b12512a48566c1da7197545df53fa194e9d40d6b35",
-      "groupPrice": 2800,
-      "groupCount": 5,
-      "series": "Serie de ídolos"
-    },
-    {
       "id": "Pickaxe_IvyStub",
       "name": "Filo telequinético",
       "image": "https://fortnite-api.com/images/cosmetics/br/pickaxe_ivystub/icon.png",
@@ -2547,6 +2867,22 @@
       "groupPrice": 800,
       "groupCount": 1,
       "series": null
+    },
+    {
+      "id": "EID_SummitReedGrit",
+      "name": "EVIL J0RDAN",
+      "image": "https://fortnite-api.com/images/cosmetics/br/eid_summitreedgrit/icon.png",
+      "rarity": "icon_series",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "gesto",
+      "section": null,
+      "group": null,
+      "groupId": "v2:/36148deb79d20a4f7a0b91fccd4ca79c6f414842fc3b907a66af69a19713db1c",
+      "groupPrice": 500,
+      "groupCount": 1,
+      "series": "Serie de ídolos"
     },
     {
       "id": "Backpack_ChimeCurlCorn",
@@ -2901,22 +3237,6 @@
       "series": null
     },
     {
-      "id": "Shoes_WesternBarb",
-      "name": "Cactuflas",
-      "image": "https://fortnite-api.com/images/cosmetics/br/shoes_westernbarb/icon.png",
-      "rarity": "common",
-      "price": null,
-      "expires": null,
-      "expiresISO": null,
-      "type": "traje",
-      "section": null,
-      "group": null,
-      "groupId": "v2:/7dc7d645966165830b78b09b259e15ddce6bdbeeae724e5992abad9bb3ea973f",
-      "groupPrice": 600,
-      "groupCount": 1,
-      "series": null
-    },
-    {
       "id": "Character_OboeThorn",
       "name": "Fred Jones",
       "image": "https://fortnite-api.com/images/cosmetics/br/character_oboethorn/icon.png",
@@ -2929,6 +3249,22 @@
       "group": null,
       "groupId": "v2:/eb373ad5098495f67a5af5c6f4e452837d6cf1025ac97fec470c0729846fb775",
       "groupPrice": 1500,
+      "groupCount": 1,
+      "series": null
+    },
+    {
+      "id": "CID_087_Athena_Commando_F_RedSilk",
+      "name": "Defensor escarlata",
+      "image": "https://fortnite-api.com/images/cosmetics/br/cid_087_athena_commando_f_redsilk/icon.png",
+      "rarity": "common",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "traje",
+      "section": null,
+      "group": null,
+      "groupId": "v2:/99bf1f77ad03645d6bb784f963637d17ae0e1575ff84c146ad6da77a6319997b",
+      "groupPrice": 800,
       "groupCount": 1,
       "series": null
     },
@@ -2965,22 +3301,6 @@
       "series": "Serie de ídolos"
     },
     {
-      "id": "Glider_ID_193_TheGoldenSkeleton",
-      "name": "Dracorazado",
-      "image": "https://fortnite-api.com/images/cosmetics/br/glider_id_193_thegoldenskeleton/icon.png",
-      "rarity": "legendary",
-      "price": null,
-      "expires": null,
-      "expiresISO": null,
-      "type": "ala_delta",
-      "section": null,
-      "group": null,
-      "groupId": "v2:/e6b5a9f51e990b61c2cdb3452da85b000adbfb9b12c25bc1a0dabb2fef4a212b",
-      "groupPrice": 1500,
-      "groupCount": 1,
-      "series": null
-    },
-    {
       "id": "CID_A_060_Athena_Commando_M_Daytrader_8MRO2",
       "name": "Comerciante de diamantes",
       "image": "https://fortnite-api.com/images/cosmetics/br/cid_a_060_athena_commando_m_daytrader_8mro2/icon.png",
@@ -3013,6 +3333,22 @@
       "series": null
     },
     {
+      "id": "Glider_ID_193_TheGoldenSkeleton",
+      "name": "Dracorazado",
+      "image": "https://fortnite-api.com/images/cosmetics/br/glider_id_193_thegoldenskeleton/icon.png",
+      "rarity": "legendary",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "ala_delta",
+      "section": null,
+      "group": null,
+      "groupId": "v2:/e6b5a9f51e990b61c2cdb3452da85b000adbfb9b12c25bc1a0dabb2fef4a212b",
+      "groupPrice": 1500,
+      "groupCount": 1,
+      "series": null
+    },
+    {
       "id": "Backpack_FluteLamp",
       "name": "Superhamburguesa de Shaggy",
       "image": "https://fortnite-api.com/images/cosmetics/br/backpack_flutelamp/icon.png",
@@ -3029,22 +3365,6 @@
       "series": null
     },
     {
-      "id": "EID_Disconnect",
-      "name": "Shuffle rompecorazones",
-      "image": "https://fortnite-api.com/images/cosmetics/br/eid_disconnect/icon.png",
-      "rarity": "icon_series",
-      "price": null,
-      "expires": null,
-      "expiresISO": null,
-      "type": "gesto",
-      "section": null,
-      "group": null,
-      "groupId": "v2:/7a6a8b7917eab441a2995e9442d530e169d0d5a901c4e1e362093a072e440eed",
-      "groupPrice": 500,
-      "groupCount": 1,
-      "series": "Serie de ídolos"
-    },
-    {
       "id": "Character_IvyStub",
       "name": "Tornado del Terror",
       "image": "https://fortnite-api.com/images/cosmetics/br/character_ivystub/icon.png",
@@ -3059,6 +3379,214 @@
       "groupPrice": 1500,
       "groupCount": 1,
       "series": null
+    },
+    {
+      "id": "Character_DefectGlitch",
+      "name": "Glitch",
+      "image": "https://fortnite-api.com/images/cosmetics/br/character_defectglitch/icon.png",
+      "rarity": "epic",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "traje",
+      "section": null,
+      "group": null,
+      "groupId": "v2:/3d1238f1edff7133a3254d1215894afcdf9876d86aea2f83afdeae09d0b79854",
+      "groupPrice": 1500,
+      "groupCount": 3,
+      "series": null
+    },
+    {
+      "id": "Backpack_DefectGlitch",
+      "name": "Inhibidor de señal",
+      "image": "https://fortnite-api.com/images/cosmetics/br/backpack_defectglitch/icon.png",
+      "rarity": "epic",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "mochila",
+      "section": null,
+      "group": null,
+      "groupId": "v2:/3d1238f1edff7133a3254d1215894afcdf9876d86aea2f83afdeae09d0b79854",
+      "groupPrice": 1500,
+      "groupCount": 3,
+      "series": null
+    },
+    {
+      "id": "Wrap_DefectGlitch",
+      "name": "Sonar ultrasónico",
+      "image": "https://fortnite-api.com/images/cosmetics/br/wrap_defectglitch/icon.png",
+      "rarity": "rare",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "envoltorio",
+      "section": null,
+      "group": null,
+      "groupId": "v2:/3d1238f1edff7133a3254d1215894afcdf9876d86aea2f83afdeae09d0b79854",
+      "groupPrice": 1500,
+      "groupCount": 3,
+      "series": null
+    },
+    {
+      "id": "Character_SummitReedGrit",
+      "name": "Playboi Carti",
+      "image": "https://fortnite-api.com/images/cosmetics/br/character_summitreedgrit/icon.png",
+      "rarity": "icon_series",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "traje",
+      "section": null,
+      "group": "Lote Playboi Carti",
+      "groupId": "v2:/bc6c67d40bbe3069a8a7bfdcc1abee8aa1e42493f3f07cb46d8edea078b1697d",
+      "groupPrice": 3200,
+      "groupCount": 10,
+      "series": "Serie de ídolos"
+    },
+    {
+      "id": "Backpack_SummitReedGrit",
+      "name": "Rueda de Carti",
+      "image": "https://fortnite-api.com/images/cosmetics/br/backpack_summitreedgrit/icon.png",
+      "rarity": "icon_series",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "mochila",
+      "section": null,
+      "group": "Lote Playboi Carti",
+      "groupId": "v2:/bc6c67d40bbe3069a8a7bfdcc1abee8aa1e42493f3f07cb46d8edea078b1697d",
+      "groupPrice": 3200,
+      "groupCount": 10,
+      "series": "Serie de ídolos"
+    },
+    {
+      "id": "Character_SummitReedMolt",
+      "name": "Carti King Vamp",
+      "image": "https://fortnite-api.com/images/cosmetics/br/character_summitreedmolt/icon.png",
+      "rarity": "icon_series",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "traje",
+      "section": null,
+      "group": "Lote Playboi Carti",
+      "groupId": "v2:/bc6c67d40bbe3069a8a7bfdcc1abee8aa1e42493f3f07cb46d8edea078b1697d",
+      "groupPrice": 3200,
+      "groupCount": 10,
+      "series": "Serie de ídolos"
+    },
+    {
+      "id": "Backpack_SummitReedMolt",
+      "name": "Alas Vamp de Carti",
+      "image": "https://fortnite-api.com/images/cosmetics/br/backpack_summitreedmolt/icon.png",
+      "rarity": "icon_series",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "mochila",
+      "section": null,
+      "group": "Lote Playboi Carti",
+      "groupId": "v2:/bc6c67d40bbe3069a8a7bfdcc1abee8aa1e42493f3f07cb46d8edea078b1697d",
+      "groupPrice": 3200,
+      "groupCount": 10,
+      "series": "Serie de ídolos"
+    },
+    {
+      "id": "EID_SummitReedGrit",
+      "name": "EVIL J0RDAN",
+      "image": "https://fortnite-api.com/images/cosmetics/br/eid_summitreedgrit/icon.png",
+      "rarity": "icon_series",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "gesto",
+      "section": null,
+      "group": "Lote Playboi Carti",
+      "groupId": "v2:/bc6c67d40bbe3069a8a7bfdcc1abee8aa1e42493f3f07cb46d8edea078b1697d",
+      "groupPrice": 3200,
+      "groupCount": 10,
+      "series": "Serie de ídolos"
+    },
+    {
+      "id": "EID_SummitReedMolt",
+      "name": "Rather Lie",
+      "image": "https://fortnite-api.com/images/cosmetics/br/eid_summitreedmolt/icon.png",
+      "rarity": "icon_series",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "gesto",
+      "section": null,
+      "group": "Lote Playboi Carti",
+      "groupId": "v2:/bc6c67d40bbe3069a8a7bfdcc1abee8aa1e42493f3f07cb46d8edea078b1697d",
+      "groupPrice": 3200,
+      "groupCount": 10,
+      "series": "Serie de ídolos"
+    },
+    {
+      "id": "Wrap_SummitReedGrit",
+      "name": "Playboi",
+      "image": "https://fortnite-api.com/images/cosmetics/br/wrap_summitreedgrit/icon.png",
+      "rarity": "rare",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "envoltorio",
+      "section": null,
+      "group": "Lote Playboi Carti",
+      "groupId": "v2:/bc6c67d40bbe3069a8a7bfdcc1abee8aa1e42493f3f07cb46d8edea078b1697d",
+      "groupPrice": 3200,
+      "groupCount": 10,
+      "series": null
+    },
+    {
+      "id": "Backpack_SummitReedMolt_Guitar",
+      "name": "ROCKSTAR de Carti",
+      "image": "https://fortnite-api.com/images/cosmetics/br/backpack_summitreedmolt_guitar/icon.png",
+      "rarity": "icon_series",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "mochila",
+      "section": null,
+      "group": "Lote Playboi Carti",
+      "groupId": "v2:/bc6c67d40bbe3069a8a7bfdcc1abee8aa1e42493f3f07cb46d8edea078b1697d",
+      "groupPrice": 3200,
+      "groupCount": 10,
+      "series": "Serie de ídolos"
+    },
+    {
+      "id": "Backpack_SummitReedGrit_Mic",
+      "name": "Voz antagonista",
+      "image": "https://fortnite-api.com/images/cosmetics/br/backpack_summitreedgrit_mic/icon.png",
+      "rarity": "icon_series",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "mochila",
+      "section": null,
+      "group": "Lote Playboi Carti",
+      "groupId": "v2:/bc6c67d40bbe3069a8a7bfdcc1abee8aa1e42493f3f07cb46d8edea078b1697d",
+      "groupPrice": 3200,
+      "groupCount": 10,
+      "series": "Serie de ídolos"
+    },
+    {
+      "id": "LoadingScreen_SummitReedKeyArt",
+      "name": "Los fans de Carti",
+      "image": "https://fortnite-api.com/images/cosmetics/br/loadingscreen_summitreedkeyart/icon.png",
+      "rarity": "icon_series",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "traje",
+      "section": null,
+      "group": "Lote Playboi Carti",
+      "groupId": "v2:/bc6c67d40bbe3069a8a7bfdcc1abee8aa1e42493f3f07cb46d8edea078b1697d",
+      "groupPrice": 3200,
+      "groupCount": 10,
+      "series": "Serie de ídolos"
     },
     {
       "id": "Character_SteamPower",
@@ -3157,22 +3685,6 @@
       "series": null
     },
     {
-      "id": "EID_Bollywood",
-      "name": "Bhangra Boogie",
-      "image": "https://fortnite-api.com/images/cosmetics/br/eid_bollywood/icon.png",
-      "rarity": "rare",
-      "price": null,
-      "expires": null,
-      "expiresISO": null,
-      "type": "gesto",
-      "section": null,
-      "group": null,
-      "groupId": "v2:/5120d260dd827246ce6f8eaf5a1afcffe398272d9847e2e4f34d5e857c4207f8",
-      "groupPrice": 500,
-      "groupCount": 1,
-      "series": null
-    },
-    {
       "id": "EID_Calico",
       "name": "Pistola gatito",
       "image": "https://fortnite-api.com/images/cosmetics/br/eid_calico/icon.png",
@@ -3201,6 +3713,38 @@
       "group": null,
       "groupId": "v2:/d83488551afa25b5a6000e6434b27cee923ad7f4e87b0c5d7c52875479aaa479",
       "groupPrice": 500,
+      "groupCount": 1,
+      "series": null
+    },
+    {
+      "id": "Glider_Voyager",
+      "name": "Voyager",
+      "image": "https://fortnite-api.com/images/cosmetics/br/glider_voyager/icon.png",
+      "rarity": "rare",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "ala_delta",
+      "section": null,
+      "group": null,
+      "groupId": "v2:/ccd50db46f82a759ef96a2e2f8e29a420e95b26f72f5bfefa975d1f193517b7d",
+      "groupPrice": 800,
+      "groupCount": 1,
+      "series": null
+    },
+    {
+      "id": "Backpack_HexagonVoxel_Drum",
+      "name": "Voxelada",
+      "image": "https://fortnite-api.com/images/cosmetics/br/backpack_hexagonvoxel_drum/icon.png",
+      "rarity": "rare",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "mochila",
+      "section": null,
+      "group": null,
+      "groupId": "v2:/c402b700ea54354fe31175a47603481720e035eab86bdf94db76c9b6c3ffcc65",
+      "groupPrice": 800,
       "groupCount": 1,
       "series": null
     },
@@ -3285,36 +3829,20 @@
       "series": null
     },
     {
-      "id": "CID_A_158_Athena_Commando_F_Buffet_YC20H",
-      "name": "Ariana Grande",
-      "image": "https://fortnite-api.com/images/cosmetics/br/cid_a_158_athena_commando_f_buffet_yc20h/icon.png",
-      "rarity": "icon_series",
+      "id": "Character_TicketPoke",
+      "name": "Zane maestro del hielo",
+      "image": "https://fortnite-api.com/images/cosmetics/br/character_ticketpoke/icon.png",
+      "rarity": "epic",
       "price": null,
       "expires": null,
       "expiresISO": null,
       "type": "traje",
       "section": null,
       "group": null,
-      "groupId": "v2:/7c87510354666964b766a2ddf3572b53b65ab4f902bf9b3a721ccb0b95d16986",
-      "groupPrice": 2000,
-      "groupCount": 2,
-      "series": "Serie de ídolos"
-    },
-    {
-      "id": "BID_818_Buffet_XRF7H",
-      "name": "Piggy Smallz",
-      "image": "https://fortnite-api.com/images/cosmetics/br/bid_818_buffet_xrf7h/icon.png",
-      "rarity": "icon_series",
-      "price": null,
-      "expires": null,
-      "expiresISO": null,
-      "type": "mochila",
-      "section": null,
-      "group": null,
-      "groupId": "v2:/7c87510354666964b766a2ddf3572b53b65ab4f902bf9b3a721ccb0b95d16986",
-      "groupPrice": 2000,
-      "groupCount": 2,
-      "series": "Serie de ídolos"
+      "groupId": "v2:/4c125cabc645a4f13e11c198774287e14945a22836ed961862f1a247d93c483a",
+      "groupPrice": 1200,
+      "groupCount": 1,
+      "series": null
     },
     {
       "id": "Character_JoltMosaic",
@@ -3397,22 +3925,6 @@
       "series": null
     },
     {
-      "id": "EID_Scribe",
-      "name": "Apuntes de héroes",
-      "image": "https://fortnite-api.com/images/cosmetics/br/eid_scribe/icon.png",
-      "rarity": "common",
-      "price": null,
-      "expires": null,
-      "expiresISO": null,
-      "type": "gesto",
-      "section": null,
-      "group": null,
-      "groupId": "v2:/d931f1de1a6887cb948e8181881edcdeb6e49fa1fb299eb69c6c833e426892e2",
-      "groupPrice": 300,
-      "groupCount": 1,
-      "series": null
-    },
-    {
       "id": "Pickaxe_ArmyFlour",
       "name": "Puño martillo mecánico",
       "image": "https://fortnite-api.com/images/cosmetics/br/pickaxe_armyflour/icon.png",
@@ -3425,6 +3937,22 @@
       "group": null,
       "groupId": "v2:/8a345215b6bde7f12ffa55eae6c6ef85182174e4d0dd995863734bfd4c945af5",
       "groupPrice": 800,
+      "groupCount": 1,
+      "series": null
+    },
+    {
+      "id": "EID_Scribe",
+      "name": "Apuntes de héroes",
+      "image": "https://fortnite-api.com/images/cosmetics/br/eid_scribe/icon.png",
+      "rarity": "common",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "gesto",
+      "section": null,
+      "group": null,
+      "groupId": "v2:/d931f1de1a6887cb948e8181881edcdeb6e49fa1fb299eb69c6c833e426892e2",
+      "groupPrice": 300,
       "groupCount": 1,
       "series": null
     },
@@ -3518,7 +4046,7 @@
       "expiresISO": null,
       "type": "traje",
       "section": null,
-      "group": "Lote Lupita",
+      "group": "Lote Festival feroz",
       "groupId": "v2:/d922e1a32ff18b1be312e30dfb9f0b9d9f361b48d5eeaf2ba1496c60c7dcc33c",
       "groupPrice": 1400,
       "groupCount": 3,
@@ -3534,7 +4062,7 @@
       "expiresISO": null,
       "type": "mochila",
       "section": null,
-      "group": "Lote Lupita",
+      "group": "Lote Festival feroz",
       "groupId": "v2:/d922e1a32ff18b1be312e30dfb9f0b9d9f361b48d5eeaf2ba1496c60c7dcc33c",
       "groupPrice": 1400,
       "groupCount": 3,
@@ -3550,9 +4078,57 @@
       "expiresISO": null,
       "type": "pico",
       "section": null,
-      "group": "Lote Lupita",
+      "group": "Lote Festival feroz",
       "groupId": "v2:/d922e1a32ff18b1be312e30dfb9f0b9d9f361b48d5eeaf2ba1496c60c7dcc33c",
       "groupPrice": 1400,
+      "groupCount": 3,
+      "series": null
+    },
+    {
+      "id": "Character_SunnySquawk",
+      "name": "Paulie Carapluma",
+      "image": "https://fortnite-api.com/images/cosmetics/br/character_sunnysquawk/icon.png",
+      "rarity": "epic",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "traje",
+      "section": null,
+      "group": "Lote Vacaciones en casa",
+      "groupId": "v2:/537dc5beb2abbc9f6c7e1596acb140f5a174f522b577b056f94db43f2c7b9661",
+      "groupPrice": 1600,
+      "groupCount": 3,
+      "series": null
+    },
+    {
+      "id": "Backpack_SunnySquawk",
+      "name": "Mochiloro",
+      "image": "https://fortnite-api.com/images/cosmetics/br/backpack_sunnysquawk/icon.png",
+      "rarity": "rare",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "mochila",
+      "section": null,
+      "group": "Lote Vacaciones en casa",
+      "groupId": "v2:/537dc5beb2abbc9f6c7e1596acb140f5a174f522b577b056f94db43f2c7b9661",
+      "groupPrice": 1600,
+      "groupCount": 3,
+      "series": null
+    },
+    {
+      "id": "Shoes_SunsetTreads",
+      "name": "Pantuflas pasajeras",
+      "image": "https://fortnite-api.com/images/cosmetics/br/shoes_sunsettreads/icon.png",
+      "rarity": "common",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "traje",
+      "section": null,
+      "group": "Lote Vacaciones en casa",
+      "groupId": "v2:/537dc5beb2abbc9f6c7e1596acb140f5a174f522b577b056f94db43f2c7b9661",
+      "groupPrice": 1600,
       "groupCount": 3,
       "series": null
     },
@@ -3589,6 +4165,22 @@
       "series": null
     },
     {
+      "id": "Shoes_LungeStreamTenor",
+      "name": "Nike SB Dunk Low \"Money Cat\"",
+      "image": "https://fortnite-api.com/images/cosmetics/br/shoes_lungestreamtenor/icon.png",
+      "rarity": "common",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "traje",
+      "section": null,
+      "group": null,
+      "groupId": "v2:/ca1b7433e287a332add73906f18659c779770e899984f0161b2e13813c89d96b",
+      "groupPrice": 1000,
+      "groupCount": 1,
+      "series": null
+    },
+    {
       "id": "Backpack_IgniteEgg_DrumStick",
       "name": "Kit de One-Punch Man",
       "image": "https://fortnite-api.com/images/cosmetics/br/backpack_igniteegg_drumstick/icon.png",
@@ -3601,6 +4193,22 @@
       "group": null,
       "groupId": "v2:/5be18e5a5f1e6777647f5f2318ef4b931cb0a9da7ffa09910bfcc1d298083b67",
       "groupPrice": 800,
+      "groupCount": 1,
+      "series": null
+    },
+    {
+      "id": "CID_538_Athena_Commando_M_Taco",
+      "name": "Guaco",
+      "image": "https://fortnite-api.com/images/cosmetics/br/cid_538_athena_commando_m_taco/icon.png",
+      "rarity": "rare",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "traje",
+      "section": null,
+      "group": null,
+      "groupId": "v2:/3a15779551e27ed72d08a0161a9d21e6824daf9592eebd8ac2d1c772718baf36",
+      "groupPrice": 1200,
       "groupCount": 1,
       "series": null
     },
@@ -3653,6 +4261,38 @@
       "series": null
     },
     {
+      "id": "Character_SummitReedMolt",
+      "name": "Carti King Vamp",
+      "image": "https://fortnite-api.com/images/cosmetics/br/character_summitreedmolt/icon.png",
+      "rarity": "icon_series",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "traje",
+      "section": null,
+      "group": "Carti King Vamp",
+      "groupId": "v2:/83a9852517fe0564c383865f928928f9ec558742ca5709f5125e44f37ad18482",
+      "groupPrice": 1500,
+      "groupCount": 2,
+      "series": "Serie de ídolos"
+    },
+    {
+      "id": "Backpack_SummitReedMolt",
+      "name": "Alas Vamp de Carti",
+      "image": "https://fortnite-api.com/images/cosmetics/br/backpack_summitreedmolt/icon.png",
+      "rarity": "icon_series",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "mochila",
+      "section": null,
+      "group": "Carti King Vamp",
+      "groupId": "v2:/83a9852517fe0564c383865f928928f9ec558742ca5709f5125e44f37ad18482",
+      "groupPrice": 1500,
+      "groupCount": 2,
+      "series": "Serie de ídolos"
+    },
+    {
       "id": "Backpack_OboeThorn",
       "name": "Caballero negro",
       "image": "https://fortnite-api.com/images/cosmetics/br/backpack_oboethorn/icon.png",
@@ -3701,6 +4341,22 @@
       "series": null
     },
     {
+      "id": "EID_SynthRose",
+      "name": "Good Luck, Babe!",
+      "image": "https://fortnite-api.com/images/cosmetics/br/eid_synthrose/icon.png",
+      "rarity": "icon_series",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "gesto",
+      "section": null,
+      "group": null,
+      "groupId": "v2:/48f0880da4dc72041024025959af23af9c5689f96e34022997b31fd7cc929218",
+      "groupPrice": 500,
+      "groupCount": 1,
+      "series": "Serie de ídolos"
+    },
+    {
       "id": "CID_022_Athena_Commando_F",
       "name": "Experta en reconocimiento",
       "image": "https://fortnite-api.com/images/cosmetics/br/cid_022_athena_commando_f/icon.png",
@@ -3717,25 +4373,9 @@
       "series": null
     },
     {
-      "id": "Glider_ID_007_TurtleShell",
-      "name": "Medio caparazón",
-      "image": "https://fortnite-api.com/images/cosmetics/br/glider_id_007_turtleshell/icon.png",
-      "rarity": "rare",
-      "price": null,
-      "expires": null,
-      "expiresISO": null,
-      "type": "ala_delta",
-      "section": null,
-      "group": null,
-      "groupId": "v2:/c0bff9974eabb0dd390ffa73f8942d6aae70cb33ae5ed815eae084d2e56b04ad",
-      "groupPrice": 800,
-      "groupCount": 1,
-      "series": null
-    },
-    {
-      "id": "EID_FlipIt",
-      "name": "Bateo milagroso",
-      "image": "https://fortnite-api.com/images/cosmetics/br/eid_flipit/icon.png",
+      "id": "EID_Coping",
+      "name": "Copines",
+      "image": "https://fortnite-api.com/images/cosmetics/br/eid_coping/icon.png",
       "rarity": "icon_series",
       "price": null,
       "expires": null,
@@ -3743,89 +4383,25 @@
       "type": "gesto",
       "section": null,
       "group": null,
-      "groupId": "v2:/ca1480e8e79b594abd54b234fd99504e23330d8fa8a53a2da630dbe7b446e7c4",
-      "groupPrice": 300,
+      "groupId": "v2:/e417b41f9a5aa6cbd693a6e64d26b3dad26611617c45b596f91395b4b8fb55a4",
+      "groupPrice": 500,
       "groupCount": 1,
       "series": "Serie de ídolos"
     },
     {
-      "id": "CID_383_Athena_Commando_F_Cacti",
-      "name": "Patrullero espinoso",
-      "image": "https://fortnite-api.com/images/cosmetics/br/cid_383_athena_commando_f_cacti/icon.png",
-      "rarity": "common",
-      "price": null,
-      "expires": null,
-      "expiresISO": null,
-      "type": "traje",
-      "section": null,
-      "group": "Lote Enojo total",
-      "groupId": "v2:/1c66b2e1a4bef949c9721816ccf8765892fd67b29964f58e38b1367d7876a2fc",
-      "groupPrice": 1200,
-      "groupCount": 2,
-      "series": null
-    },
-    {
-      "id": "Shoes_WesternBarb",
-      "name": "Cactuflas",
-      "image": "https://fortnite-api.com/images/cosmetics/br/shoes_westernbarb/icon.png",
-      "rarity": "common",
-      "price": null,
-      "expires": null,
-      "expiresISO": null,
-      "type": "traje",
-      "section": null,
-      "group": "Lote Enojo total",
-      "groupId": "v2:/1c66b2e1a4bef949c9721816ccf8765892fd67b29964f58e38b1367d7876a2fc",
-      "groupPrice": 1200,
-      "groupCount": 2,
-      "series": null
-    },
-    {
-      "id": "Pickaxe_ID_644_BuffetFemale_TOH8A",
-      "name": "Mazo de 7 quilates",
-      "image": "https://fortnite-api.com/images/cosmetics/br/pickaxe_id_644_buffetfemale_toh8a/icon.png",
+      "id": "EID_SummitReedMolt",
+      "name": "Rather Lie",
+      "image": "https://fortnite-api.com/images/cosmetics/br/eid_summitreedmolt/icon.png",
       "rarity": "icon_series",
       "price": null,
       "expires": null,
       "expiresISO": null,
-      "type": "pico",
+      "type": "gesto",
       "section": null,
       "group": null,
-      "groupId": "v2:/6d64497df29e471476820819cff256b9f42e392ba34b8f47198e3abf69c9e628",
-      "groupPrice": 800,
+      "groupId": "v2:/1c57909395258053e01dfd0286f16633df5512e23cfe991563b8d9d62959b000",
+      "groupPrice": 500,
       "groupCount": 1,
-      "series": "Serie de ídolos"
-    },
-    {
-      "id": "CID_A_227_Athena_Commando_F_BistroAstronaut_JJLK5",
-      "name": "Ariana Grande viajera espacial",
-      "image": "https://fortnite-api.com/images/cosmetics/br/cid_a_227_athena_commando_f_bistroastronaut_jjlk5/icon.png",
-      "rarity": "icon_series",
-      "price": null,
-      "expires": null,
-      "expiresISO": null,
-      "type": "traje",
-      "section": null,
-      "group": null,
-      "groupId": "v2:/b207944c9bef7d62fb338975f0fcb491b0731d7d2dc2a8ea59a6243327607383",
-      "groupPrice": 2000,
-      "groupCount": 2,
-      "series": "Serie de ídolos"
-    },
-    {
-      "id": "BID_877_BistroAstronaut_LWL45",
-      "name": "I.R.I.S.",
-      "image": "https://fortnite-api.com/images/cosmetics/br/bid_877_bistroastronaut_lwl45/icon.png",
-      "rarity": "icon_series",
-      "price": null,
-      "expires": null,
-      "expiresISO": null,
-      "type": "mochila",
-      "section": null,
-      "group": null,
-      "groupId": "v2:/b207944c9bef7d62fb338975f0fcb491b0731d7d2dc2a8ea59a6243327607383",
-      "groupPrice": 2000,
-      "groupCount": 2,
       "series": "Serie de ídolos"
     },
     {
@@ -3842,6 +4418,54 @@
       "groupId": "v2:/e29fd1dd89d9ec0e7dadfe3def42d9121e9ff78db49b7e2cd4d77417847726fc",
       "groupPrice": 300,
       "groupCount": 1,
+      "series": null
+    },
+    {
+      "id": "EID_ScallopLava",
+      "name": "Alzarrocas",
+      "image": "https://fortnite-api.com/images/cosmetics/br/eid_scalloplava/icon.png",
+      "rarity": "common",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "gesto",
+      "section": null,
+      "group": null,
+      "groupId": "v2:/4551149535ab46014db26b557f99fcc218413cbd6ea459a7a6d247c91b7e1aea",
+      "groupPrice": 300,
+      "groupCount": 1,
+      "series": null
+    },
+    {
+      "id": "Character_SunnySquawk",
+      "name": "Paulie Carapluma",
+      "image": "https://fortnite-api.com/images/cosmetics/br/character_sunnysquawk/icon.png",
+      "rarity": "epic",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "traje",
+      "section": null,
+      "group": null,
+      "groupId": "v2:/91282611a16ec7dbb2e33c04b0f5b36f743c7246beff6c027109d47b3c68ba1b",
+      "groupPrice": 1200,
+      "groupCount": 2,
+      "series": null
+    },
+    {
+      "id": "Backpack_SunnySquawk",
+      "name": "Mochiloro",
+      "image": "https://fortnite-api.com/images/cosmetics/br/backpack_sunnysquawk/icon.png",
+      "rarity": "rare",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "mochila",
+      "section": null,
+      "group": null,
+      "groupId": "v2:/91282611a16ec7dbb2e33c04b0f5b36f743c7246beff6c027109d47b3c68ba1b",
+      "groupPrice": 1200,
+      "groupCount": 2,
       "series": null
     },
     {
@@ -3941,6 +4565,22 @@
       "series": null
     },
     {
+      "id": "Wrap_SummitReedGrit",
+      "name": "Playboi",
+      "image": "https://fortnite-api.com/images/cosmetics/br/wrap_summitreedgrit/icon.png",
+      "rarity": "rare",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "envoltorio",
+      "section": null,
+      "group": null,
+      "groupId": "v2:/054b2d051cb2dab694861f5072aa0727d559ae854188b8a64cc1ecf54dca6fd4",
+      "groupPrice": 500,
+      "groupCount": 1,
+      "series": null
+    },
+    {
       "id": "Glider_IgniteEgg",
       "name": "Centichoro",
       "image": "https://fortnite-api.com/images/cosmetics/br/glider_igniteegg/icon.png",
@@ -4021,18 +4661,18 @@
       "series": null
     },
     {
-      "id": "Pickaxe_CyborgWarrior",
-      "name": "Ciberguadaña esquelética",
-      "image": "https://fortnite-api.com/images/cosmetics/br/pickaxe_cyborgwarrior/icon.png",
-      "rarity": "rare",
+      "id": "EID_ElectroShuffle",
+      "name": "Shuffle",
+      "image": "https://fortnite-api.com/images/cosmetics/br/eid_electroshuffle/icon.png",
+      "rarity": "epic",
       "price": null,
       "expires": null,
       "expiresISO": null,
-      "type": "pico",
+      "type": "gesto",
       "section": null,
       "group": null,
-      "groupId": "v2:/c770978e23cb387a21623a13fed4b9cb2bd5568932890c91350e8fc45e9f8f14",
-      "groupPrice": 500,
+      "groupId": "v2:/a0c2229bb82a20e540703cdadb308190e1555e975640a42a680108681a1cb939",
+      "groupPrice": 800,
       "groupCount": 1,
       "series": null
     },
@@ -4133,22 +4773,6 @@
       "series": null
     },
     {
-      "id": "Shoes_WhiskerCaesarChomp",
-      "name": "Crocs Classic Clog \"White\"",
-      "image": "https://fortnite-api.com/images/cosmetics/br/shoes_whiskercaesarchomp/icon.png",
-      "rarity": "common",
-      "price": null,
-      "expires": null,
-      "expiresISO": null,
-      "type": "traje",
-      "section": null,
-      "group": null,
-      "groupId": "v2:/20a9912e2e4c04ea36d6f67a17f6680f9e73def532d965b2e8a5e093a5ed8b93",
-      "groupPrice": 1000,
-      "groupCount": 1,
-      "series": null
-    },
-    {
       "id": "Character_MollyKit",
       "name": "Cate Michi",
       "image": "https://fortnite-api.com/images/cosmetics/br/character_mollykit/icon.png",
@@ -4163,22 +4787,6 @@
       "groupPrice": 1200,
       "groupCount": 1,
       "series": null
-    },
-    {
-      "id": "Glider_ID_319_BistroAstronautFemale_A4839",
-      "name": "Fantasía I.R.I.S.",
-      "image": "https://fortnite-api.com/images/cosmetics/br/glider_id_319_bistroastronautfemale_a4839/icon.png",
-      "rarity": "icon_series",
-      "price": null,
-      "expires": null,
-      "expiresISO": null,
-      "type": "ala_delta",
-      "section": null,
-      "group": null,
-      "groupId": "v2:/8daab8b1a4e2a900cc05000687b488744aa36735ca19bec8e82061b4dab0cf8f",
-      "groupPrice": 1200,
-      "groupCount": 1,
-      "series": "Serie de ídolos"
     },
     {
       "id": "CID_310_Athena_Commando_F_StreetGoth",
@@ -4213,38 +4821,6 @@
       "series": null
     },
     {
-      "id": "CID_684_Athena_Commando_F_DragonRacer",
-      "name": "Piloto de jade",
-      "image": "https://fortnite-api.com/images/cosmetics/br/cid_684_athena_commando_f_dragonracer/icon.png",
-      "rarity": "rare",
-      "price": null,
-      "expires": null,
-      "expiresISO": null,
-      "type": "traje",
-      "section": null,
-      "group": null,
-      "groupId": "v2:/84363ff16e2dd867e2601eb9699f472e37229fd082c3c3af731d96c205ab1edb",
-      "groupPrice": 1200,
-      "groupCount": 2,
-      "series": null
-    },
-    {
-      "id": "BID_467_DragonRacer",
-      "name": "Guardia dragón",
-      "image": "https://fortnite-api.com/images/cosmetics/br/bid_467_dragonracer/icon.png",
-      "rarity": "rare",
-      "price": null,
-      "expires": null,
-      "expiresISO": null,
-      "type": "mochila",
-      "section": null,
-      "group": null,
-      "groupId": "v2:/84363ff16e2dd867e2601eb9699f472e37229fd082c3c3af731d96c205ab1edb",
-      "groupPrice": 1200,
-      "groupCount": 2,
-      "series": null
-    },
-    {
       "id": "EID_FluteLamp",
       "name": "Especial de Shaggy",
       "image": "https://fortnite-api.com/images/cosmetics/br/eid_flutelamp/icon.png",
@@ -4257,6 +4833,22 @@
       "group": null,
       "groupId": "v2:/b33180674df416c57ccc51db550d753dae661a394fe5287e70a6cbd16174b025",
       "groupPrice": 300,
+      "groupCount": 1,
+      "series": null
+    },
+    {
+      "id": "CID_397_Athena_Commando_F_TreasureHunterFashion",
+      "name": "Aura",
+      "image": "https://fortnite-api.com/images/cosmetics/br/cid_397_athena_commando_f_treasurehunterfashion/icon.png",
+      "rarity": "common",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "traje",
+      "section": null,
+      "group": null,
+      "groupId": "v2:/4beb5b00883f88aab666860d9bad732d9aefb27fedb5ce7de84dddcb00f91f6e",
+      "groupPrice": 800,
       "groupCount": 1,
       "series": null
     },
@@ -4373,25 +4965,9 @@
       "series": null
     },
     {
-      "id": "EID_Depart",
-      "name": "Juego de talones",
-      "image": "https://fortnite-api.com/images/cosmetics/br/eid_depart/icon.png",
-      "rarity": "icon_series",
-      "price": null,
-      "expires": null,
-      "expiresISO": null,
-      "type": "gesto",
-      "section": null,
-      "group": null,
-      "groupId": "v2:/ea50f41ee9564a8453b0cc9527f5cad94fd15f7c67dc31981e3d31c615a1c0ff",
-      "groupPrice": 500,
-      "groupCount": 1,
-      "series": "Serie de ídolos"
-    },
-    {
-      "id": "Shoes_LungeStreamForte",
-      "name": "Nike ISPA Drifter Split \"Indigo\"",
-      "image": "https://fortnite-api.com/images/cosmetics/br/shoes_lungestreamforte/icon.png",
+      "id": "CID_734_Athena_Commando_F_BannerRed",
+      "name": "Comandante escarlata",
+      "image": "https://fortnite-api.com/images/cosmetics/br/cid_734_athena_commando_f_bannerred/icon.png",
       "rarity": "common",
       "price": null,
       "expires": null,
@@ -4399,58 +4975,10 @@
       "type": "traje",
       "section": null,
       "group": null,
-      "groupId": "v2:/22697a03cdcb1de52d33ac753a975ef4efeb879a07640dd8a15eb2bc27507686",
-      "groupPrice": 1000,
-      "groupCount": 1,
-      "series": null
-    },
-    {
-      "id": "Character_CyborgWarrior",
-      "name": "Craneodroide",
-      "image": "https://fortnite-api.com/images/cosmetics/br/character_cyborgwarrior/icon.png",
-      "rarity": "epic",
-      "price": null,
-      "expires": null,
-      "expiresISO": null,
-      "type": "traje",
-      "section": null,
-      "group": null,
-      "groupId": "v2:/3aa93225abbcc9c6d3aadd227b88bc0ee680a2beb46e2f29c43654fce2d6af46",
+      "groupId": "v2:/02665089a2d825d56573a2523a9d13e001d758ee4a8009ac347e145becc1c9d6",
       "groupPrice": 800,
       "groupCount": 1,
       "series": null
-    },
-    {
-      "id": "EID_Bewilder",
-      "name": "Pasos presuntuosos",
-      "image": "https://fortnite-api.com/images/cosmetics/br/eid_bewilder/icon.png",
-      "rarity": "icon_series",
-      "price": null,
-      "expires": null,
-      "expiresISO": null,
-      "type": "gesto",
-      "section": null,
-      "group": null,
-      "groupId": "v2:/f893ec1c59b855d3c65cae3ab2fa7ad2cac217fe64673982109d5cdbbc988ae5",
-      "groupPrice": 500,
-      "groupCount": 1,
-      "series": "Serie de ídolos"
-    },
-    {
-      "id": "Glider_ID_304_BuffetFemale_AOF61",
-      "name": "Estelas endulzadas",
-      "image": "https://fortnite-api.com/images/cosmetics/br/glider_id_304_buffetfemale_aof61/icon.png",
-      "rarity": "icon_series",
-      "price": null,
-      "expires": null,
-      "expiresISO": null,
-      "type": "ala_delta",
-      "section": null,
-      "group": null,
-      "groupId": "v2:/4d9596222ed4e23138049aa5a63799e75e9f15629924bd8770aad3ae97a62a44",
-      "groupPrice": 1200,
-      "groupCount": 1,
-      "series": "Serie de ídolos"
     },
     {
       "id": "Pickaxe_FearCatch",
@@ -4465,6 +4993,22 @@
       "group": null,
       "groupId": "v2:/9edd2563bef4f18b5bb159ae484deb66c6a84be645b99ecc61d303ff217d8461",
       "groupPrice": 800,
+      "groupCount": 1,
+      "series": null
+    },
+    {
+      "id": "Character_RoosterRoast",
+      "name": "Cacareador cafetero",
+      "image": "https://fortnite-api.com/images/cosmetics/br/character_roosterroast/icon.png",
+      "rarity": "epic",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "traje",
+      "section": null,
+      "group": null,
+      "groupId": "v2:/12c8a78d47af48283a6ee26b16c42fa12346b68548cb6455b554793c531928fd",
+      "groupPrice": 1200,
       "groupCount": 1,
       "series": null
     },
@@ -4498,6 +5042,22 @@
       "groupId": "v2:/fabc2c89a4dcec48bccb17b21082977bff89103afbbbfaa83b4b8b566d6486e9",
       "groupPrice": 1500,
       "groupCount": 2,
+      "series": null
+    },
+    {
+      "id": "Character_OvenDrastic",
+      "name": "Jay maestro del rayo",
+      "image": "https://fortnite-api.com/images/cosmetics/br/character_ovendrastic/icon.png",
+      "rarity": "epic",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "traje",
+      "section": null,
+      "group": null,
+      "groupId": "v2:/61ab261f37e6ae843053a4cda781acda7878334315f7d25f91ffb41daf8cc9e7",
+      "groupPrice": 1200,
+      "groupCount": 1,
       "series": null
     },
     {
@@ -4661,6 +5221,38 @@
       "series": null
     },
     {
+      "id": "CID_315_Athena_Commando_M_TeriyakiFish",
+      "name": "Palito de pez",
+      "image": "https://fortnite-api.com/images/cosmetics/br/cid_315_athena_commando_m_teriyakifish/icon.png",
+      "rarity": "rare",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "traje",
+      "section": null,
+      "group": null,
+      "groupId": "v2:/c72a68f93fa01b879726f31818ebd790713a24a86f188c2b1984633c47ee6569",
+      "groupPrice": 1200,
+      "groupCount": 2,
+      "series": null
+    },
+    {
+      "id": "BID_193_TeriyakiFishMale",
+      "name": "Morral de agua salada",
+      "image": "https://fortnite-api.com/images/cosmetics/br/bid_193_teriyakifishmale/icon.png",
+      "rarity": "rare",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "mochila",
+      "section": null,
+      "group": null,
+      "groupId": "v2:/c72a68f93fa01b879726f31818ebd790713a24a86f188c2b1984633c47ee6569",
+      "groupPrice": 1200,
+      "groupCount": 2,
+      "series": null
+    },
+    {
       "id": "Backpack_ArmyFlour",
       "name": "Núcleo de Genos",
       "image": "https://fortnite-api.com/images/cosmetics/br/backpack_armyflour/icon.png",
@@ -4673,6 +5265,22 @@
       "group": null,
       "groupId": "v2:/3eb3410903b5050abf5982972158e82835c6aa78e3b916ec06a377d1cc5b9b3a",
       "groupPrice": 300,
+      "groupCount": 1,
+      "series": null
+    },
+    {
+      "id": "Companion_EggBawk",
+      "name": "Quiquiriquí",
+      "image": "https://fortnite-api.com/images/cosmetics/br/companion_eggbawk/icon.png",
+      "rarity": "common",
+      "price": null,
+      "expires": null,
+      "expiresISO": null,
+      "type": "traje",
+      "section": null,
+      "group": null,
+      "groupId": "v2:/faa1ace75054264115c5921d188686694efabec1a74e254e7c5e86644d904da5",
+      "groupPrice": 1200,
       "groupCount": 1,
       "series": null
     },
@@ -4731,6 +5339,26 @@
       ]
     },
     {
+      "id": "v2:/9cec3b32928df5331533e860f1925a9fcc91413052719d78af1cdca5a84336d2",
+      "name": null,
+      "price": 1000,
+      "expires": null,
+      "expiresISO": null,
+      "images": [
+        "https://fortnite-api.com/images/cosmetics/br/shoes_clinicraisebarge/icon.png"
+      ],
+      "items": [
+        {
+          "id": "Shoes_ClinicRaiseBarge",
+          "name": "Crocs Classic Marbled Clog \"Tinted Glass\"",
+          "image": "https://fortnite-api.com/images/cosmetics/br/shoes_clinicraisebarge/icon.png",
+          "rarity": "common",
+          "type": "traje",
+          "price": null
+        }
+      ]
+    },
+    {
       "id": "v2:/a76b0440069293bb1b3f14178a25f1de0f503d6e58e1ead5e52f5b8093b2ff0e",
       "name": null,
       "price": 1200,
@@ -4780,48 +5408,28 @@
       ]
     },
     {
-      "id": "v2:/c63256dbb8ea617a8162e3526aab822c8e84b8d7f15a0ad0fecffdf99c79c7ee",
-      "name": null,
-      "price": 1500,
+      "id": "v2:/71862276a40d879203f6154d9d103959fd79b1d0eb0e316e5565ff85409fb037",
+      "name": "Nunchakus del rayo",
+      "price": 800,
       "expires": null,
       "expiresISO": null,
       "images": [
-        "https://fortnite-api.com/images/cosmetics/br/character_impulsespring_d/icon.png"
+        "https://fortnite-api.com/images/cosmetics/br/pickaxe_ovendrastic/icon.png",
+        "https://fortnite-api.com/images/cosmetics/br/backpack_ovendrastic/icon.png"
       ],
       "items": [
         {
-          "id": "Character_ImpulseSpring_D",
-          "name": "Protectora de la portería",
-          "image": "https://fortnite-api.com/images/cosmetics/br/character_impulsespring_d/icon.png",
-          "rarity": "epic",
-          "type": "traje",
-          "price": null
-        }
-      ]
-    },
-    {
-      "id": "v2:/5e86ba92efea7a45541305882c6a43f14b353b1b2a163428ad4107f84f62bb15",
-      "name": "Lote Hermoso día",
-      "price": 1500,
-      "expires": null,
-      "expiresISO": null,
-      "images": [
-        "https://fortnite-api.com/images/cosmetics/br/character_sunshine/icon.png",
-        "https://fortnite-api.com/images/cosmetics/br/backpack_sunshine/icon.png"
-      ],
-      "items": [
-        {
-          "id": "Character_SunShine",
-          "name": "Rayo solar",
-          "image": "https://fortnite-api.com/images/cosmetics/br/character_sunshine/icon.png",
+          "id": "Pickaxe_OvenDrastic",
+          "name": "Nunchakus del rayo",
+          "image": "https://fortnite-api.com/images/cosmetics/br/pickaxe_ovendrastic/icon.png",
           "rarity": "rare",
-          "type": "traje",
+          "type": "pico",
           "price": null
         },
         {
-          "id": "Backpack_SunShine",
-          "name": "Aperitivo luminario",
-          "image": "https://fortnite-api.com/images/cosmetics/br/backpack_sunshine/icon.png",
+          "id": "Backpack_OvenDrastic",
+          "name": "Nunchakus del rayo",
+          "image": "https://fortnite-api.com/images/cosmetics/br/backpack_ovendrastic/icon.png",
           "rarity": "rare",
           "type": "mochila",
           "price": null
@@ -4936,26 +5544,6 @@
       ]
     },
     {
-      "id": "v2:/2dca0b0a7fc977f7bd13e261afb6fdff7078f4b4ec7ecef60dc7e48b5c8b6cc6",
-      "name": null,
-      "price": 800,
-      "expires": null,
-      "expiresISO": null,
-      "images": [
-        "https://fortnite-api.com/images/cosmetics/br/pickaxe_id_682_bistroastronautfemale_a3md2/icon.png"
-      ],
-      "items": [
-        {
-          "id": "Pickaxe_ID_682_BistroAstronautFemale_A3MD2",
-          "name": "Guadaña viajera espacial",
-          "image": "https://fortnite-api.com/images/cosmetics/br/pickaxe_id_682_bistroastronautfemale_a3md2/icon.png",
-          "rarity": "icon_series",
-          "type": "pico",
-          "price": null
-        }
-      ]
-    },
-    {
       "id": "v2:/3e259195f725427040516a1bd69beed6dc364fb0e71f45e94e4254d2d760c91e",
       "name": null,
       "price": 500,
@@ -4976,7 +5564,7 @@
       ]
     },
     {
-      "id": "v2:/0183d346e5017f33804a8fec543abfd244f1597f649019c02d5c42bf5c6f56b6",
+      "id": "v2:/d0016f5d58f1302595dc1d7038f4fa5e9bb088ffb01e9cbeab523149d99451d3",
       "name": null,
       "price": 500,
       "expires": null,
@@ -4985,7 +5573,7 @@
       "items": []
     },
     {
-      "id": "v2:/d0016f5d58f1302595dc1d7038f4fa5e9bb088ffb01e9cbeab523149d99451d3",
+      "id": "v2:/0183d346e5017f33804a8fec543abfd244f1597f649019c02d5c42bf5c6f56b6",
       "name": null,
       "price": 500,
       "expires": null,
@@ -5054,26 +5642,6 @@
       ]
     },
     {
-      "id": "v2:/66995041a0112a6fce99f99e8867756a6ca3dcf9f8b61cc6507b2a537798c1dc",
-      "name": null,
-      "price": 500,
-      "expires": null,
-      "expiresISO": null,
-      "images": [
-        "https://fortnite-api.com/images/cosmetics/br/eid_frontyard/icon.png"
-      ],
-      "items": [
-        {
-          "id": "EID_FrontYard",
-          "name": "Paso pandillero",
-          "image": "https://fortnite-api.com/images/cosmetics/br/eid_frontyard/icon.png",
-          "rarity": "icon_series",
-          "type": "gesto",
-          "price": null
-        }
-      ]
-    },
-    {
       "id": "v2:/b349fa0e30a454cbe0082b9a541cc92151d8e1b7d1c36924c66394f021bba67b",
       "name": "Lote LISA",
       "price": 2500,
@@ -5130,21 +5698,21 @@
       ]
     },
     {
-      "id": "v2:/348938c55f47c36d54c5feafad8675a9e9de9042e80083acd25936ec82bc17a3",
+      "id": "v2:/7d6544c1829f51145afd4439c1231efacfb6cfae8271e50dcc39fc62cd181651",
       "name": null,
-      "price": 1000,
+      "price": 800,
       "expires": null,
       "expiresISO": null,
       "images": [
-        "https://fortnite-api.com/images/cosmetics/br/shoes_volumewellargyle/icon.png"
+        "https://fortnite-api.com/images/cosmetics/br/backpack_summitreedgrit_mic/icon.png"
       ],
       "items": [
         {
-          "id": "Shoes_VolumeWellArgyle",
-          "name": "adidas Forum JS Wings 4.0 \"White\"",
-          "image": "https://fortnite-api.com/images/cosmetics/br/shoes_volumewellargyle/icon.png",
-          "rarity": "common",
-          "type": "traje",
+          "id": "Backpack_SummitReedGrit_Mic",
+          "name": "Voz antagonista",
+          "image": "https://fortnite-api.com/images/cosmetics/br/backpack_summitreedgrit_mic/icon.png",
+          "rarity": "icon_series",
+          "type": "mochila",
           "price": null
         }
       ]
@@ -5208,26 +5776,6 @@
       "items": []
     },
     {
-      "id": "v2:/78c8cc9a4369adbbe0764d8b56ad58ad64e6d0bb71c4552d546b7d283155e873",
-      "name": null,
-      "price": 500,
-      "expires": null,
-      "expiresISO": null,
-      "images": [
-        "https://fortnite-api.com/images/cosmetics/br/eid_nevergonna/icon.png"
-      ],
-      "items": [
-        {
-          "id": "EID_NeverGonna",
-          "name": "Never Gonna",
-          "image": "https://fortnite-api.com/images/cosmetics/br/eid_nevergonna/icon.png",
-          "rarity": "icon_series",
-          "type": "gesto",
-          "price": null
-        }
-      ]
-    },
-    {
       "id": "v2:/69432e9771b55ff99e4be8093964634de4684821ffef5090cb7624530520473b",
       "name": null,
       "price": 1200,
@@ -5277,6 +5825,26 @@
       ]
     },
     {
+      "id": "v2:/e2c0bd95006f4dd705fa70cf5e784ffe18ad3b588495deac45d05fe8625307e1",
+      "name": null,
+      "price": 800,
+      "expires": null,
+      "expiresISO": null,
+      "images": [
+        "https://fortnite-api.com/images/cosmetics/br/eid_easternbloc/icon.png"
+      ],
+      "items": [
+        {
+          "id": "EID_EasternBloc",
+          "name": "Sentadilla con patada",
+          "image": "https://fortnite-api.com/images/cosmetics/br/eid_easternbloc/icon.png",
+          "rarity": "epic",
+          "type": "gesto",
+          "price": null
+        }
+      ]
+    },
+    {
       "id": "v2:/426ed01b198c6d6bf6a008bbd28a925b7da70e4c07460a46fbf4ff5b45cc745a",
       "name": null,
       "price": 500,
@@ -5290,6 +5858,55 @@
           "id": "EID_FearCatch",
           "name": "Miniplaneador espectral",
           "image": "https://fortnite-api.com/images/cosmetics/br/eid_fearcatch/icon.png",
+          "rarity": "common",
+          "type": "gesto",
+          "price": null
+        }
+      ]
+    },
+    {
+      "id": "v2:/95926ed551edc2928c0de7f2167dc7079dc391ff2bfe3beff24ac46a1583fef1",
+      "name": "Playboi Carti",
+      "price": 1500,
+      "expires": null,
+      "expiresISO": null,
+      "images": [
+        "https://fortnite-api.com/images/cosmetics/br/character_summitreedgrit/icon.png",
+        "https://fortnite-api.com/images/cosmetics/br/backpack_summitreedgrit/icon.png"
+      ],
+      "items": [
+        {
+          "id": "Character_SummitReedGrit",
+          "name": "Playboi Carti",
+          "image": "https://fortnite-api.com/images/cosmetics/br/character_summitreedgrit/icon.png",
+          "rarity": "icon_series",
+          "type": "traje",
+          "price": null
+        },
+        {
+          "id": "Backpack_SummitReedGrit",
+          "name": "Rueda de Carti",
+          "image": "https://fortnite-api.com/images/cosmetics/br/backpack_summitreedgrit/icon.png",
+          "rarity": "icon_series",
+          "type": "mochila",
+          "price": null
+        }
+      ]
+    },
+    {
+      "id": "v2:/c6533589f75432c42999bb05389fe6fedaec756c87014020b109967b6eef3d60",
+      "name": null,
+      "price": 300,
+      "expires": null,
+      "expiresISO": null,
+      "images": [
+        "https://fortnite-api.com/images/cosmetics/br/eid_ticketpoke/icon.png"
+      ],
+      "items": [
+        {
+          "id": "EID_TicketPoke",
+          "name": "Patada gélida",
+          "image": "https://fortnite-api.com/images/cosmetics/br/eid_ticketpoke/icon.png",
           "rarity": "common",
           "type": "gesto",
           "price": null
@@ -5317,6 +5934,26 @@
       ]
     },
     {
+      "id": "v2:/eaa27ff467a57c5984787964c19eaa607b45a8a8dedd9862d45734cb4d7dd1e6",
+      "name": null,
+      "price": 600,
+      "expires": null,
+      "expiresISO": null,
+      "images": [
+        "https://fortnite-api.com/images/cosmetics/br/shoes_tinselglam/icon.png"
+      ],
+      "items": [
+        {
+          "id": "Shoes_TinselGlam",
+          "name": "Tacones brillantes",
+          "image": "https://fortnite-api.com/images/cosmetics/br/shoes_tinselglam/icon.png",
+          "rarity": "common",
+          "type": "traje",
+          "price": null
+        }
+      ]
+    },
+    {
       "id": "v2:/b23d2569f49b86b73a360a2a46a78b97677922bcc739d8bd9d7a6847b7e6b019",
       "name": null,
       "price": 300,
@@ -5332,6 +5969,35 @@
           "image": "https://fortnite-api.com/images/cosmetics/br/eid_ivystub/icon.png",
           "rarity": "common",
           "type": "gesto",
+          "price": null
+        }
+      ]
+    },
+    {
+      "id": "v2:/d7bd4a741c44025894a1800232229d36aa9430289c16aff6ad6f4b20ed313b95",
+      "name": "Shurikens de hielo",
+      "price": 800,
+      "expires": null,
+      "expiresISO": null,
+      "images": [
+        "https://fortnite-api.com/images/cosmetics/br/pickaxe_ticketpoke/icon.png",
+        "https://fortnite-api.com/images/cosmetics/br/backpack_ticketpoke/icon.png"
+      ],
+      "items": [
+        {
+          "id": "Pickaxe_TicketPoke",
+          "name": "Shurikens de hielo",
+          "image": "https://fortnite-api.com/images/cosmetics/br/pickaxe_ticketpoke/icon.png",
+          "rarity": "rare",
+          "type": "pico",
+          "price": null
+        },
+        {
+          "id": "Backpack_TicketPoke",
+          "name": "Shurikens de hielo",
+          "image": "https://fortnite-api.com/images/cosmetics/br/backpack_ticketpoke/icon.png",
+          "rarity": "rare",
+          "type": "mochila",
           "price": null
         }
       ]
@@ -5375,21 +6041,21 @@
       "items": []
     },
     {
-      "id": "v2:/a2a4ba21c0d315deefe1bdfd2e7e5d425b7c3e036b15d0e7c4fdb18c77f25d30",
+      "id": "v2:/f724f07f1a891b9ae7cb19101ff8dfe71b9c8c5e6cedb887cde33af65d101eeb",
       "name": null,
-      "price": 1200,
+      "price": 500,
       "expires": null,
       "expiresISO": null,
       "images": [
-        "https://fortnite-api.com/images/cosmetics/br/character_joltmosaic/icon.png"
+        "https://fortnite-api.com/images/cosmetics/br/eid_medicinal/icon.png"
       ],
       "items": [
         {
-          "id": "Character_JoltMosaic",
-          "name": "Gogo Yubari",
-          "image": "https://fortnite-api.com/images/cosmetics/br/character_joltmosaic/icon.png",
-          "rarity": "epic",
-          "type": "traje",
+          "id": "EID_Medicinal",
+          "name": "No hay cura",
+          "image": "https://fortnite-api.com/images/cosmetics/br/eid_medicinal/icon.png",
+          "rarity": "icon_series",
+          "type": "gesto",
           "price": null
         }
       ]
@@ -5424,6 +6090,26 @@
       ]
     },
     {
+      "id": "v2:/a2a4ba21c0d315deefe1bdfd2e7e5d425b7c3e036b15d0e7c4fdb18c77f25d30",
+      "name": null,
+      "price": 1200,
+      "expires": null,
+      "expiresISO": null,
+      "images": [
+        "https://fortnite-api.com/images/cosmetics/br/character_joltmosaic/icon.png"
+      ],
+      "items": [
+        {
+          "id": "Character_JoltMosaic",
+          "name": "Gogo Yubari",
+          "image": "https://fortnite-api.com/images/cosmetics/br/character_joltmosaic/icon.png",
+          "rarity": "epic",
+          "type": "traje",
+          "price": null
+        }
+      ]
+    },
+    {
       "id": "v2:/e7522cd5a5c3d20770af62c1b894a989bf249e3bf0c1ad3eb8ca9171b9d31393",
       "name": null,
       "price": 500,
@@ -5447,6 +6133,46 @@
           "name": "Minitornado del Terror",
           "image": "https://fortnite-api.com/images/cosmetics/br/backpack_ivystub/icon.png",
           "rarity": "rare",
+          "type": "mochila",
+          "price": null
+        }
+      ]
+    },
+    {
+      "id": "v2:/6303e41b527dceda9531e1565a7793b8aeaab759fe7f2a0df8c73a01ad4f43ea",
+      "name": null,
+      "price": 800,
+      "expires": null,
+      "expiresISO": null,
+      "images": [
+        "https://fortnite-api.com/images/cosmetics/br/backpack_hexagonvoxel_bass/icon.png"
+      ],
+      "items": [
+        {
+          "id": "Backpack_HexagonVoxel_Bass",
+          "name": "Vóxel oscuro",
+          "image": "https://fortnite-api.com/images/cosmetics/br/backpack_hexagonvoxel_bass/icon.png",
+          "rarity": "rare",
+          "type": "mochila",
+          "price": null
+        }
+      ]
+    },
+    {
+      "id": "v2:/f40627d5977a3a5daa77ed5eca1088ed6586d9b7f1d94a00e4576143cac8660a",
+      "name": null,
+      "price": 300,
+      "expires": null,
+      "expiresISO": null,
+      "images": [
+        "https://fortnite-api.com/images/cosmetics/br/backpack_summitreedgrit/icon.png"
+      ],
+      "items": [
+        {
+          "id": "Backpack_SummitReedGrit",
+          "name": "Rueda de Carti",
+          "image": "https://fortnite-api.com/images/cosmetics/br/backpack_summitreedgrit/icon.png",
+          "rarity": "icon_series",
           "type": "mochila",
           "price": null
         }
@@ -5493,60 +6219,53 @@
       ]
     },
     {
-      "id": "v2:/9da23b7396071683bc38a86ef529e3940175a8713e24c1c86d3ee407f8a8375d",
-      "name": "Lote Ariana Grande viajera espacial",
-      "price": 2500,
+      "id": "v2:/6a0981f87502c5800a9b78b10df56a7996ceaa616adf3b8430698849762bdd2d",
+      "name": null,
+      "price": 1200,
       "expires": null,
       "expiresISO": null,
       "images": [
-        "https://fortnite-api.com/images/cosmetics/br/cid_a_227_athena_commando_f_bistroastronaut_jjlk5/icon.png",
-        "https://fortnite-api.com/images/cosmetics/br/bid_877_bistroastronaut_lwl45/icon.png",
-        "https://fortnite-api.com/images/cosmetics/br/pickaxe_id_682_bistroastronautfemale_a3md2/icon.png",
-        "https://fortnite-api.com/images/cosmetics/br/glider_id_319_bistroastronautfemale_a4839/icon.png"
+        "https://fortnite-api.com/images/cosmetics/br/cid_785_athena_commando_f_python/icon.png",
+        "https://fortnite-api.com/images/cosmetics/br/bid_540_python/icon.png"
       ],
       "items": [
         {
-          "id": "CID_A_227_Athena_Commando_F_BistroAstronaut_JJLK5",
-          "name": "Ariana Grande viajera espacial",
-          "image": "https://fortnite-api.com/images/cosmetics/br/cid_a_227_athena_commando_f_bistroastronaut_jjlk5/icon.png",
-          "rarity": "icon_series",
+          "id": "CID_785_Athena_Commando_F_Python",
+          "name": "Culebra carmesí",
+          "image": "https://fortnite-api.com/images/cosmetics/br/cid_785_athena_commando_f_python/icon.png",
+          "rarity": "rare",
           "type": "traje",
           "price": null
         },
         {
-          "id": "BID_877_BistroAstronaut_LWL45",
-          "name": "I.R.I.S.",
-          "image": "https://fortnite-api.com/images/cosmetics/br/bid_877_bistroastronaut_lwl45/icon.png",
-          "rarity": "icon_series",
+          "id": "BID_540_Python",
+          "name": "Colmillo doble",
+          "image": "https://fortnite-api.com/images/cosmetics/br/bid_540_python/icon.png",
+          "rarity": "rare",
           "type": "mochila",
-          "price": null
-        },
-        {
-          "id": "Pickaxe_ID_682_BistroAstronautFemale_A3MD2",
-          "name": "Guadaña viajera espacial",
-          "image": "https://fortnite-api.com/images/cosmetics/br/pickaxe_id_682_bistroastronautfemale_a3md2/icon.png",
-          "rarity": "icon_series",
-          "type": "pico",
-          "price": null
-        },
-        {
-          "id": "Glider_ID_319_BistroAstronautFemale_A4839",
-          "name": "Fantasía I.R.I.S.",
-          "image": "https://fortnite-api.com/images/cosmetics/br/glider_id_319_bistroastronautfemale_a4839/icon.png",
-          "rarity": "icon_series",
-          "type": "ala_delta",
           "price": null
         }
       ]
     },
     {
-      "id": "v2:/53fd99ec507a1814226bb60a11a000448ef9931df1cfc63063885d0bfe2f8d04",
+      "id": "v2:/f0544a63083b410cf93e9a3bbadd7a24a1f71667f4c37cca7186700f91fe636b",
       "name": null,
-      "price": 500,
+      "price": 800,
       "expires": null,
       "expiresISO": null,
-      "images": [],
-      "items": []
+      "images": [
+        "https://fortnite-api.com/images/cosmetics/br/backpack_summitreedmolt_guitar/icon.png"
+      ],
+      "items": [
+        {
+          "id": "Backpack_SummitReedMolt_Guitar",
+          "name": "ROCKSTAR de Carti",
+          "image": "https://fortnite-api.com/images/cosmetics/br/backpack_summitreedmolt_guitar/icon.png",
+          "rarity": "icon_series",
+          "type": "mochila",
+          "price": null
+        }
+      ]
     },
     {
       "id": "v2:/22588348b8e21b92fad5340c77104f2bbc9ec523a20b00f0dab9c2b2d342c8f2",
@@ -5578,41 +6297,30 @@
       ]
     },
     {
-      "id": "v2:/2754055fe1ece51afd9edc6716d7cf72a7a4e37d25dca72af34a8cfdf01f598e",
+      "id": "v2:/53fd99ec507a1814226bb60a11a000448ef9931df1cfc63063885d0bfe2f8d04",
       "name": null,
-      "price": 800,
+      "price": 500,
       "expires": null,
       "expiresISO": null,
-      "images": [
-        "https://fortnite-api.com/images/cosmetics/br/cid_383_athena_commando_f_cacti/icon.png"
-      ],
-      "items": [
-        {
-          "id": "CID_383_Athena_Commando_F_Cacti",
-          "name": "Patrullero espinoso",
-          "image": "https://fortnite-api.com/images/cosmetics/br/cid_383_athena_commando_f_cacti/icon.png",
-          "rarity": "common",
-          "type": "traje",
-          "price": null
-        }
-      ]
+      "images": [],
+      "items": []
     },
     {
-      "id": "v2:/57bb8c4b7bf3de012096b5896cd03dafd4a102eacff28b6f57355713b33cb35c",
+      "id": "v2:/523a070acc40095556fce1c2f0f162f18cf6bca1033d6d845f75d9300e5d8d5a",
       "name": null,
-      "price": 800,
+      "price": 1000,
       "expires": null,
       "expiresISO": null,
       "images": [
-        "https://fortnite-api.com/images/cosmetics/br/pickaxe_id_448_sportsfashionfemale1h/icon.png"
+        "https://fortnite-api.com/images/cosmetics/br/shoes_volumewellchecker/icon.png"
       ],
       "items": [
         {
-          "id": "Pickaxe_ID_448_SportsFashionFemale1H",
-          "name": "Palitos giratorios",
-          "image": "https://fortnite-api.com/images/cosmetics/br/pickaxe_id_448_sportsfashionfemale1h/icon.png",
-          "rarity": "rare",
-          "type": "pico",
+          "id": "Shoes_VolumeWellChecker",
+          "name": "adidas Harden Vol 9 \"Red\"",
+          "image": "https://fortnite-api.com/images/cosmetics/br/shoes_volumewellchecker/icon.png",
+          "rarity": "common",
+          "type": "traje",
           "price": null
         }
       ]
@@ -5636,6 +6344,35 @@
       "items": []
     },
     {
+      "id": "v2:/45c8205daabb0471ad28d884841efc802e2dbeefdf0e178a1bfa50f4ec1314aa",
+      "name": null,
+      "price": 1200,
+      "expires": null,
+      "expiresISO": null,
+      "images": [
+        "https://fortnite-api.com/images/cosmetics/br/cid_480_athena_commando_f_bubblegum/icon.png",
+        "https://fortnite-api.com/images/cosmetics/br/bid_313_bubblegum/icon.png"
+      ],
+      "items": [
+        {
+          "id": "CID_480_Athena_Commando_F_Bubblegum",
+          "name": "Bombardera burbuja",
+          "image": "https://fortnite-api.com/images/cosmetics/br/cid_480_athena_commando_f_bubblegum/icon.png",
+          "rarity": "rare",
+          "type": "traje",
+          "price": null
+        },
+        {
+          "id": "BID_313_Bubblegum",
+          "name": "Bomba burbuja",
+          "image": "https://fortnite-api.com/images/cosmetics/br/bid_313_bubblegum/icon.png",
+          "rarity": "rare",
+          "type": "mochila",
+          "price": null
+        }
+      ]
+    },
+    {
       "id": "v2:/f9936b07f1a0e295669325c3dfbaf31636b09a3c0794b1819397249c9821a5be",
       "name": null,
       "price": 500,
@@ -5643,6 +6380,26 @@
       "expiresISO": null,
       "images": [],
       "items": []
+    },
+    {
+      "id": "v2:/cfb8b5d38421bd51e651e99f64ba8270d77389b68c5dc6e9d57a8d86c9a59335",
+      "name": null,
+      "price": 500,
+      "expires": null,
+      "expiresISO": null,
+      "images": [
+        "https://fortnite-api.com/images/cosmetics/br/eid_julybooks/icon.png"
+      ],
+      "items": [
+        {
+          "id": "EID_JulyBooks",
+          "name": "Out West",
+          "image": "https://fortnite-api.com/images/cosmetics/br/eid_julybooks/icon.png",
+          "rarity": "icon_series",
+          "type": "gesto",
+          "price": null
+        }
+      ]
     },
     {
       "id": "v2:/a4b1763207359a09c52650240654251347a633aef1a68ce91920d30e9fbb21fc",
@@ -5672,6 +6429,15 @@
           "price": null
         }
       ]
+    },
+    {
+      "id": "v2:/0c6266a1932139f7e0ad386aa0c08b032b0d88e182a7cb9174d44b843ecda8e8",
+      "name": null,
+      "price": 500,
+      "expires": null,
+      "expiresISO": null,
+      "images": [],
+      "items": []
     },
     {
       "id": "v2:/7ea7b908d9307f16f2a1ea4d3108b12963c0505f86ce4db90b8543b7cb686f0f",
@@ -5712,15 +6478,6 @@
       ]
     },
     {
-      "id": "v2:/0c6266a1932139f7e0ad386aa0c08b032b0d88e182a7cb9174d44b843ecda8e8",
-      "name": null,
-      "price": 500,
-      "expires": null,
-      "expiresISO": null,
-      "images": [],
-      "items": []
-    },
-    {
       "id": "v2:/46566d731b32d716f5531400061cff14f4e7870f51517a59797e4c782ecbe24c",
       "name": null,
       "price": 800,
@@ -5739,15 +6496,6 @@
           "price": null
         }
       ]
-    },
-    {
-      "id": "v2:/8fb0aade51bf528bcbfffd578d984a8ef2a027df60efd7949ecd45e1c2bd4587",
-      "name": null,
-      "price": 500,
-      "expires": null,
-      "expiresISO": null,
-      "images": [],
-      "items": []
     },
     {
       "id": "v2:/25e2a003460398540364742a1eef5b18535130f30c5aa2d9e50804401dbf17f8",
@@ -5857,7 +6605,16 @@
       ]
     },
     {
-      "id": "v2:/7ab646783f25e9d2bd2339c9d6509da75e52f3585a802d8ed7c1ff3d7ee07402",
+      "id": "v2:/8fb0aade51bf528bcbfffd578d984a8ef2a027df60efd7949ecd45e1c2bd4587",
+      "name": null,
+      "price": 500,
+      "expires": null,
+      "expiresISO": null,
+      "images": [],
+      "items": []
+    },
+    {
+      "id": "v2:/ad9fc200edde113308fe4328cd2442971413dec87239d6ddc919001d8bef6806",
       "name": null,
       "price": 500,
       "expires": null,
@@ -5886,24 +6643,13 @@
       ]
     },
     {
-      "id": "v2:/b1c05345a3c45dfa364b547679ce075d7df96c4bda3d41b78317c26bcfde107a",
+      "id": "v2:/7ab646783f25e9d2bd2339c9d6509da75e52f3585a802d8ed7c1ff3d7ee07402",
       "name": null,
       "price": 500,
       "expires": null,
       "expiresISO": null,
-      "images": [
-        "https://fortnite-api.com/images/cosmetics/br/eid_timesticking/icon.png"
-      ],
-      "items": [
-        {
-          "id": "EID_TimesTicking",
-          "name": "Atemporal",
-          "image": "https://fortnite-api.com/images/cosmetics/br/eid_timesticking/icon.png",
-          "rarity": "icon_series",
-          "type": "gesto",
-          "price": null
-        }
-      ]
+      "images": [],
+      "items": []
     },
     {
       "id": "v2:/c8f9131e0764f19b0ec1b5c730c654a1b6422d7b07d1e4595e7a0c2860078741",
@@ -5973,50 +6719,70 @@
       ]
     },
     {
-      "id": "v2:/ec6d0954a97521d347ac65d2ff5f3115a4f54a6fc476d9524540baa16d9225b6",
+      "id": "v2:/9222e71d5cf6b9dd8b173c010220b34ce72272d8f6979ed47eab8e8170a6e0cf",
       "name": null,
       "price": 1200,
       "expires": null,
       "expiresISO": null,
       "images": [
-        "https://fortnite-api.com/images/cosmetics/br/cid_720_athena_commando_f_streetfashionemerald/icon.png",
-        "https://fortnite-api.com/images/cosmetics/br/bid_494_streetfashionemerald/icon.png"
+        "https://fortnite-api.com/images/cosmetics/br/glider_id_266_neon/icon.png"
       ],
       "items": [
         {
-          "id": "CID_720_Athena_Commando_F_StreetFashionEmerald",
-          "name": "Azar",
-          "image": "https://fortnite-api.com/images/cosmetics/br/cid_720_athena_commando_f_streetfashionemerald/icon.png",
-          "rarity": "rare",
-          "type": "traje",
-          "price": null
-        },
-        {
-          "id": "BID_494_StreetFashionEmerald",
-          "name": "Borde boscoso",
-          "image": "https://fortnite-api.com/images/cosmetics/br/bid_494_streetfashionemerald/icon.png",
-          "rarity": "rare",
-          "type": "mochila",
+          "id": "Glider_ID_266_Neon",
+          "name": "Alas resplandecientes",
+          "image": "https://fortnite-api.com/images/cosmetics/br/glider_id_266_neon/icon.png",
+          "rarity": "epic",
+          "type": "ala_delta",
           "price": null
         }
       ]
     },
     {
-      "id": "v2:/78741f7d84ad91d936abc9ea743f8ca746583b3d05498c34d97572c72d42fb4d",
+      "id": "v2:/f0e9d61f59849ab07eb2673ef38e4dd676ff926f1898e08c07f065c893c5e17f",
       "name": null,
       "price": 500,
       "expires": null,
       "expiresISO": null,
       "images": [
-        "https://fortnite-api.com/images/cosmetics/br/wrap_197_toxinbubbles/icon.png"
+        "https://fortnite-api.com/images/cosmetics/br/eid_bigstepper/icon.png"
       ],
       "items": [
         {
-          "id": "Wrap_197_ToxinBubbles",
-          "name": "Burbujeante",
-          "image": "https://fortnite-api.com/images/cosmetics/br/wrap_197_toxinbubbles/icon.png",
+          "id": "EID_BigStepper",
+          "name": "Big Dawgs",
+          "image": "https://fortnite-api.com/images/cosmetics/br/eid_bigstepper/icon.png",
+          "rarity": "icon_series",
+          "type": "gesto",
+          "price": null
+        }
+      ]
+    },
+    {
+      "id": "v2:/abd006c3389815f8abc598dbc88518bb79e3f33221b0186902d509f77732c583",
+      "name": null,
+      "price": 1200,
+      "expires": null,
+      "expiresISO": null,
+      "images": [
+        "https://fortnite-api.com/images/cosmetics/br/cid_a_058_athena_commando_f_wickedduck/icon.png",
+        "https://fortnite-api.com/images/cosmetics/br/bid_735_wickedduckfemale/icon.png"
+      ],
+      "items": [
+        {
+          "id": "CID_A_058_Athena_Commando_F_WickedDuck",
+          "name": "Megg",
+          "image": "https://fortnite-api.com/images/cosmetics/br/cid_a_058_athena_commando_f_wickedduck/icon.png",
           "rarity": "rare",
-          "type": "envoltorio",
+          "type": "traje",
+          "price": null
+        },
+        {
+          "id": "BID_735_WickedDuckFemale",
+          "name": "Cascarón cuaquero",
+          "image": "https://fortnite-api.com/images/cosmetics/br/bid_735_wickedduckfemale/icon.png",
+          "rarity": "rare",
+          "type": "mochila",
           "price": null
         }
       ]
@@ -6071,29 +6837,20 @@
       ]
     },
     {
-      "id": "v2:/4572322b5c0a52433834f3f86bef191e66759f419e8e0493cceb8397d8aa5034",
+      "id": "v2:/5fa7a10a7b5f9fd0487e497a1544a9c4e2667e08c953846a9cef431a3bb511c1",
       "name": null,
-      "price": 1200,
+      "price": 300,
       "expires": null,
       "expiresISO": null,
       "images": [
-        "https://fortnite-api.com/images/cosmetics/br/character_sunshine/icon.png",
-        "https://fortnite-api.com/images/cosmetics/br/backpack_sunshine/icon.png"
+        "https://fortnite-api.com/images/cosmetics/br/backpack_summitreedmolt/icon.png"
       ],
       "items": [
         {
-          "id": "Character_SunShine",
-          "name": "Rayo solar",
-          "image": "https://fortnite-api.com/images/cosmetics/br/character_sunshine/icon.png",
-          "rarity": "rare",
-          "type": "traje",
-          "price": null
-        },
-        {
-          "id": "Backpack_SunShine",
-          "name": "Aperitivo luminario",
-          "image": "https://fortnite-api.com/images/cosmetics/br/backpack_sunshine/icon.png",
-          "rarity": "rare",
+          "id": "Backpack_SummitReedMolt",
+          "name": "Alas Vamp de Carti",
+          "image": "https://fortnite-api.com/images/cosmetics/br/backpack_summitreedmolt/icon.png",
+          "rarity": "icon_series",
           "type": "mochila",
           "price": null
         }
@@ -6243,6 +7000,15 @@
       ]
     },
     {
+      "id": "v2:/3a3130e43b4bacef46154758c1a775fdc2961fb5c4580ce31117417ecad0be8d",
+      "name": null,
+      "price": 500,
+      "expires": null,
+      "expiresISO": null,
+      "images": [],
+      "items": []
+    },
+    {
       "id": "v2:/83778bb9c4d689a4a4e25a4b6fc839c256263be40dabe80d10435bbdb6a6be08",
       "name": "Genos",
       "price": 1500,
@@ -6283,13 +7049,24 @@
       ]
     },
     {
-      "id": "v2:/3fd97aff752d47c472c08bb9d4e5599b6ef016c2f4671a3a883e3bfd555ccbb7",
+      "id": "v2:/2b63be18bb4d2faf1ce1edcc02c65980601d32b488f1e45f6075bfb08fb5d1e3",
       "name": null,
       "price": 500,
       "expires": null,
       "expiresISO": null,
-      "images": [],
-      "items": []
+      "images": [
+        "https://fortnite-api.com/images/cosmetics/br/eid_enchant/icon.png"
+      ],
+      "items": [
+        {
+          "id": "EID_Enchant",
+          "name": "Compromiso",
+          "image": "https://fortnite-api.com/images/cosmetics/br/eid_enchant/icon.png",
+          "rarity": "icon_series",
+          "type": "gesto",
+          "price": null
+        }
+      ]
     },
     {
       "id": "v2:/0a7863d99428b9afe8037e87d6729a3e6d648346f2a99b5a8b1d47029e98a672",
@@ -6382,6 +7159,35 @@
           "name": "Miauchero",
           "image": "https://fortnite-api.com/images/cosmetics/br/backpack_ectocat/icon.png",
           "rarity": "epic",
+          "type": "mochila",
+          "price": null
+        }
+      ]
+    },
+    {
+      "id": "v2:/cacdf090d4305c8469804e9efc68b471ea2100c42b71c3bd3ae0497455f3ea75",
+      "name": "Guadaña de los terremotos",
+      "price": 800,
+      "expires": null,
+      "expiresISO": null,
+      "images": [
+        "https://fortnite-api.com/images/cosmetics/br/pickaxe_scalloplava/icon.png",
+        "https://fortnite-api.com/images/cosmetics/br/backpack_scalloplava/icon.png"
+      ],
+      "items": [
+        {
+          "id": "Pickaxe_ScallopLava",
+          "name": "Guadaña de los terremotos",
+          "image": "https://fortnite-api.com/images/cosmetics/br/pickaxe_scalloplava/icon.png",
+          "rarity": "rare",
+          "type": "pico",
+          "price": null
+        },
+        {
+          "id": "Backpack_ScallopLava",
+          "name": "Guadaña de los terremotos",
+          "image": "https://fortnite-api.com/images/cosmetics/br/backpack_scalloplava/icon.png",
+          "rarity": "rare",
           "type": "mochila",
           "price": null
         }
@@ -6557,40 +7363,135 @@
       ]
     },
     {
-      "id": "v2:/0ee4719e1adbb99f063f46b764d15cf18246cda8cfc29139aab2de63b1c18335",
-      "name": null,
-      "price": 500,
+      "id": "v2:/6ff9c0f144c37e35efb1d22e6bc68db3bb049695556537936764683214df800a",
+      "name": "Lote LEGO NINJAGO®",
+      "price": 2800,
       "expires": null,
       "expiresISO": null,
       "images": [
-        "https://fortnite-api.com/images/cosmetics/br/eid_llamafloat/icon.png"
+        "https://fortnite-api.com/images/cosmetics/br/character_ovendrastic/icon.png",
+        "https://fortnite-api.com/images/cosmetics/br/character_scalloplava/icon.png",
+        "https://fortnite-api.com/images/cosmetics/br/character_ticketpoke/icon.png",
+        "https://fortnite-api.com/images/cosmetics/br/eid_ovendrastic/icon.png",
+        "https://fortnite-api.com/images/cosmetics/br/eid_scalloplava/icon.png",
+        "https://fortnite-api.com/images/cosmetics/br/eid_ticketpoke/icon.png",
+        "https://fortnite-api.com/images/cosmetics/br/pickaxe_ovendrastic/icon.png",
+        "https://fortnite-api.com/images/cosmetics/br/backpack_ovendrastic/icon.png"
       ],
       "items": [
         {
-          "id": "EID_LlamaFloat",
-          "name": "Floticornio",
-          "image": "https://fortnite-api.com/images/cosmetics/br/eid_llamafloat/icon.png",
-          "rarity": "icon_series",
+          "id": "Character_OvenDrastic",
+          "name": "Jay maestro del rayo",
+          "image": "https://fortnite-api.com/images/cosmetics/br/character_ovendrastic/icon.png",
+          "rarity": "epic",
+          "type": "traje",
+          "price": null
+        },
+        {
+          "id": "Character_ScallopLava",
+          "name": "Cole maestro de la tierra",
+          "image": "https://fortnite-api.com/images/cosmetics/br/character_scalloplava/icon.png",
+          "rarity": "epic",
+          "type": "traje",
+          "price": null
+        },
+        {
+          "id": "Character_TicketPoke",
+          "name": "Zane maestro del hielo",
+          "image": "https://fortnite-api.com/images/cosmetics/br/character_ticketpoke/icon.png",
+          "rarity": "epic",
+          "type": "traje",
+          "price": null
+        },
+        {
+          "id": "EID_OvenDrastic",
+          "name": "Golpe de ladrillo",
+          "image": "https://fortnite-api.com/images/cosmetics/br/eid_ovendrastic/icon.png",
+          "rarity": "common",
           "type": "gesto",
+          "price": null
+        },
+        {
+          "id": "EID_ScallopLava",
+          "name": "Alzarrocas",
+          "image": "https://fortnite-api.com/images/cosmetics/br/eid_scalloplava/icon.png",
+          "rarity": "common",
+          "type": "gesto",
+          "price": null
+        },
+        {
+          "id": "EID_TicketPoke",
+          "name": "Patada gélida",
+          "image": "https://fortnite-api.com/images/cosmetics/br/eid_ticketpoke/icon.png",
+          "rarity": "common",
+          "type": "gesto",
+          "price": null
+        },
+        {
+          "id": "Pickaxe_OvenDrastic",
+          "name": "Nunchakus del rayo",
+          "image": "https://fortnite-api.com/images/cosmetics/br/pickaxe_ovendrastic/icon.png",
+          "rarity": "rare",
+          "type": "pico",
+          "price": null
+        },
+        {
+          "id": "Backpack_OvenDrastic",
+          "name": "Nunchakus del rayo",
+          "image": "https://fortnite-api.com/images/cosmetics/br/backpack_ovendrastic/icon.png",
+          "rarity": "rare",
+          "type": "mochila",
+          "price": null
+        },
+        {
+          "id": "Pickaxe_ScallopLava",
+          "name": "Guadaña de los terremotos",
+          "image": "https://fortnite-api.com/images/cosmetics/br/pickaxe_scalloplava/icon.png",
+          "rarity": "rare",
+          "type": "pico",
+          "price": null
+        },
+        {
+          "id": "Backpack_ScallopLava",
+          "name": "Guadaña de los terremotos",
+          "image": "https://fortnite-api.com/images/cosmetics/br/backpack_scalloplava/icon.png",
+          "rarity": "rare",
+          "type": "mochila",
+          "price": null
+        },
+        {
+          "id": "Pickaxe_TicketPoke",
+          "name": "Shurikens de hielo",
+          "image": "https://fortnite-api.com/images/cosmetics/br/pickaxe_ticketpoke/icon.png",
+          "rarity": "rare",
+          "type": "pico",
+          "price": null
+        },
+        {
+          "id": "Backpack_TicketPoke",
+          "name": "Shurikens de hielo",
+          "image": "https://fortnite-api.com/images/cosmetics/br/backpack_ticketpoke/icon.png",
+          "rarity": "rare",
+          "type": "mochila",
           "price": null
         }
       ]
     },
     {
-      "id": "v2:/f063197b9148edba3c46b1f03b09f7520fcae944c3ae18e5dda30fc1a1452eaa",
+      "id": "v2:/d21a12b79db95d9467beb3d9d820dcb54987c7a1c55aeb7e99434f4dcc3c9db9",
       "name": null,
-      "price": 800,
+      "price": 1200,
       "expires": null,
       "expiresISO": null,
       "images": [
-        "https://fortnite-api.com/images/cosmetics/br/cid_884_athena_commando_f_choneramirez/icon.png"
+        "https://fortnite-api.com/images/cosmetics/br/character_scalloplava/icon.png"
       ],
       "items": [
         {
-          "id": "CID_884_Athena_Commando_F_ChOneRamirez",
-          "name": "Ramirez vintage",
-          "image": "https://fortnite-api.com/images/cosmetics/br/cid_884_athena_commando_f_choneramirez/icon.png",
-          "rarity": "common",
+          "id": "Character_ScallopLava",
+          "name": "Cole maestro de la tierra",
+          "image": "https://fortnite-api.com/images/cosmetics/br/character_scalloplava/icon.png",
+          "rarity": "epic",
           "type": "traje",
           "price": null
         }
@@ -6627,15 +7528,6 @@
     },
     {
       "id": "v2:/c3ee09f7df541f817ab2cdf861bfce09a9e2f2f007fec51201cd61de23520b9e",
-      "name": null,
-      "price": 500,
-      "expires": null,
-      "expiresISO": null,
-      "images": [],
-      "items": []
-    },
-    {
-      "id": "v2:/04e6084de17836ec94cd89a25789ed0aefd743786c656f6140b183f767e242fd",
       "name": null,
       "price": 500,
       "expires": null,
@@ -6689,6 +7581,15 @@
           "price": null
         }
       ]
+    },
+    {
+      "id": "v2:/04e6084de17836ec94cd89a25789ed0aefd743786c656f6140b183f767e242fd",
+      "name": null,
+      "price": 500,
+      "expires": null,
+      "expiresISO": null,
+      "images": [],
+      "items": []
     },
     {
       "id": "v2:/da8d24e83fda6ee2c3660311acfdaf1e41c3914fe0f3646dbdd6181b6c3be904",
@@ -6758,6 +7659,26 @@
       ]
     },
     {
+      "id": "v2:/9fb520724d0bf9205b281ac17775c4a192e9b342a0828b0d139ea4f42ab61e0f",
+      "name": null,
+      "price": 300,
+      "expires": null,
+      "expiresISO": null,
+      "images": [
+        "https://fortnite-api.com/images/cosmetics/br/eid_ovendrastic/icon.png"
+      ],
+      "items": [
+        {
+          "id": "EID_OvenDrastic",
+          "name": "Golpe de ladrillo",
+          "image": "https://fortnite-api.com/images/cosmetics/br/eid_ovendrastic/icon.png",
+          "rarity": "common",
+          "type": "gesto",
+          "price": null
+        }
+      ]
+    },
+    {
       "id": "v2:/9b431e7c26a3f513a96153b752d1b18df64e55f0540f3409c45c7662664d0ee2",
       "name": null,
       "price": 800,
@@ -6807,26 +7728,6 @@
       "items": []
     },
     {
-      "id": "v2:/69dc60ba410da83746b74e6f5f49223e51a4e3154f9cbe783227d633b5d75c79",
-      "name": null,
-      "price": 1000,
-      "expires": null,
-      "expiresISO": null,
-      "images": [
-        "https://fortnite-api.com/images/cosmetics/br/shoes_volumewellstripe/icon.png"
-      ],
-      "items": [
-        {
-          "id": "Shoes_VolumeWellStripe",
-          "name": "adidas Harden Vol 9 \"Cyber Metallic\"",
-          "image": "https://fortnite-api.com/images/cosmetics/br/shoes_volumewellstripe/icon.png",
-          "rarity": "common",
-          "type": "traje",
-          "price": null
-        }
-      ]
-    },
-    {
       "id": "v2:/1651d985ca83c92f3054680bffe055f999ba9a90847b7004f38fef9b29a70526",
       "name": null,
       "price": 1500,
@@ -6867,26 +7768,6 @@
       ]
     },
     {
-      "id": "v2:/4e705ee1fd61275832f1207f5c719faddba4bbcffa8bf4e994f230fb3f7115c5",
-      "name": null,
-      "price": 400,
-      "expires": null,
-      "expiresISO": null,
-      "images": [
-        "https://fortnite-api.com/images/cosmetics/br/bid_878_bistrospooky_vpf4t/icon.png"
-      ],
-      "items": [
-        {
-          "id": "BID_878_BistroSpooky_VPF4T",
-          "name": "Smallz espeluznante",
-          "image": "https://fortnite-api.com/images/cosmetics/br/bid_878_bistrospooky_vpf4t/icon.png",
-          "rarity": "icon_series",
-          "type": "mochila",
-          "price": null
-        }
-      ]
-    },
-    {
       "id": "v2:/4149476e23435f6a8fbb40099dc945bc940e2c918f09a647180b2b7f7d8fcac5",
       "name": null,
       "price": 1500,
@@ -6911,6 +7792,26 @@
           "image": "https://fortnite-api.com/images/cosmetics/br/backpack_steampower/icon.png",
           "rarity": "epic",
           "type": "mochila",
+          "price": null
+        }
+      ]
+    },
+    {
+      "id": "v2:/9d3525ee692dde854aa9f658fdee02ba099022d0a65fdfb7970bb42fb06c7eb1",
+      "name": null,
+      "price": 500,
+      "expires": null,
+      "expiresISO": null,
+      "images": [
+        "https://fortnite-api.com/images/cosmetics/br/eid_beepbop/icon.png"
+      ],
+      "items": [
+        {
+          "id": "EID_BeepBop",
+          "name": "Doot Doot (6 7)",
+          "image": "https://fortnite-api.com/images/cosmetics/br/eid_beepbop/icon.png",
+          "rarity": "common",
+          "type": "gesto",
           "price": null
         }
       ]
@@ -7005,13 +7906,84 @@
       "items": []
     },
     {
-      "id": "v2:/789003d6baaa784977368a6d0578868b315a4ec0a11ca78fedec8e88e0a2d986",
+      "id": "v2:/075818b65f180af79dd0eeda07c4879aa226bf965c30b1a9fbb1d1249e597089",
+      "name": null,
+      "price": 1000,
+      "expires": null,
+      "expiresISO": null,
+      "images": [
+        "https://fortnite-api.com/images/cosmetics/br/shoes_clinicraisefloat/icon.png"
+      ],
+      "items": [
+        {
+          "id": "Shoes_ClinicRaiseFloat",
+          "name": "Crocs Classic Rubber Ducky Clog",
+          "image": "https://fortnite-api.com/images/cosmetics/br/shoes_clinicraisefloat/icon.png",
+          "rarity": "common",
+          "type": "traje",
+          "price": null
+        }
+      ]
+    },
+    {
+      "id": "v2:/0b15408450c89282a16f98c63f70e0caebb0e2057528ad5785535e1c812a489d",
+      "name": null,
+      "price": 600,
+      "expires": null,
+      "expiresISO": null,
+      "images": [
+        "https://fortnite-api.com/images/cosmetics/br/shoes_sunsettreads/icon.png"
+      ],
+      "items": [
+        {
+          "id": "Shoes_SunsetTreads",
+          "name": "Pantuflas pasajeras",
+          "image": "https://fortnite-api.com/images/cosmetics/br/shoes_sunsettreads/icon.png",
+          "rarity": "common",
+          "type": "traje",
+          "price": null
+        }
+      ]
+    },
+    {
+      "id": "v2:/48d712e4bf00f437da8aaa598aaf75858de1d4da9987abc08df3ca84aecd9a6f",
       "name": null,
       "price": 500,
       "expires": null,
       "expiresISO": null,
-      "images": [],
-      "items": []
+      "images": [
+        "https://fortnite-api.com/images/cosmetics/br/eid_blaster/icon.png"
+      ],
+      "items": [
+        {
+          "id": "EID_Blaster",
+          "name": "El cruzadito",
+          "image": "https://fortnite-api.com/images/cosmetics/br/eid_blaster/icon.png",
+          "rarity": "icon_series",
+          "type": "gesto",
+          "price": null
+        }
+      ]
+    },
+    {
+      "id": "v2:/e9b456250b22b61b457bc1959156a85b117cc95b3381624b0acb47b02de12ead",
+      "name": null,
+      "price": 800,
+      "expires": null,
+      "expiresISO": null,
+      "images": [
+        "https://fortnite-api.com/images/cosmetics/br/cid_801_athena_commando_f_golfsummer/icon.png"
+      ],
+      "items": [
+        {
+          "id": "CID_801_Athena_Commando_F_GolfSummer",
+          "name": "Patrullero par",
+          "image": "https://fortnite-api.com/images/cosmetics/br/cid_801_athena_commando_f_golfsummer/icon.png",
+          "rarity": "common",
+          "type": "traje",
+          "price": null
+        }
+      ]
     },
     {
       "id": "v2:/02471821215be45dea5c72ca6ecc569a40d96871c1f1de97128b65f373092a72",
@@ -7119,62 +8091,6 @@
       ]
     },
     {
-      "id": "v2:/bf4c78f52cf547f6c044b0b12512a48566c1da7197545df53fa194e9d40d6b35",
-      "name": "Lote Ariana Grande",
-      "price": 2800,
-      "expires": null,
-      "expiresISO": null,
-      "images": [
-        "https://fortnite-api.com/images/cosmetics/br/cid_a_158_athena_commando_f_buffet_yc20h/icon.png",
-        "https://fortnite-api.com/images/cosmetics/br/bid_818_buffet_xrf7h/icon.png",
-        "https://fortnite-api.com/images/cosmetics/br/pickaxe_id_644_buffetfemale_toh8a/icon.png",
-        "https://fortnite-api.com/images/cosmetics/br/glider_id_304_buffetfemale_aof61/icon.png",
-        "https://fortnite-api.com/images/cosmetics/br/eid_llamafloat/icon.png"
-      ],
-      "items": [
-        {
-          "id": "CID_A_158_Athena_Commando_F_Buffet_YC20H",
-          "name": "Ariana Grande",
-          "image": "https://fortnite-api.com/images/cosmetics/br/cid_a_158_athena_commando_f_buffet_yc20h/icon.png",
-          "rarity": "icon_series",
-          "type": "traje",
-          "price": null
-        },
-        {
-          "id": "BID_818_Buffet_XRF7H",
-          "name": "Piggy Smallz",
-          "image": "https://fortnite-api.com/images/cosmetics/br/bid_818_buffet_xrf7h/icon.png",
-          "rarity": "icon_series",
-          "type": "mochila",
-          "price": null
-        },
-        {
-          "id": "Pickaxe_ID_644_BuffetFemale_TOH8A",
-          "name": "Mazo de 7 quilates",
-          "image": "https://fortnite-api.com/images/cosmetics/br/pickaxe_id_644_buffetfemale_toh8a/icon.png",
-          "rarity": "icon_series",
-          "type": "pico",
-          "price": null
-        },
-        {
-          "id": "Glider_ID_304_BuffetFemale_AOF61",
-          "name": "Estelas endulzadas",
-          "image": "https://fortnite-api.com/images/cosmetics/br/glider_id_304_buffetfemale_aof61/icon.png",
-          "rarity": "icon_series",
-          "type": "ala_delta",
-          "price": null
-        },
-        {
-          "id": "EID_LlamaFloat",
-          "name": "Floticornio",
-          "image": "https://fortnite-api.com/images/cosmetics/br/eid_llamafloat/icon.png",
-          "rarity": "icon_series",
-          "type": "gesto",
-          "price": null
-        }
-      ]
-    },
-    {
       "id": "v2:/e7b33de9259baf806d3dc49c7c365e53654ca800ab6d93457ae55c6f4617a691",
       "name": null,
       "price": 500,
@@ -7233,6 +8149,26 @@
       ]
     },
     {
+      "id": "v2:/36148deb79d20a4f7a0b91fccd4ca79c6f414842fc3b907a66af69a19713db1c",
+      "name": null,
+      "price": 500,
+      "expires": null,
+      "expiresISO": null,
+      "images": [
+        "https://fortnite-api.com/images/cosmetics/br/eid_summitreedgrit/icon.png"
+      ],
+      "items": [
+        {
+          "id": "EID_SummitReedGrit",
+          "name": "EVIL J0RDAN",
+          "image": "https://fortnite-api.com/images/cosmetics/br/eid_summitreedgrit/icon.png",
+          "rarity": "icon_series",
+          "type": "gesto",
+          "price": null
+        }
+      ]
+    },
+    {
       "id": "v2:/2b080094ab404aae7cc7671e092c86ad973970c77c301ade8ad83e47e0b974d2",
       "name": null,
       "price": 500,
@@ -7282,15 +8218,6 @@
       ]
     },
     {
-      "id": "v2:/281859283eee17ab4741a406013d4c953fb0859ad5579798d55e2f7c05129e2d",
-      "name": null,
-      "price": 500,
-      "expires": null,
-      "expiresISO": null,
-      "images": [],
-      "items": []
-    },
-    {
       "id": "v2:/8450a5c515373ed603a84f00f764da1ae79ac70bd0b5a2a3087ee1582838aa74",
       "name": null,
       "price": 500,
@@ -7309,6 +8236,15 @@
           "price": null
         }
       ]
+    },
+    {
+      "id": "v2:/281859283eee17ab4741a406013d4c953fb0859ad5579798d55e2f7c05129e2d",
+      "name": null,
+      "price": 500,
+      "expires": null,
+      "expiresISO": null,
+      "images": [],
+      "items": []
     },
     {
       "id": "v2:/faf89272cf3b09529385c1184aef9301af80fa9255ff8a51c20257044f2124e3",
@@ -7507,26 +8443,6 @@
       ]
     },
     {
-      "id": "v2:/7dc7d645966165830b78b09b259e15ddce6bdbeeae724e5992abad9bb3ea973f",
-      "name": null,
-      "price": 600,
-      "expires": null,
-      "expiresISO": null,
-      "images": [
-        "https://fortnite-api.com/images/cosmetics/br/shoes_westernbarb/icon.png"
-      ],
-      "items": [
-        {
-          "id": "Shoes_WesternBarb",
-          "name": "Cactuflas",
-          "image": "https://fortnite-api.com/images/cosmetics/br/shoes_westernbarb/icon.png",
-          "rarity": "common",
-          "type": "traje",
-          "price": null
-        }
-      ]
-    },
-    {
       "id": "v2:/eb373ad5098495f67a5af5c6f4e452837d6cf1025ac97fec470c0729846fb775",
       "name": null,
       "price": 1500,
@@ -7565,6 +8481,26 @@
       "items": []
     },
     {
+      "id": "v2:/99bf1f77ad03645d6bb784f963637d17ae0e1575ff84c146ad6da77a6319997b",
+      "name": null,
+      "price": 800,
+      "expires": null,
+      "expiresISO": null,
+      "images": [
+        "https://fortnite-api.com/images/cosmetics/br/cid_087_athena_commando_f_redsilk/icon.png"
+      ],
+      "items": [
+        {
+          "id": "CID_087_Athena_Commando_F_RedSilk",
+          "name": "Defensor escarlata",
+          "image": "https://fortnite-api.com/images/cosmetics/br/cid_087_athena_commando_f_redsilk/icon.png",
+          "rarity": "common",
+          "type": "traje",
+          "price": null
+        }
+      ]
+    },
+    {
       "id": "v2:/71f29b438229ee952273a626c4589a2d5a87ef85766b151432bf8696ac1f8789",
       "name": null,
       "price": 500,
@@ -7586,15 +8522,6 @@
     },
     {
       "id": "v2:/9857647d564e52c5a5c2119c3b50a055c89a7267c696addbe547485e1fc0f285",
-      "name": null,
-      "price": 500,
-      "expires": null,
-      "expiresISO": null,
-      "images": [],
-      "items": []
-    },
-    {
-      "id": "v2:/8b9c85d458c8136f36be139da19dabe08bbf40a2cfb2758abf5d32591e1293f4",
       "name": null,
       "price": 500,
       "expires": null,
@@ -7641,26 +8568,6 @@
       "items": []
     },
     {
-      "id": "v2:/e6b5a9f51e990b61c2cdb3452da85b000adbfb9b12c25bc1a0dabb2fef4a212b",
-      "name": null,
-      "price": 1500,
-      "expires": null,
-      "expiresISO": null,
-      "images": [
-        "https://fortnite-api.com/images/cosmetics/br/glider_id_193_thegoldenskeleton/icon.png"
-      ],
-      "items": [
-        {
-          "id": "Glider_ID_193_TheGoldenSkeleton",
-          "name": "Dracorazado",
-          "image": "https://fortnite-api.com/images/cosmetics/br/glider_id_193_thegoldenskeleton/icon.png",
-          "rarity": "legendary",
-          "type": "ala_delta",
-          "price": null
-        }
-      ]
-    },
-    {
       "id": "v2:/a80a4d990c6130686624533001337a4d76f96915dac28aeede556d6f5f89c682",
       "name": null,
       "price": 1200,
@@ -7690,6 +8597,26 @@
       ]
     },
     {
+      "id": "v2:/e6b5a9f51e990b61c2cdb3452da85b000adbfb9b12c25bc1a0dabb2fef4a212b",
+      "name": null,
+      "price": 1500,
+      "expires": null,
+      "expiresISO": null,
+      "images": [
+        "https://fortnite-api.com/images/cosmetics/br/glider_id_193_thegoldenskeleton/icon.png"
+      ],
+      "items": [
+        {
+          "id": "Glider_ID_193_TheGoldenSkeleton",
+          "name": "Dracorazado",
+          "image": "https://fortnite-api.com/images/cosmetics/br/glider_id_193_thegoldenskeleton/icon.png",
+          "rarity": "legendary",
+          "type": "ala_delta",
+          "price": null
+        }
+      ]
+    },
+    {
       "id": "v2:/ec0cc7fc4bd68dc2473f39eaca9e55ed11e2af72b8ddd1c6e9d68447894c37e4",
       "name": null,
       "price": 600,
@@ -7710,26 +8637,6 @@
       ]
     },
     {
-      "id": "v2:/7a6a8b7917eab441a2995e9442d530e169d0d5a901c4e1e362093a072e440eed",
-      "name": null,
-      "price": 500,
-      "expires": null,
-      "expiresISO": null,
-      "images": [
-        "https://fortnite-api.com/images/cosmetics/br/eid_disconnect/icon.png"
-      ],
-      "items": [
-        {
-          "id": "EID_Disconnect",
-          "name": "Shuffle rompecorazones",
-          "image": "https://fortnite-api.com/images/cosmetics/br/eid_disconnect/icon.png",
-          "rarity": "icon_series",
-          "type": "gesto",
-          "price": null
-        }
-      ]
-    },
-    {
       "id": "v2:/f2d899177157f6b442c2fbb1a2eb0d752950ff540c527052f16836b34f78ac83",
       "name": null,
       "price": 1500,
@@ -7744,6 +8651,143 @@
           "name": "Tornado del Terror",
           "image": "https://fortnite-api.com/images/cosmetics/br/character_ivystub/icon.png",
           "rarity": "epic",
+          "type": "traje",
+          "price": null
+        }
+      ]
+    },
+    {
+      "id": "v2:/3d1238f1edff7133a3254d1215894afcdf9876d86aea2f83afdeae09d0b79854",
+      "name": null,
+      "price": 1500,
+      "expires": null,
+      "expiresISO": null,
+      "images": [
+        "https://fortnite-api.com/images/cosmetics/br/character_defectglitch/icon.png",
+        "https://fortnite-api.com/images/cosmetics/br/backpack_defectglitch/icon.png",
+        "https://fortnite-api.com/images/cosmetics/br/wrap_defectglitch/icon.png"
+      ],
+      "items": [
+        {
+          "id": "Character_DefectGlitch",
+          "name": "Glitch",
+          "image": "https://fortnite-api.com/images/cosmetics/br/character_defectglitch/icon.png",
+          "rarity": "epic",
+          "type": "traje",
+          "price": null
+        },
+        {
+          "id": "Backpack_DefectGlitch",
+          "name": "Inhibidor de señal",
+          "image": "https://fortnite-api.com/images/cosmetics/br/backpack_defectglitch/icon.png",
+          "rarity": "epic",
+          "type": "mochila",
+          "price": null
+        },
+        {
+          "id": "Wrap_DefectGlitch",
+          "name": "Sonar ultrasónico",
+          "image": "https://fortnite-api.com/images/cosmetics/br/wrap_defectglitch/icon.png",
+          "rarity": "rare",
+          "type": "envoltorio",
+          "price": null
+        }
+      ]
+    },
+    {
+      "id": "v2:/bc6c67d40bbe3069a8a7bfdcc1abee8aa1e42493f3f07cb46d8edea078b1697d",
+      "name": "Lote Playboi Carti",
+      "price": 3200,
+      "expires": null,
+      "expiresISO": null,
+      "images": [
+        "https://fortnite-api.com/images/cosmetics/br/character_summitreedgrit/icon.png",
+        "https://fortnite-api.com/images/cosmetics/br/backpack_summitreedgrit/icon.png",
+        "https://fortnite-api.com/images/cosmetics/br/character_summitreedmolt/icon.png",
+        "https://fortnite-api.com/images/cosmetics/br/backpack_summitreedmolt/icon.png",
+        "https://fortnite-api.com/images/cosmetics/br/eid_summitreedgrit/icon.png",
+        "https://fortnite-api.com/images/cosmetics/br/eid_summitreedmolt/icon.png",
+        "https://fortnite-api.com/images/cosmetics/br/wrap_summitreedgrit/icon.png",
+        "https://fortnite-api.com/images/cosmetics/br/backpack_summitreedmolt_guitar/icon.png"
+      ],
+      "items": [
+        {
+          "id": "Character_SummitReedGrit",
+          "name": "Playboi Carti",
+          "image": "https://fortnite-api.com/images/cosmetics/br/character_summitreedgrit/icon.png",
+          "rarity": "icon_series",
+          "type": "traje",
+          "price": null
+        },
+        {
+          "id": "Backpack_SummitReedGrit",
+          "name": "Rueda de Carti",
+          "image": "https://fortnite-api.com/images/cosmetics/br/backpack_summitreedgrit/icon.png",
+          "rarity": "icon_series",
+          "type": "mochila",
+          "price": null
+        },
+        {
+          "id": "Character_SummitReedMolt",
+          "name": "Carti King Vamp",
+          "image": "https://fortnite-api.com/images/cosmetics/br/character_summitreedmolt/icon.png",
+          "rarity": "icon_series",
+          "type": "traje",
+          "price": null
+        },
+        {
+          "id": "Backpack_SummitReedMolt",
+          "name": "Alas Vamp de Carti",
+          "image": "https://fortnite-api.com/images/cosmetics/br/backpack_summitreedmolt/icon.png",
+          "rarity": "icon_series",
+          "type": "mochila",
+          "price": null
+        },
+        {
+          "id": "EID_SummitReedGrit",
+          "name": "EVIL J0RDAN",
+          "image": "https://fortnite-api.com/images/cosmetics/br/eid_summitreedgrit/icon.png",
+          "rarity": "icon_series",
+          "type": "gesto",
+          "price": null
+        },
+        {
+          "id": "EID_SummitReedMolt",
+          "name": "Rather Lie",
+          "image": "https://fortnite-api.com/images/cosmetics/br/eid_summitreedmolt/icon.png",
+          "rarity": "icon_series",
+          "type": "gesto",
+          "price": null
+        },
+        {
+          "id": "Wrap_SummitReedGrit",
+          "name": "Playboi",
+          "image": "https://fortnite-api.com/images/cosmetics/br/wrap_summitreedgrit/icon.png",
+          "rarity": "rare",
+          "type": "envoltorio",
+          "price": null
+        },
+        {
+          "id": "Backpack_SummitReedMolt_Guitar",
+          "name": "ROCKSTAR de Carti",
+          "image": "https://fortnite-api.com/images/cosmetics/br/backpack_summitreedmolt_guitar/icon.png",
+          "rarity": "icon_series",
+          "type": "mochila",
+          "price": null
+        },
+        {
+          "id": "Backpack_SummitReedGrit_Mic",
+          "name": "Voz antagonista",
+          "image": "https://fortnite-api.com/images/cosmetics/br/backpack_summitreedgrit_mic/icon.png",
+          "rarity": "icon_series",
+          "type": "mochila",
+          "price": null
+        },
+        {
+          "id": "LoadingScreen_SummitReedKeyArt",
+          "name": "Los fans de Carti",
+          "image": "https://fortnite-api.com/images/cosmetics/br/loadingscreen_summitreedkeyart/icon.png",
+          "rarity": "icon_series",
           "type": "traje",
           "price": null
         }
@@ -7815,26 +8859,6 @@
       ]
     },
     {
-      "id": "v2:/5120d260dd827246ce6f8eaf5a1afcffe398272d9847e2e4f34d5e857c4207f8",
-      "name": null,
-      "price": 500,
-      "expires": null,
-      "expiresISO": null,
-      "images": [
-        "https://fortnite-api.com/images/cosmetics/br/eid_bollywood/icon.png"
-      ],
-      "items": [
-        {
-          "id": "EID_Bollywood",
-          "name": "Bhangra Boogie",
-          "image": "https://fortnite-api.com/images/cosmetics/br/eid_bollywood/icon.png",
-          "rarity": "rare",
-          "type": "gesto",
-          "price": null
-        }
-      ]
-    },
-    {
       "id": "v2:/d69187d9ea8b2a2f6fb2f03d37d6969997134a9e1202bb1e95f27612942e1875",
       "name": null,
       "price": 300,
@@ -7875,6 +8899,26 @@
       ]
     },
     {
+      "id": "v2:/ccd50db46f82a759ef96a2e2f8e29a420e95b26f72f5bfefa975d1f193517b7d",
+      "name": null,
+      "price": 800,
+      "expires": null,
+      "expiresISO": null,
+      "images": [
+        "https://fortnite-api.com/images/cosmetics/br/glider_voyager/icon.png"
+      ],
+      "items": [
+        {
+          "id": "Glider_Voyager",
+          "name": "Voyager",
+          "image": "https://fortnite-api.com/images/cosmetics/br/glider_voyager/icon.png",
+          "rarity": "rare",
+          "type": "ala_delta",
+          "price": null
+        }
+      ]
+    },
+    {
       "id": "v2:/86ad8398c9445577d78871c3a2f68d1339181f0263b509c85ead392e63734449",
       "name": null,
       "price": 500,
@@ -7882,6 +8926,26 @@
       "expiresISO": null,
       "images": [],
       "items": []
+    },
+    {
+      "id": "v2:/c402b700ea54354fe31175a47603481720e035eab86bdf94db76c9b6c3ffcc65",
+      "name": null,
+      "price": 800,
+      "expires": null,
+      "expiresISO": null,
+      "images": [
+        "https://fortnite-api.com/images/cosmetics/br/backpack_hexagonvoxel_drum/icon.png"
+      ],
+      "items": [
+        {
+          "id": "Backpack_HexagonVoxel_Drum",
+          "name": "Voxelada",
+          "image": "https://fortnite-api.com/images/cosmetics/br/backpack_hexagonvoxel_drum/icon.png",
+          "rarity": "rare",
+          "type": "mochila",
+          "price": null
+        }
+      ]
     },
     {
       "id": "v2:/7bbc568cb908115255f394d97ab3490bd487d84e3ae03977a09999d993c7039a",
@@ -7980,30 +9044,21 @@
       "items": []
     },
     {
-      "id": "v2:/7c87510354666964b766a2ddf3572b53b65ab4f902bf9b3a721ccb0b95d16986",
+      "id": "v2:/4c125cabc645a4f13e11c198774287e14945a22836ed961862f1a247d93c483a",
       "name": null,
-      "price": 2000,
+      "price": 1200,
       "expires": null,
       "expiresISO": null,
       "images": [
-        "https://fortnite-api.com/images/cosmetics/br/cid_a_158_athena_commando_f_buffet_yc20h/icon.png",
-        "https://fortnite-api.com/images/cosmetics/br/bid_818_buffet_xrf7h/icon.png"
+        "https://fortnite-api.com/images/cosmetics/br/character_ticketpoke/icon.png"
       ],
       "items": [
         {
-          "id": "CID_A_158_Athena_Commando_F_Buffet_YC20H",
-          "name": "Ariana Grande",
-          "image": "https://fortnite-api.com/images/cosmetics/br/cid_a_158_athena_commando_f_buffet_yc20h/icon.png",
-          "rarity": "icon_series",
+          "id": "Character_TicketPoke",
+          "name": "Zane maestro del hielo",
+          "image": "https://fortnite-api.com/images/cosmetics/br/character_ticketpoke/icon.png",
+          "rarity": "epic",
           "type": "traje",
-          "price": null
-        },
-        {
-          "id": "BID_818_Buffet_XRF7H",
-          "name": "Piggy Smallz",
-          "image": "https://fortnite-api.com/images/cosmetics/br/bid_818_buffet_xrf7h/icon.png",
-          "rarity": "icon_series",
-          "type": "mochila",
           "price": null
         }
       ]
@@ -8087,13 +9142,24 @@
       ]
     },
     {
-      "id": "v2:/19e6e821da0383529bcbb1bbc3a465358ab6acff16c0aabb0e12079c69fc5864",
+      "id": "v2:/8a345215b6bde7f12ffa55eae6c6ef85182174e4d0dd995863734bfd4c945af5",
       "name": null,
-      "price": 500,
+      "price": 800,
       "expires": null,
       "expiresISO": null,
-      "images": [],
-      "items": []
+      "images": [
+        "https://fortnite-api.com/images/cosmetics/br/pickaxe_armyflour/icon.png"
+      ],
+      "items": [
+        {
+          "id": "Pickaxe_ArmyFlour",
+          "name": "Puño martillo mecánico",
+          "image": "https://fortnite-api.com/images/cosmetics/br/pickaxe_armyflour/icon.png",
+          "rarity": "rare",
+          "type": "pico",
+          "price": null
+        }
+      ]
     },
     {
       "id": "v2:/d931f1de1a6887cb948e8181881edcdeb6e49fa1fb299eb69c6c833e426892e2",
@@ -8116,24 +9182,13 @@
       ]
     },
     {
-      "id": "v2:/8a345215b6bde7f12ffa55eae6c6ef85182174e4d0dd995863734bfd4c945af5",
+      "id": "v2:/19e6e821da0383529bcbb1bbc3a465358ab6acff16c0aabb0e12079c69fc5864",
       "name": null,
-      "price": 800,
+      "price": 500,
       "expires": null,
       "expiresISO": null,
-      "images": [
-        "https://fortnite-api.com/images/cosmetics/br/pickaxe_armyflour/icon.png"
-      ],
-      "items": [
-        {
-          "id": "Pickaxe_ArmyFlour",
-          "name": "Puño martillo mecánico",
-          "image": "https://fortnite-api.com/images/cosmetics/br/pickaxe_armyflour/icon.png",
-          "rarity": "rare",
-          "type": "pico",
-          "price": null
-        }
-      ]
+      "images": [],
+      "items": []
     },
     {
       "id": "v2:/fa533cb82fc74ac38463027a50386583030be606f1c316fdd9c9370149c7a7d8",
@@ -8235,7 +9290,7 @@
     },
     {
       "id": "v2:/d922e1a32ff18b1be312e30dfb9f0b9d9f361b48d5eeaf2ba1496c60c7dcc33c",
-      "name": "Lote Lupita",
+      "name": "Lote Festival feroz",
       "price": 1400,
       "expires": null,
       "expiresISO": null,
@@ -8279,6 +9334,44 @@
       "expiresISO": null,
       "images": [],
       "items": []
+    },
+    {
+      "id": "v2:/537dc5beb2abbc9f6c7e1596acb140f5a174f522b577b056f94db43f2c7b9661",
+      "name": "Lote Vacaciones en casa",
+      "price": 1600,
+      "expires": null,
+      "expiresISO": null,
+      "images": [
+        "https://fortnite-api.com/images/cosmetics/br/character_sunnysquawk/icon.png",
+        "https://fortnite-api.com/images/cosmetics/br/backpack_sunnysquawk/icon.png",
+        "https://fortnite-api.com/images/cosmetics/br/shoes_sunsettreads/icon.png"
+      ],
+      "items": [
+        {
+          "id": "Character_SunnySquawk",
+          "name": "Paulie Carapluma",
+          "image": "https://fortnite-api.com/images/cosmetics/br/character_sunnysquawk/icon.png",
+          "rarity": "epic",
+          "type": "traje",
+          "price": null
+        },
+        {
+          "id": "Backpack_SunnySquawk",
+          "name": "Mochiloro",
+          "image": "https://fortnite-api.com/images/cosmetics/br/backpack_sunnysquawk/icon.png",
+          "rarity": "rare",
+          "type": "mochila",
+          "price": null
+        },
+        {
+          "id": "Shoes_SunsetTreads",
+          "name": "Pantuflas pasajeras",
+          "image": "https://fortnite-api.com/images/cosmetics/br/shoes_sunsettreads/icon.png",
+          "rarity": "common",
+          "type": "traje",
+          "price": null
+        }
+      ]
     },
     {
       "id": "v2:/4bcec7ed1866da33db5ff80c553e7393bc8fa8bf19df090410ade7563cc9b580",
@@ -8357,6 +9450,26 @@
       ]
     },
     {
+      "id": "v2:/ca1b7433e287a332add73906f18659c779770e899984f0161b2e13813c89d96b",
+      "name": null,
+      "price": 1000,
+      "expires": null,
+      "expiresISO": null,
+      "images": [
+        "https://fortnite-api.com/images/cosmetics/br/shoes_lungestreamtenor/icon.png"
+      ],
+      "items": [
+        {
+          "id": "Shoes_LungeStreamTenor",
+          "name": "Nike SB Dunk Low \"Money Cat\"",
+          "image": "https://fortnite-api.com/images/cosmetics/br/shoes_lungestreamtenor/icon.png",
+          "rarity": "common",
+          "type": "traje",
+          "price": null
+        }
+      ]
+    },
+    {
       "id": "v2:/5be18e5a5f1e6777647f5f2318ef4b931cb0a9da7ffa09910bfcc1d298083b67",
       "name": null,
       "price": 800,
@@ -8372,6 +9485,26 @@
           "image": "https://fortnite-api.com/images/cosmetics/br/backpack_igniteegg_drumstick/icon.png",
           "rarity": "rare",
           "type": "mochila",
+          "price": null
+        }
+      ]
+    },
+    {
+      "id": "v2:/3a15779551e27ed72d08a0161a9d21e6824daf9592eebd8ac2d1c772718baf36",
+      "name": null,
+      "price": 1200,
+      "expires": null,
+      "expiresISO": null,
+      "images": [
+        "https://fortnite-api.com/images/cosmetics/br/cid_538_athena_commando_m_taco/icon.png"
+      ],
+      "items": [
+        {
+          "id": "CID_538_Athena_Commando_M_Taco",
+          "name": "Guaco",
+          "image": "https://fortnite-api.com/images/cosmetics/br/cid_538_athena_commando_m_taco/icon.png",
+          "rarity": "rare",
+          "type": "traje",
           "price": null
         }
       ]
@@ -8417,15 +9550,6 @@
       ]
     },
     {
-      "id": "v2:/4c4ee4f1e716d07c057a188d28e5b4b03f5c95ca9f7b2e3e1769cfaceb88778e",
-      "name": null,
-      "price": 500,
-      "expires": null,
-      "expiresISO": null,
-      "images": [],
-      "items": []
-    },
-    {
       "id": "v2:/3df849da977fcc05bd81050c6a5170ae192011f1bc2e28c1bd90fcfb9f7974e6",
       "name": null,
       "price": 500,
@@ -8441,6 +9565,44 @@
           "image": "https://fortnite-api.com/images/cosmetics/br/wrap_igniteegg/icon.png",
           "rarity": "common",
           "type": "envoltorio",
+          "price": null
+        }
+      ]
+    },
+    {
+      "id": "v2:/4c4ee4f1e716d07c057a188d28e5b4b03f5c95ca9f7b2e3e1769cfaceb88778e",
+      "name": null,
+      "price": 500,
+      "expires": null,
+      "expiresISO": null,
+      "images": [],
+      "items": []
+    },
+    {
+      "id": "v2:/83a9852517fe0564c383865f928928f9ec558742ca5709f5125e44f37ad18482",
+      "name": "Carti King Vamp",
+      "price": 1500,
+      "expires": null,
+      "expiresISO": null,
+      "images": [
+        "https://fortnite-api.com/images/cosmetics/br/character_summitreedmolt/icon.png",
+        "https://fortnite-api.com/images/cosmetics/br/backpack_summitreedmolt/icon.png"
+      ],
+      "items": [
+        {
+          "id": "Character_SummitReedMolt",
+          "name": "Carti King Vamp",
+          "image": "https://fortnite-api.com/images/cosmetics/br/character_summitreedmolt/icon.png",
+          "rarity": "icon_series",
+          "type": "traje",
+          "price": null
+        },
+        {
+          "id": "Backpack_SummitReedMolt",
+          "name": "Alas Vamp de Carti",
+          "image": "https://fortnite-api.com/images/cosmetics/br/backpack_summitreedmolt/icon.png",
+          "rarity": "icon_series",
+          "type": "mochila",
           "price": null
         }
       ]
@@ -8495,6 +9657,26 @@
       ]
     },
     {
+      "id": "v2:/48f0880da4dc72041024025959af23af9c5689f96e34022997b31fd7cc929218",
+      "name": null,
+      "price": 500,
+      "expires": null,
+      "expiresISO": null,
+      "images": [
+        "https://fortnite-api.com/images/cosmetics/br/eid_synthrose/icon.png"
+      ],
+      "items": [
+        {
+          "id": "EID_SynthRose",
+          "name": "Good Luck, Babe!",
+          "image": "https://fortnite-api.com/images/cosmetics/br/eid_synthrose/icon.png",
+          "rarity": "icon_series",
+          "type": "gesto",
+          "price": null
+        }
+      ]
+    },
+    {
       "id": "v2:/12dd88106c446ae9785af9e84698ba0daf50958fd185e2439d7a36c78920c604",
       "name": null,
       "price": 1200,
@@ -8515,26 +9697,6 @@
       ]
     },
     {
-      "id": "v2:/c0bff9974eabb0dd390ffa73f8942d6aae70cb33ae5ed815eae084d2e56b04ad",
-      "name": null,
-      "price": 800,
-      "expires": null,
-      "expiresISO": null,
-      "images": [
-        "https://fortnite-api.com/images/cosmetics/br/glider_id_007_turtleshell/icon.png"
-      ],
-      "items": [
-        {
-          "id": "Glider_ID_007_TurtleShell",
-          "name": "Medio caparazón",
-          "image": "https://fortnite-api.com/images/cosmetics/br/glider_id_007_turtleshell/icon.png",
-          "rarity": "rare",
-          "type": "ala_delta",
-          "price": null
-        }
-      ]
-    },
-    {
       "id": "v2:/b6c23c35cbf6737aa9c1ac932593e4150149c52711b574e7cbcc29dda9c70b7d",
       "name": null,
       "price": 500,
@@ -8542,55 +9704,6 @@
       "expiresISO": null,
       "images": [],
       "items": []
-    },
-    {
-      "id": "v2:/ca1480e8e79b594abd54b234fd99504e23330d8fa8a53a2da630dbe7b446e7c4",
-      "name": null,
-      "price": 300,
-      "expires": null,
-      "expiresISO": null,
-      "images": [
-        "https://fortnite-api.com/images/cosmetics/br/eid_flipit/icon.png"
-      ],
-      "items": [
-        {
-          "id": "EID_FlipIt",
-          "name": "Bateo milagroso",
-          "image": "https://fortnite-api.com/images/cosmetics/br/eid_flipit/icon.png",
-          "rarity": "icon_series",
-          "type": "gesto",
-          "price": null
-        }
-      ]
-    },
-    {
-      "id": "v2:/1c66b2e1a4bef949c9721816ccf8765892fd67b29964f58e38b1367d7876a2fc",
-      "name": "Lote Enojo total",
-      "price": 1200,
-      "expires": null,
-      "expiresISO": null,
-      "images": [
-        "https://fortnite-api.com/images/cosmetics/br/cid_383_athena_commando_f_cacti/icon.png",
-        "https://fortnite-api.com/images/cosmetics/br/shoes_westernbarb/icon.png"
-      ],
-      "items": [
-        {
-          "id": "CID_383_Athena_Commando_F_Cacti",
-          "name": "Patrullero espinoso",
-          "image": "https://fortnite-api.com/images/cosmetics/br/cid_383_athena_commando_f_cacti/icon.png",
-          "rarity": "common",
-          "type": "traje",
-          "price": null
-        },
-        {
-          "id": "Shoes_WesternBarb",
-          "name": "Cactuflas",
-          "image": "https://fortnite-api.com/images/cosmetics/br/shoes_westernbarb/icon.png",
-          "rarity": "common",
-          "type": "traje",
-          "price": null
-        }
-      ]
     },
     {
       "id": "v2:/1973597e4e25b32f7bbffaaddc886324f670b0057e367454a423b659c932b8c5",
@@ -8602,24 +9715,33 @@
       "items": []
     },
     {
-      "id": "v2:/6d64497df29e471476820819cff256b9f42e392ba34b8f47198e3abf69c9e628",
+      "id": "v2:/e417b41f9a5aa6cbd693a6e64d26b3dad26611617c45b596f91395b4b8fb55a4",
       "name": null,
-      "price": 800,
+      "price": 500,
       "expires": null,
       "expiresISO": null,
       "images": [
-        "https://fortnite-api.com/images/cosmetics/br/pickaxe_id_644_buffetfemale_toh8a/icon.png"
+        "https://fortnite-api.com/images/cosmetics/br/eid_coping/icon.png"
       ],
       "items": [
         {
-          "id": "Pickaxe_ID_644_BuffetFemale_TOH8A",
-          "name": "Mazo de 7 quilates",
-          "image": "https://fortnite-api.com/images/cosmetics/br/pickaxe_id_644_buffetfemale_toh8a/icon.png",
+          "id": "EID_Coping",
+          "name": "Copines",
+          "image": "https://fortnite-api.com/images/cosmetics/br/eid_coping/icon.png",
           "rarity": "icon_series",
-          "type": "pico",
+          "type": "gesto",
           "price": null
         }
       ]
+    },
+    {
+      "id": "v2:/b8591926201f3669ce0ed70ef5a2e419f53ee0a56b7a87f143a3151d88961a83",
+      "name": "Lote Chevrolet Corvette Stingray",
+      "price": 2200,
+      "expires": null,
+      "expiresISO": null,
+      "images": [],
+      "items": []
     },
     {
       "id": "v2:/d512a97f49551dd855f1e0440e1881b1df6a497b3b9df9a5658a0a72af15d149",
@@ -8631,30 +9753,21 @@
       "items": []
     },
     {
-      "id": "v2:/b207944c9bef7d62fb338975f0fcb491b0731d7d2dc2a8ea59a6243327607383",
+      "id": "v2:/1c57909395258053e01dfd0286f16633df5512e23cfe991563b8d9d62959b000",
       "name": null,
-      "price": 2000,
+      "price": 500,
       "expires": null,
       "expiresISO": null,
       "images": [
-        "https://fortnite-api.com/images/cosmetics/br/cid_a_227_athena_commando_f_bistroastronaut_jjlk5/icon.png",
-        "https://fortnite-api.com/images/cosmetics/br/bid_877_bistroastronaut_lwl45/icon.png"
+        "https://fortnite-api.com/images/cosmetics/br/eid_summitreedmolt/icon.png"
       ],
       "items": [
         {
-          "id": "CID_A_227_Athena_Commando_F_BistroAstronaut_JJLK5",
-          "name": "Ariana Grande viajera espacial",
-          "image": "https://fortnite-api.com/images/cosmetics/br/cid_a_227_athena_commando_f_bistroastronaut_jjlk5/icon.png",
+          "id": "EID_SummitReedMolt",
+          "name": "Rather Lie",
+          "image": "https://fortnite-api.com/images/cosmetics/br/eid_summitreedmolt/icon.png",
           "rarity": "icon_series",
-          "type": "traje",
-          "price": null
-        },
-        {
-          "id": "BID_877_BistroAstronaut_LWL45",
-          "name": "I.R.I.S.",
-          "image": "https://fortnite-api.com/images/cosmetics/br/bid_877_bistroastronaut_lwl45/icon.png",
-          "rarity": "icon_series",
-          "type": "mochila",
+          "type": "gesto",
           "price": null
         }
       ]
@@ -8673,6 +9786,55 @@
           "id": "Backpack_ArcanaAgate",
           "name": "Medallón misterioso de Daphne",
           "image": "https://fortnite-api.com/images/cosmetics/br/backpack_arcanaagate/icon.png",
+          "rarity": "rare",
+          "type": "mochila",
+          "price": null
+        }
+      ]
+    },
+    {
+      "id": "v2:/4551149535ab46014db26b557f99fcc218413cbd6ea459a7a6d247c91b7e1aea",
+      "name": null,
+      "price": 300,
+      "expires": null,
+      "expiresISO": null,
+      "images": [
+        "https://fortnite-api.com/images/cosmetics/br/eid_scalloplava/icon.png"
+      ],
+      "items": [
+        {
+          "id": "EID_ScallopLava",
+          "name": "Alzarrocas",
+          "image": "https://fortnite-api.com/images/cosmetics/br/eid_scalloplava/icon.png",
+          "rarity": "common",
+          "type": "gesto",
+          "price": null
+        }
+      ]
+    },
+    {
+      "id": "v2:/91282611a16ec7dbb2e33c04b0f5b36f743c7246beff6c027109d47b3c68ba1b",
+      "name": null,
+      "price": 1200,
+      "expires": null,
+      "expiresISO": null,
+      "images": [
+        "https://fortnite-api.com/images/cosmetics/br/character_sunnysquawk/icon.png",
+        "https://fortnite-api.com/images/cosmetics/br/backpack_sunnysquawk/icon.png"
+      ],
+      "items": [
+        {
+          "id": "Character_SunnySquawk",
+          "name": "Paulie Carapluma",
+          "image": "https://fortnite-api.com/images/cosmetics/br/character_sunnysquawk/icon.png",
+          "rarity": "epic",
+          "type": "traje",
+          "price": null
+        },
+        {
+          "id": "Backpack_SunnySquawk",
+          "name": "Mochiloro",
+          "image": "https://fortnite-api.com/images/cosmetics/br/backpack_sunnysquawk/icon.png",
           "rarity": "rare",
           "type": "mochila",
           "price": null
@@ -8740,6 +9902,26 @@
           "image": "https://fortnite-api.com/images/cosmetics/br/backpack_emeraldglasspink/icon.png",
           "rarity": "epic",
           "type": "mochila",
+          "price": null
+        }
+      ]
+    },
+    {
+      "id": "v2:/054b2d051cb2dab694861f5072aa0727d559ae854188b8a64cc1ecf54dca6fd4",
+      "name": null,
+      "price": 500,
+      "expires": null,
+      "expiresISO": null,
+      "images": [
+        "https://fortnite-api.com/images/cosmetics/br/wrap_summitreedgrit/icon.png"
+      ],
+      "items": [
+        {
+          "id": "Wrap_SummitReedGrit",
+          "name": "Playboi",
+          "image": "https://fortnite-api.com/images/cosmetics/br/wrap_summitreedgrit/icon.png",
+          "rarity": "rare",
+          "type": "envoltorio",
           "price": null
         }
       ]
@@ -8843,21 +10025,21 @@
       ]
     },
     {
-      "id": "v2:/c770978e23cb387a21623a13fed4b9cb2bd5568932890c91350e8fc45e9f8f14",
+      "id": "v2:/a0c2229bb82a20e540703cdadb308190e1555e975640a42a680108681a1cb939",
       "name": null,
-      "price": 500,
+      "price": 800,
       "expires": null,
       "expiresISO": null,
       "images": [
-        "https://fortnite-api.com/images/cosmetics/br/pickaxe_cyborgwarrior/icon.png"
+        "https://fortnite-api.com/images/cosmetics/br/eid_electroshuffle/icon.png"
       ],
       "items": [
         {
-          "id": "Pickaxe_CyborgWarrior",
-          "name": "Ciberguadaña esquelética",
-          "image": "https://fortnite-api.com/images/cosmetics/br/pickaxe_cyborgwarrior/icon.png",
-          "rarity": "rare",
-          "type": "pico",
+          "id": "EID_ElectroShuffle",
+          "name": "Shuffle",
+          "image": "https://fortnite-api.com/images/cosmetics/br/eid_electroshuffle/icon.png",
+          "rarity": "epic",
+          "type": "gesto",
           "price": null
         }
       ]
@@ -8950,26 +10132,6 @@
       ]
     },
     {
-      "id": "v2:/20a9912e2e4c04ea36d6f67a17f6680f9e73def532d965b2e8a5e093a5ed8b93",
-      "name": null,
-      "price": 1000,
-      "expires": null,
-      "expiresISO": null,
-      "images": [
-        "https://fortnite-api.com/images/cosmetics/br/shoes_whiskercaesarchomp/icon.png"
-      ],
-      "items": [
-        {
-          "id": "Shoes_WhiskerCaesarChomp",
-          "name": "Crocs Classic Clog \"White\"",
-          "image": "https://fortnite-api.com/images/cosmetics/br/shoes_whiskercaesarchomp/icon.png",
-          "rarity": "common",
-          "type": "traje",
-          "price": null
-        }
-      ]
-    },
-    {
       "id": "v2:/d830b121b4a53e19459e2506fd886f8464ca112bceea6d62485bd5083db2b7a7",
       "name": null,
       "price": 1200,
@@ -8985,26 +10147,6 @@
           "image": "https://fortnite-api.com/images/cosmetics/br/character_mollykit/icon.png",
           "rarity": "epic",
           "type": "traje",
-          "price": null
-        }
-      ]
-    },
-    {
-      "id": "v2:/8daab8b1a4e2a900cc05000687b488744aa36735ca19bec8e82061b4dab0cf8f",
-      "name": null,
-      "price": 1200,
-      "expires": null,
-      "expiresISO": null,
-      "images": [
-        "https://fortnite-api.com/images/cosmetics/br/glider_id_319_bistroastronautfemale_a4839/icon.png"
-      ],
-      "items": [
-        {
-          "id": "Glider_ID_319_BistroAstronautFemale_A4839",
-          "name": "Fantasía I.R.I.S.",
-          "image": "https://fortnite-api.com/images/cosmetics/br/glider_id_319_bistroastronautfemale_a4839/icon.png",
-          "rarity": "icon_series",
-          "type": "ala_delta",
           "price": null
         }
       ]
@@ -9039,35 +10181,6 @@
       ]
     },
     {
-      "id": "v2:/84363ff16e2dd867e2601eb9699f472e37229fd082c3c3af731d96c205ab1edb",
-      "name": null,
-      "price": 1200,
-      "expires": null,
-      "expiresISO": null,
-      "images": [
-        "https://fortnite-api.com/images/cosmetics/br/cid_684_athena_commando_f_dragonracer/icon.png",
-        "https://fortnite-api.com/images/cosmetics/br/bid_467_dragonracer/icon.png"
-      ],
-      "items": [
-        {
-          "id": "CID_684_Athena_Commando_F_DragonRacer",
-          "name": "Piloto de jade",
-          "image": "https://fortnite-api.com/images/cosmetics/br/cid_684_athena_commando_f_dragonracer/icon.png",
-          "rarity": "rare",
-          "type": "traje",
-          "price": null
-        },
-        {
-          "id": "BID_467_DragonRacer",
-          "name": "Guardia dragón",
-          "image": "https://fortnite-api.com/images/cosmetics/br/bid_467_dragonracer/icon.png",
-          "rarity": "rare",
-          "type": "mochila",
-          "price": null
-        }
-      ]
-    },
-    {
       "id": "v2:/b33180674df416c57ccc51db550d753dae661a394fe5287e70a6cbd16174b025",
       "name": null,
       "price": 300,
@@ -9083,6 +10196,26 @@
           "image": "https://fortnite-api.com/images/cosmetics/br/eid_flutelamp/icon.png",
           "rarity": "common",
           "type": "gesto",
+          "price": null
+        }
+      ]
+    },
+    {
+      "id": "v2:/4beb5b00883f88aab666860d9bad732d9aefb27fedb5ce7de84dddcb00f91f6e",
+      "name": null,
+      "price": 800,
+      "expires": null,
+      "expiresISO": null,
+      "images": [
+        "https://fortnite-api.com/images/cosmetics/br/cid_397_athena_commando_f_treasurehunterfashion/icon.png"
+      ],
+      "items": [
+        {
+          "id": "CID_397_Athena_Commando_F_TreasureHunterFashion",
+          "name": "Aura",
+          "image": "https://fortnite-api.com/images/cosmetics/br/cid_397_athena_commando_f_treasurehunterfashion/icon.png",
+          "rarity": "common",
+          "type": "traje",
           "price": null
         }
       ]
@@ -9162,86 +10295,6 @@
       ]
     },
     {
-      "id": "v2:/ea50f41ee9564a8453b0cc9527f5cad94fd15f7c67dc31981e3d31c615a1c0ff",
-      "name": null,
-      "price": 500,
-      "expires": null,
-      "expiresISO": null,
-      "images": [
-        "https://fortnite-api.com/images/cosmetics/br/eid_depart/icon.png"
-      ],
-      "items": [
-        {
-          "id": "EID_Depart",
-          "name": "Juego de talones",
-          "image": "https://fortnite-api.com/images/cosmetics/br/eid_depart/icon.png",
-          "rarity": "icon_series",
-          "type": "gesto",
-          "price": null
-        }
-      ]
-    },
-    {
-      "id": "v2:/22697a03cdcb1de52d33ac753a975ef4efeb879a07640dd8a15eb2bc27507686",
-      "name": null,
-      "price": 1000,
-      "expires": null,
-      "expiresISO": null,
-      "images": [
-        "https://fortnite-api.com/images/cosmetics/br/shoes_lungestreamforte/icon.png"
-      ],
-      "items": [
-        {
-          "id": "Shoes_LungeStreamForte",
-          "name": "Nike ISPA Drifter Split \"Indigo\"",
-          "image": "https://fortnite-api.com/images/cosmetics/br/shoes_lungestreamforte/icon.png",
-          "rarity": "common",
-          "type": "traje",
-          "price": null
-        }
-      ]
-    },
-    {
-      "id": "v2:/3aa93225abbcc9c6d3aadd227b88bc0ee680a2beb46e2f29c43654fce2d6af46",
-      "name": null,
-      "price": 800,
-      "expires": null,
-      "expiresISO": null,
-      "images": [
-        "https://fortnite-api.com/images/cosmetics/br/character_cyborgwarrior/icon.png"
-      ],
-      "items": [
-        {
-          "id": "Character_CyborgWarrior",
-          "name": "Craneodroide",
-          "image": "https://fortnite-api.com/images/cosmetics/br/character_cyborgwarrior/icon.png",
-          "rarity": "epic",
-          "type": "traje",
-          "price": null
-        }
-      ]
-    },
-    {
-      "id": "v2:/f893ec1c59b855d3c65cae3ab2fa7ad2cac217fe64673982109d5cdbbc988ae5",
-      "name": null,
-      "price": 500,
-      "expires": null,
-      "expiresISO": null,
-      "images": [
-        "https://fortnite-api.com/images/cosmetics/br/eid_bewilder/icon.png"
-      ],
-      "items": [
-        {
-          "id": "EID_Bewilder",
-          "name": "Pasos presuntuosos",
-          "image": "https://fortnite-api.com/images/cosmetics/br/eid_bewilder/icon.png",
-          "rarity": "icon_series",
-          "type": "gesto",
-          "price": null
-        }
-      ]
-    },
-    {
       "id": "v2:/f4925e0a755b54774a3fedd2a60172e4efc64e390cf879348aff7afd06ff7f50",
       "name": null,
       "price": 500,
@@ -9251,21 +10304,21 @@
       "items": []
     },
     {
-      "id": "v2:/4d9596222ed4e23138049aa5a63799e75e9f15629924bd8770aad3ae97a62a44",
+      "id": "v2:/02665089a2d825d56573a2523a9d13e001d758ee4a8009ac347e145becc1c9d6",
       "name": null,
-      "price": 1200,
+      "price": 800,
       "expires": null,
       "expiresISO": null,
       "images": [
-        "https://fortnite-api.com/images/cosmetics/br/glider_id_304_buffetfemale_aof61/icon.png"
+        "https://fortnite-api.com/images/cosmetics/br/cid_734_athena_commando_f_bannerred/icon.png"
       ],
       "items": [
         {
-          "id": "Glider_ID_304_BuffetFemale_AOF61",
-          "name": "Estelas endulzadas",
-          "image": "https://fortnite-api.com/images/cosmetics/br/glider_id_304_buffetfemale_aof61/icon.png",
-          "rarity": "icon_series",
-          "type": "ala_delta",
+          "id": "CID_734_Athena_Commando_F_BannerRed",
+          "name": "Comandante escarlata",
+          "image": "https://fortnite-api.com/images/cosmetics/br/cid_734_athena_commando_f_bannerred/icon.png",
+          "rarity": "common",
+          "type": "traje",
           "price": null
         }
       ]
@@ -9286,6 +10339,26 @@
           "image": "https://fortnite-api.com/images/cosmetics/br/pickaxe_fearcatch/icon.png",
           "rarity": "rare",
           "type": "pico",
+          "price": null
+        }
+      ]
+    },
+    {
+      "id": "v2:/12c8a78d47af48283a6ee26b16c42fa12346b68548cb6455b554793c531928fd",
+      "name": null,
+      "price": 1200,
+      "expires": null,
+      "expiresISO": null,
+      "images": [
+        "https://fortnite-api.com/images/cosmetics/br/character_roosterroast/icon.png"
+      ],
+      "items": [
+        {
+          "id": "Character_RoosterRoast",
+          "name": "Cacareador cafetero",
+          "image": "https://fortnite-api.com/images/cosmetics/br/character_roosterroast/icon.png",
+          "rarity": "epic",
+          "type": "traje",
           "price": null
         }
       ]
@@ -9329,13 +10402,24 @@
       ]
     },
     {
-      "id": "v2:/daf1b6ea11ea06054a737e22ebc0cfac8243b083f72186e91812315b57113629",
+      "id": "v2:/61ab261f37e6ae843053a4cda781acda7878334315f7d25f91ffb41daf8cc9e7",
       "name": null,
-      "price": 500,
+      "price": 1200,
       "expires": null,
       "expiresISO": null,
-      "images": [],
-      "items": []
+      "images": [
+        "https://fortnite-api.com/images/cosmetics/br/character_ovendrastic/icon.png"
+      ],
+      "items": [
+        {
+          "id": "Character_OvenDrastic",
+          "name": "Jay maestro del rayo",
+          "image": "https://fortnite-api.com/images/cosmetics/br/character_ovendrastic/icon.png",
+          "rarity": "epic",
+          "type": "traje",
+          "price": null
+        }
+      ]
     },
     {
       "id": "v2:/9ca02860dc75c5c0a00870e89d8a8781e55713dadfed727f5adc598b56b76e56",
@@ -9412,6 +10496,15 @@
       ]
     },
     {
+      "id": "v2:/daf1b6ea11ea06054a737e22ebc0cfac8243b083f72186e91812315b57113629",
+      "name": null,
+      "price": 500,
+      "expires": null,
+      "expiresISO": null,
+      "images": [],
+      "items": []
+    },
+    {
       "id": "v2:/afbff9574d8b8f8397048d85a79955958ea24d6c738f9e39adf8d58e851cd4cc",
       "name": null,
       "price": 500,
@@ -9439,15 +10532,6 @@
           "price": null
         }
       ]
-    },
-    {
-      "id": "v2:/6ff782d81eb749487c5c23855135a80b783cda0520cbc82470dcaab16e1ffabe",
-      "name": null,
-      "price": 1200,
-      "expires": null,
-      "expiresISO": null,
-      "images": [],
-      "items": []
     },
     {
       "id": "v2:/d90ddec6800321baf3839c72e69605d772e2bd29db084441ff54a8643b9be8d7",
@@ -9499,6 +10583,35 @@
       ]
     },
     {
+      "id": "v2:/c72a68f93fa01b879726f31818ebd790713a24a86f188c2b1984633c47ee6569",
+      "name": null,
+      "price": 1200,
+      "expires": null,
+      "expiresISO": null,
+      "images": [
+        "https://fortnite-api.com/images/cosmetics/br/cid_315_athena_commando_m_teriyakifish/icon.png",
+        "https://fortnite-api.com/images/cosmetics/br/bid_193_teriyakifishmale/icon.png"
+      ],
+      "items": [
+        {
+          "id": "CID_315_Athena_Commando_M_TeriyakiFish",
+          "name": "Palito de pez",
+          "image": "https://fortnite-api.com/images/cosmetics/br/cid_315_athena_commando_m_teriyakifish/icon.png",
+          "rarity": "rare",
+          "type": "traje",
+          "price": null
+        },
+        {
+          "id": "BID_193_TeriyakiFishMale",
+          "name": "Morral de agua salada",
+          "image": "https://fortnite-api.com/images/cosmetics/br/bid_193_teriyakifishmale/icon.png",
+          "rarity": "rare",
+          "type": "mochila",
+          "price": null
+        }
+      ]
+    },
+    {
       "id": "v2:/3eb3410903b5050abf5982972158e82835c6aa78e3b916ec06a377d1cc5b9b3a",
       "name": null,
       "price": 300,
@@ -9514,6 +10627,26 @@
           "image": "https://fortnite-api.com/images/cosmetics/br/backpack_armyflour/icon.png",
           "rarity": "rare",
           "type": "mochila",
+          "price": null
+        }
+      ]
+    },
+    {
+      "id": "v2:/faa1ace75054264115c5921d188686694efabec1a74e254e7c5e86644d904da5",
+      "name": null,
+      "price": 1200,
+      "expires": null,
+      "expiresISO": null,
+      "images": [
+        "https://fortnite-api.com/images/cosmetics/br/companion_eggbawk/icon.png"
+      ],
+      "items": [
+        {
+          "id": "Companion_EggBawk",
+          "name": "Quiquiriquí",
+          "image": "https://fortnite-api.com/images/cosmetics/br/companion_eggbawk/icon.png",
+          "rarity": "common",
+          "type": "traje",
           "price": null
         }
       ]
